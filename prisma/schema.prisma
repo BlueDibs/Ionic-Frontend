@@ -11,5 +11,13 @@ datasource db {
 }
 
 model User {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  firebaseId   String   @unique
+  email        String   @unique
+  username     String   @unique
+  bio          String?
+  followers    User[]   @relation("UserFollows", fields: [followersIDs], references: [id])
+  followersIDs String[] @db.ObjectId
+  following    User[]   @relation("UserFollows", fields: [followingIDs], references: [id])
+  followingIDs String[] @db.ObjectId
 }
