@@ -21,6 +21,8 @@ model User {
   following    User[]   @relation("UserFollows", fields: [followingIDs], references: [id])
   followingIDs String[] @db.ObjectId
   Posts        Post[]
+
+  @@unique([firebaseId, email, username])
 }
 
 model Post {
