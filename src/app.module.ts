@@ -5,15 +5,18 @@ import { PrismaService } from './Prisma.Service';
 import { APP_PIPE } from '@nestjs/core';
 import { ZodValidationPipe } from 'nestjs-zod';
 import { UserModule } from './user/user.module';
+import { AuthStrategy } from './auth/auth.strategy';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
+    PassportModule,
     UserModule
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService, {
     provide: APP_PIPE,
     useClass: ZodValidationPipe,
-  }],
+  }, AuthStrategy],
 })
 export class AppModule { }

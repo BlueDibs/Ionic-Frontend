@@ -1,12 +1,13 @@
-import { Controller, Param, Get, HttpException, HttpStatus, Post, Body, Delete, Patch, HttpCode } from "@nestjs/common";
+import { Controller, Param, Get, HttpException, HttpStatus, Post, Body, Delete, Patch, HttpCode, UseGuards } from "@nestjs/common";
 import { PrismaService } from "src/Prisma.Service";
 import { AddUserDTO, UpdateUserDTO } from "./user.DTOs";
-import { PrismaClientUnknownRequestError } from "@prisma/client/runtime";
+import { AuthGuard } from "@nestjs/passport";
 
 @Controller('user')
 export class UserController {
     constructor(private readonly pService: PrismaService) { }
 
+    @UseGuards(AuthGuard('jwt'))
     @Get(':id')
     async getUserId(@Param('id') id) {
         const user = await this.pService.user.findFirst({
