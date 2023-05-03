@@ -32,11 +32,21 @@ import { Feed } from './Feed/Feed';
 import { useEffect, useLayoutEffect } from 'react';
 import { ActionIcon, Button, Group, Text, Flex } from '@mantine/core';
 import { chatbubbleEllipsesOutline } from 'ionicons/icons';
+import { useQuery } from '@tanstack/react-query';
+import { getUserDetails } from './main.api';
+import { axiosInstance } from '../utils/axios';
 
 export const MainLayout = () => {
   if (!localStorage.getItem('user')) {
     return <Redirect exact to="/auth/login" />;
   }
+
+  const getUserQuery = useQuery({
+    queryKey: ['user'],
+    queryFn: getUserDetails,
+  });
+
+  if (getUserQuery.isLoading) return <>Loading...</>;
 
   return (
     <IonPage>
