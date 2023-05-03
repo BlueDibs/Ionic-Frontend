@@ -35,15 +35,25 @@ import { chatbubbleEllipsesOutline } from 'ionicons/icons';
 import { useQuery } from '@tanstack/react-query';
 import { getUserDetails } from './main.api';
 import { axiosInstance } from '../utils/axios';
+import { getAuth } from 'firebase/auth';
+import { app } from '../utils/firebase';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { setUser } from '../store/slice/userSlice';
 
 export const MainLayout = () => {
-  if (!localStorage.getItem('user')) {
-    return <Redirect exact to="/auth/login" />;
-  }
+  const dispatch = useAppDispatch();
+
+  // if (!auth.currentUser) {
+  //   return <Redirect exact to="/auth/login" />;
+  // }
 
   const getUserQuery = useQuery({
     queryKey: ['user'],
     queryFn: getUserDetails,
+    refetchOnWindowFocus: false,
+    onSuccess(user) {
+      dispatch(setUser(user));
+    },
   });
 
   if (getUserQuery.isLoading) return <>Loading...</>;

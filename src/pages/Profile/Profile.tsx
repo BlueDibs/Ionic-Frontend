@@ -9,6 +9,7 @@ import {
   Image,
   SimpleGrid,
 } from '@mantine/core';
+import { useAppSelector } from '../../store/hooks';
 
 const useStyles = createStyles((theme) => ({
   statusLeft: {
@@ -43,7 +44,7 @@ const Status = ({
   className,
 }: {
   label: string;
-  value: string;
+  value: string | number;
   className: any;
 }) => (
   <Flex
@@ -69,6 +70,7 @@ const Status = ({
 
 export function Profile() {
   const { classes } = useStyles();
+  const user = useAppSelector((state) => state.user);
 
   return (
     <>
@@ -82,32 +84,26 @@ export function Profile() {
             alt="it's me"
           />
           <Title order={5} weight={500}>
-            Sharib Khan
+            {user.username}
           </Title>
 
           <Text size={'xs'} mt={'sm'}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime
-            mollitia,molestiae quas vel sint commodi repudiandae consequuntur
-            voluptatum laborum numquam blanditiis harum quisquam eius sed odit
-            fugiat
+            {user.bio}
           </Text>
         </Flex>
         <Flex align={'center'} justify={'center'} mt={'sm'}>
           <Status
             label="Following"
-            value="257"
+            value={user.followers}
             className={classes.statusLeft}
           />
+
           <Status
             label="Following"
-            value="257"
+            value={user.following}
             className={classes.statusSquare}
           />
-          <Status
-            label="Following"
-            value="257"
-            className={classes.statusRight}
-          />
+          <Status label="Posts" value="0" className={classes.statusRight} />
         </Flex>
         <Button
           w={'100%'}

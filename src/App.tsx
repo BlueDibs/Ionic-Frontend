@@ -22,11 +22,11 @@ import '@ionic/react/css/display.css';
 // import './theme/variables.css';
 import { Login } from './pages/Auth/login';
 import { SignUp } from './pages/Auth/signup';
-import { MainLayout } from './pages/main';
+import { MainLayout } from './pages/MainApp';
 
 setupIonicReact();
 
-const App: React.FC = () =>
+const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
       <IonRouterOutlet>
@@ -38,6 +38,7 @@ const App: React.FC = () =>
         </Route>
       </IonRouterOutlet>
     </IonReactRouter>
-  </IonApp>;
+  </IonApp>
+);
 
 export default App;

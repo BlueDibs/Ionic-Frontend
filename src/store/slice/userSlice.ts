@@ -4,16 +4,23 @@ import type { RootState } from '../store'
 
 interface UserState {
     id: string;
+    firebaseId: string;
+    email: string;
     username: string;
+    bio: string;
+    followers: number;
+    following: number;
 }
 
 
 export const userSlice = createSlice({
     name: 'user',
-    initialState: {},
+    initialState: {} as UserState,
     reducers: {
-        setUser(state, action: PayloadAction<(state: object) => void>) {
-            action.payload(state);
+        setUser(user, action: PayloadAction<any>) {
+            console.log(action.payload)
+            user = { ...action.payload, followers: action.payload.followersIDs.length, following: action.payload.followingIDs.length }
+            return user
         }
     }
 })
