@@ -10,6 +10,8 @@ import {
   SimpleGrid,
 } from '@mantine/core';
 import { useAppSelector } from '../../store/hooks';
+import { EditProfile } from './EditProfile';
+import { useRef, useState } from 'react';
 
 const useStyles = createStyles((theme) => ({
   statusLeft: {
@@ -71,25 +73,25 @@ const Status = ({
 export function Profile() {
   const { classes } = useStyles();
   const user = useAppSelector((state) => state.user);
+  const [editMdlOpn, setEdtMdlOpn] = useState(false);
 
   return (
     <>
       <Container p={'lg'}>
+        <EditProfile open={editMdlOpn} setModalOpen={setEdtMdlOpn} />
         <Flex direction={'column'} gap={'xs'} p={'sm'}>
           <Avatar
-            src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80"
+            src={null}
             size="xl"
             radius="md"
             style={{ width: 100, height: 100 }}
             alt="it's me"
           />
-          <Title order={5} weight={500}>
+          <Title order={4} weight={500}>
             {user.username}
           </Title>
 
-          <Text size={'xs'} mt={'sm'}>
-            {user.bio}
-          </Text>
+          <Text size={'sm'}>{user.bio}</Text>
         </Flex>
         <Flex align={'center'} justify={'center'} mt={'sm'}>
           <Status
@@ -110,6 +112,7 @@ export function Profile() {
           mt={'md'}
           variant="white"
           style={{ borderColor: 'black', color: 'black' }}
+          onClick={() => setEdtMdlOpn(true)}
         >
           Edit Profile
         </Button>

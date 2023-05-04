@@ -51,6 +51,7 @@ export function SignUp() {
         vals.email,
         vals.password
       );
+
       const rslt = await postLoginMut.mutateAsync({
         ...vals,
         firebaseId: resp.user.uid,

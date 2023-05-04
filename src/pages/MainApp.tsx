@@ -40,6 +40,8 @@ import { app } from '../utils/firebase';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { setUser } from '../store/slice/userSlice';
 
+const auth = getAuth();
+
 export const MainLayout = () => {
   const dispatch = useAppDispatch();
 
@@ -56,7 +58,7 @@ export const MainLayout = () => {
     },
   });
 
-  if (getUserQuery.isLoading) return <>Loading...</>;
+  if (getUserQuery.isFetching) return <>Loading...</>;
 
   return (
     <IonPage>
