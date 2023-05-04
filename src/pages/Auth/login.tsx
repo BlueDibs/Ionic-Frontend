@@ -11,28 +11,36 @@ import {
   Text,
 } from '@mantine/core';
 import { Redirect, useHistory } from 'react-router';
-import { app } from '../../utils/firebase';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { app, auth } from '../../utils/firebase';
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  browserLocalPersistence,
+  setPersistence,
+} from 'firebase/auth';
 import { useForm, zodResolver } from '@mantine/form';
 import { loginSchema } from './schemas';
 import { z } from 'zod';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import { IonRouterLink } from '@ionic/react';
+import { useFirebaseAuth } from '../../hooks/auth.hook';
 
 export function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [authLoading, user] = useFirebaseAuth();
 
-  const auth = getAuth(app);
   const form = useForm<z.infer<typeof loginSchema>>({
     validate: zodResolver(loginSchema),
   });
 
-  if (localStorage.getItem('user')) {
-    return <Redirect exact to="/app/feed" />;
-  }
+  if (authLoading) return <>Loading...</>;
+  if (user) return <Redirect to={'/app/feed'} exact />;
+
+  console.log('gg');
 
   const login = async (vals: z.infer<typeof loginSchema>) => {
+    await setPersistence(auth, browserLocalPersistence);
     setLoading(true);
     try {
       const resp = await signInWithEmailAndPassword(

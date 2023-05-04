@@ -16,7 +16,7 @@ import { useForm, zodResolver } from '@mantine/form';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { signupSchema } from './schemas';
 import { z } from 'zod';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IonRouterLink } from '@ionic/react';
 import { useMutation } from '@tanstack/react-query';
 import { createUser } from './auth.api';
@@ -27,6 +27,7 @@ interface ISignUpForm
 export function SignUp() {
   const auth = getAuth(app);
   const [loading, setLoading] = useState(false);
+  const history = useHistory();
   // could not have used these many states
   const [error, setError] = useState('');
 
@@ -38,9 +39,12 @@ export function SignUp() {
     validate: zodResolver(signupSchema.omit({ firebaseId: true })),
   });
 
-  if (localStorage.getItem('user')) {
-    return <Redirect exact to="/app/feed" />;
-  }
+  useEffect(() => {
+    const user = auth.currentUser;
+    if (user) {
+      history.push('/app/feed');
+    }
+  }, [history]);
 
   const signup = async (vals: ISignUpForm) => {
     setLoading(true);

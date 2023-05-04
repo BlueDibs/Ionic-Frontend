@@ -36,29 +36,33 @@ import { useQuery } from '@tanstack/react-query';
 import { getUserDetails } from './main.api';
 import { axiosInstance } from '../utils/axios';
 import { getAuth } from 'firebase/auth';
-import { app } from '../utils/firebase';
+import { app, auth } from '../utils/firebase';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { setUser } from '../store/slice/userSlice';
-
-const auth = getAuth();
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { useFirebaseAuth } from '../hooks/auth.hook';
 
 export const MainLayout = () => {
   const dispatch = useAppDispatch();
-
-  // if (!auth.currentUser) {
-  //   return <Redirect exact to="/auth/login" />;
-  // }
+  const history = useHistory();
+  const [authLoading, user] = useFirebaseAuth();
 
   const getUserQuery = useQuery({
     queryKey: ['user'],
     queryFn: getUserDetails,
     refetchOnWindowFocus: false,
+    enabled: false,
     onSuccess(user) {
       dispatch(setUser(user));
     },
   });
 
-  if (getUserQuery.isFetching) return <>Loading...</>;
+  useEffect(() => {
+    if (user) getUserQuery.refetch();
+  }, [user]);
+
+  if (authLoading) return <>Loading...</>;
+  if (!user) return <Redirect to={'/auth/login'} exact />;
 
   return (
     <IonPage>
