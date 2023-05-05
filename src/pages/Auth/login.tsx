@@ -50,7 +50,7 @@ export function Login() {
         vals.password
       );
       localStorage.setItem('user', JSON.stringify(resp));
-      return <Redirect exact from="/app/login" to="/app/feed" />;
+      // return <Redirect exact from="/app/login" to="/app/feed" />;
     } catch (err) {
       let errMsg = '';
       if ((err as Error).message.includes('auth/user-not-found'))
