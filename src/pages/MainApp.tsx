@@ -103,7 +103,20 @@ export const MainLayout = () => {
               <IonIcon icon={searchOutline} />
             </IonTabButton>
 
-            <IonTabButton tab="add" href="/app/add" disabled>
+            <IonTabButton
+              tab="add"
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                let input = document.createElement('input');
+                input.type = 'file';
+                input.onchange = (_) => {
+                  let files = Array.from(input.files);
+                  console.log(files);
+                };
+                input.click();
+              }}
+            >
               <IonIcon icon={addOutline} />
             </IonTabButton>
 
