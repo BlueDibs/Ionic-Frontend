@@ -61,6 +61,14 @@ export const MainLayout = () => {
     if (user) getUserQuery.refetch();
   }, [user]);
 
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((userR) => {
+      if (!userR) history.push('/auth/login');
+    });
+
+    return unsubscribe;
+  }, [history]);
+
   if (authLoading) return <>Loading...</>;
   if (!user) return <Redirect to={'/auth/login'} exact />;
 
@@ -99,7 +107,14 @@ export const MainLayout = () => {
               <IonIcon icon={addOutline} />
             </IonTabButton>
 
-            <IonTabButton tab="wallet" href="/app/wallet" disabled>
+            <IonTabButton
+              tab="wallet"
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                auth.signOut();
+              }}
+            >
               <IonIcon icon={walletOutline} />
             </IonTabButton>
 

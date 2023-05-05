@@ -10,6 +10,7 @@ import {
   Button,
   Text,
 } from '@mantine/core';
+import { IonPage } from '@ionic/react';
 import { Redirect, useHistory } from 'react-router';
 import { app, auth } from '../../utils/firebase';
 import {
@@ -64,7 +65,7 @@ export function Login() {
   };
 
   return (
-    <Container size={420} my={40}>
+    <IonPage style={{ display: 'block', margin: '10px 20px' }}>
       <Title
         mt={220}
         align="center"
@@ -114,6 +115,6 @@ export function Login() {
           Sign in
         </Button>
       </Paper>
-    </Container>
+    </IonPage>
   );
 }
