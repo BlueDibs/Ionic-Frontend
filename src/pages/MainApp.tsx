@@ -41,6 +41,7 @@ import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { setUser } from '../store/slice/userSlice';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useFirebaseAuth } from '../hooks/auth.hook';
+import { Search } from './Search/Search';
 
 export const MainLayout = () => {
   const dispatch = useAppDispatch();
@@ -98,13 +99,14 @@ export const MainLayout = () => {
           <IonRouterOutlet>
             <Route path="/app/feed" exact component={Feed} />
             <Route path="/app/profile" exact component={Profile} />
+            <Route path="/app/search" exact component={Search} />
           </IonRouterOutlet>
           <IonTabBar slot="bottom">
             <IonTabButton tab="home" href="/app/feed">
               <IonIcon icon={homeOutline} />
             </IonTabButton>
 
-            <IonTabButton tab="search" href="/app/search" disabled>
+            <IonTabButton tab="search" href="/app/search">
               <IonIcon icon={searchOutline} />
             </IonTabButton>
 

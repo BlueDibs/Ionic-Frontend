@@ -1,3 +1,5 @@
+import { IonPage } from '@ionic/react';
+
 export function Feed() {
-    return <>This is feed</>
+  return <IonPage>This is feed</IonPage>;
 }

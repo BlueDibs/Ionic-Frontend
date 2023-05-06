@@ -15,6 +15,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPosts } from './profile.api';
 import { config } from '../../config';
+import { IonPage } from '@ionic/react';
 
 const useStyles = createStyles((theme) => ({
   statusLeft: {
@@ -91,7 +92,7 @@ export function Profile() {
   }, [user.id]);
 
   return (
-    <>
+    <IonPage style={{ display: 'block' }}>
       <Container p={'lg'}>
         <EditProfile open={editMdlOpn} setModalOpen={setEdtMdlOpn} />
         <Flex direction={'column'} gap={'xs'} p={'sm'}>
@@ -139,13 +140,12 @@ export function Profile() {
 
       <SimpleGrid
         cols={3}
-        h={'100%'}
         style={{
           gap: 0,
-          height: '100%',
           borderColor: '#DADADA',
           borderStyle: 'solid',
           borderWidth: 1,
+          borderBottom: 'none',
           boxSizing: 'border-box',
         }}
       >
@@ -158,6 +158,6 @@ export function Profile() {
             />
           ))}
       </SimpleGrid>
-    </>
+    </IonPage>
   );
 }
