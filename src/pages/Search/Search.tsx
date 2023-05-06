@@ -10,29 +10,40 @@ import {
 } from '@ionic/react';
 import { useQuery } from '@tanstack/react-query';
 import { searchUsername } from './search.api';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Avatar } from '@mantine/core';
 import { config } from '../../config';
 import { queryClient } from '../../utils/queryClient';
+import { useHistory } from 'react-router';
 
 export function Search() {
-  const query = useRef<string | null | undefined>('');
+  const history = useHistory();
+  const searchRef = useRef<HTMLIonSearchbarElement | null>(null);
 
   const searchQuery = useQuery({
     queryKey: ['search'],
-    queryFn: () => searchUsername(query.current?.toLocaleLowerCase()),
+    queryFn: () =>
+      searchUsername(searchRef.current?.value?.toLocaleLowerCase()),
     refetchOnWindowFocus: false,
     enabled: false,
     placeholderData: [],
   });
 
+  useEffect(() => {
+    if (searchRef.current) searchRef.current.value = null;
+
+    if (queryClient.getQueriesData(['search'])) {
+      queryClient.setQueryData(['search'], []);
+    }
+  }, [history.location]);
+
   return (
     <IonPage style={{ display: 'block' }}>
       <IonSearchbar
+        ref={searchRef}
         debounce={1000}
         onIonClear={() => queryClient.setQueryData(['search'], [])}
         onIonChange={(ev) => {
-          query.current = ev.target.value;
           searchQuery.refetch();
         }}
         animated={true}
