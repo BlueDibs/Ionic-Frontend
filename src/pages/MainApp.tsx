@@ -29,7 +29,7 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 import { Profile } from './Profile/Profile';
 import { Feed } from './Feed/Feed';
-import { useEffect, useLayoutEffect } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 import { ActionIcon, Button, Group, Text, Flex } from '@mantine/core';
 import { chatbubbleEllipsesOutline } from 'ionicons/icons';
 import { useMutation, useQuery } from '@tanstack/react-query';

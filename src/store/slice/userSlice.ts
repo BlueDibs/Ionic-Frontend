@@ -10,6 +10,7 @@ interface UserState {
     bio: string;
     followers: number;
     following: number;
+    avatarPath?: string;
 }
 
 

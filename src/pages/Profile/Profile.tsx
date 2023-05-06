@@ -96,7 +96,11 @@ export function Profile() {
         <EditProfile open={editMdlOpn} setModalOpen={setEdtMdlOpn} />
         <Flex direction={'column'} gap={'xs'} p={'sm'}>
           <Avatar
-            src={null}
+            src={
+              user.avatarPath
+                ? `${config.STATIC_FILE_BASE_URL}${user.avatarPath}?alt=media`
+                : null
+            }
             size="xl"
             radius="md"
             style={{ width: 100, height: 100 }}

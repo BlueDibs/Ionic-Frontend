@@ -15,13 +15,14 @@ import {
 import { Avatar, Box, Button, Textarea } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { useMutation } from '@tanstack/react-query';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { updateProfile } from './profile.api';
 import { updateProfileSchema } from './profile.schema';
 import { useAppSelector } from '../../store/hooks';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../store/slice/userSlice';
+import { config } from '../../config';
 
 export function EditProfile({
   open,
@@ -32,14 +33,21 @@ export function EditProfile({
 }) {
   const user = useAppSelector((state) => state.user);
   const dispatch = useDispatch();
-  const hist = useHistory();
+  const [avatar, setAvatar] = useState<File | string | null>(
+    user.avatarPath
+      ? `${config.STATIC_FILE_BASE_URL}${user.avatarPath}?alt=media`
+      : null
+  );
 
   const editForm = useForm<Zod.infer<typeof updateProfileSchema>>({
     validate: zodResolver(updateProfileSchema),
   });
 
   const updateProfMut = useMutation({
-    mutationFn: updateProfile,
+    mutationFn: (vals: Zod.infer<typeof updateProfileSchema>) => {
+      vals.avatar = !!avatar && avatar;
+      return updateProfile(vals);
+    },
     onSuccess(_, vars) {
       dispatch(setUser({ ...user, ...vars }));
       setModalOpen(false);
@@ -69,7 +77,9 @@ export function EditProfile({
       <Box p={'sm'} h={'100%'} component="form">
         <IonItem style={{ height: '100%' }}>
           <Avatar
-            src={null}
+            src={
+              typeof avatar == 'function' ? URL.createObjectURL(avatar) : avatar
+            }
             size="xl"
             radius="md"
             ml={'auto'}
@@ -82,6 +92,15 @@ export function EditProfile({
               marginTop: 15,
               marginLeft: 'auto',
               marginRight: 'auto',
+            }}
+            onClick={() => {
+              const fileInput = document.createElement('input');
+              fileInput.type = 'file';
+              fileInput.onchange = (_) => {
+                const [file] = Array.from(fileInput.files);
+                setAvatar(file);
+              };
+              fileInput.click();
             }}
           >
             Change Profile
