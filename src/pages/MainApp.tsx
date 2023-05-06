@@ -32,8 +32,8 @@ import { Feed } from './Feed/Feed';
 import { useEffect, useLayoutEffect } from 'react';
 import { ActionIcon, Button, Group, Text, Flex } from '@mantine/core';
 import { chatbubbleEllipsesOutline } from 'ionicons/icons';
-import { useQuery } from '@tanstack/react-query';
-import { getUserDetails } from './main.api';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { addPost, getUserDetails } from './main.api';
 import { axiosInstance } from '../utils/axios';
 import { getAuth } from 'firebase/auth';
 import { app, auth } from '../utils/firebase';
@@ -46,6 +46,7 @@ export const MainLayout = () => {
   const dispatch = useAppDispatch();
   const history = useHistory();
   const [authLoading, user] = useFirebaseAuth();
+  const userDet = useAppSelector((state) => state.user);
 
   const getUserQuery = useQuery({
     queryKey: ['user'],
@@ -55,6 +56,10 @@ export const MainLayout = () => {
     onSuccess(user) {
       dispatch(setUser(user));
     },
+  });
+
+  const postUploadMutation = useMutation({
+    mutationFn: (file: File) => addPost(userDet.id, file),
   });
 
   useEffect(() => {
@@ -108,11 +113,11 @@ export const MainLayout = () => {
               href="#"
               onClick={(e) => {
                 e.preventDefault();
-                let input = document.createElement('input');
+                const input = document.createElement('input');
                 input.type = 'file';
                 input.onchange = (_) => {
-                  let files = Array.from(input.files);
-                  console.log(files);
+                  const [file] = Array.from(input.files);
+                  postUploadMutation.mutate(file);
                 };
                 input.click();
               }}

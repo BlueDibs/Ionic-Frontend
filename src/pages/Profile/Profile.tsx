@@ -11,7 +11,10 @@ import {
 } from '@mantine/core';
 import { useAppSelector } from '../../store/hooks';
 import { EditProfile } from './EditProfile';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { fetchPosts } from './profile.api';
+import { config } from '../../config';
 
 const useStyles = createStyles((theme) => ({
   statusLeft: {
@@ -75,6 +78,18 @@ export function Profile() {
   const user = useAppSelector((state) => state.user);
   const [editMdlOpn, setEdtMdlOpn] = useState(false);
 
+  const fetchPostQry = useQuery({
+    queryKey: ['posts'],
+    queryFn: () => fetchPosts(user.id),
+    refetchOnWindowFocus: false,
+    placeholderData: [] as any,
+    enabled: false,
+  });
+
+  useEffect(() => {
+    if (user.id) fetchPostQry.refetch();
+  }, [user.id]);
+
   return (
     <>
       <Container p={'lg'}>
@@ -122,6 +137,7 @@ export function Profile() {
         cols={3}
         h={'100%'}
         style={{
+          gap: 0,
           height: '100%',
           borderColor: '#DADADA',
           borderStyle: 'solid',
@@ -129,10 +145,14 @@ export function Profile() {
           boxSizing: 'border-box',
         }}
       >
-        <Image
-          src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80"
-          alt="Random image"
-        />
+        {Array.isArray(fetchPostQry.data) &&
+          fetchPostQry.data.map((post, i) => (
+            <Image
+              height={150}
+              src={`${config.STATIC_FILE_BASE_URL}${post.path}?alt=media`}
+              alt="Random image"
+            />
+          ))}
       </SimpleGrid>
     </>
   );
