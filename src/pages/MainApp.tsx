@@ -45,6 +45,8 @@ import { Search } from './Search/Search';
 import { PublicProfile } from './User/PublicProfile';
 import { queryClient } from '../utils/queryClient';
 import { config } from '../config';
+import { Chats } from './Chats/Chats';
+import { SingleChat } from './Chats/SingleChat';
 
 export const MainLayout = () => {
   const dispatch = useAppDispatch();
@@ -109,6 +111,9 @@ export const MainLayout = () => {
             <Route path="/app/feed" exact component={Feed} />
             <Route path="/app/profile" exact component={Profile} />
             <Route path="/app/search" exact component={Search} />
+            <Route path="/app/chat" exact component={Chats} />
+            <Route path="/app/chat/:chatId" exact component={SingleChat} />
+
             <Route path="/app/user/:userId" exact component={PublicProfile} />
           </IonRouterOutlet>
           <IonTabBar slot="bottom">
