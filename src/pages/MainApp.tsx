@@ -42,6 +42,9 @@ import { setUser } from '../store/slice/userSlice';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useFirebaseAuth } from '../hooks/auth.hook';
 import { Search } from './Search/Search';
+import { PublicProfile } from './User/PublicProfile';
+import { queryClient } from '../utils/queryClient';
+import { config } from '../config';
 
 export const MainLayout = () => {
   const dispatch = useAppDispatch();
@@ -61,6 +64,12 @@ export const MainLayout = () => {
 
   const postUploadMutation = useMutation({
     mutationFn: (file: File) => addPost(userDet.id, file),
+    onSuccess({ data }) {
+      queryClient.setQueryData(['posts'], () => [
+        ...((queryClient.getQueryData(['posts']) as []) || []),
+        data,
+      ]);
+    },
   });
 
   useEffect(() => {
@@ -100,6 +109,7 @@ export const MainLayout = () => {
             <Route path="/app/feed" exact component={Feed} />
             <Route path="/app/profile" exact component={Profile} />
             <Route path="/app/search" exact component={Search} />
+            <Route path="/app/user/:userId" exact component={PublicProfile} />
           </IonRouterOutlet>
           <IonTabBar slot="bottom">
             <IonTabButton tab="home" href="/app/feed">

@@ -10,12 +10,13 @@ import {
   SimpleGrid,
 } from '@mantine/core';
 import { useAppSelector } from '../../store/hooks';
-import { EditProfile } from './EditProfile';
 import { useEffect, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { fetchPosts } from './profile.api';
 import { config } from '../../config';
 import { IonPage } from '@ionic/react';
+import { useHistory, useParams } from 'react-router';
+import { fetchUserDetails } from './api.user';
+import { fetchPosts } from '../Profile/profile.api';
 
 const useStyles = createStyles((theme) => ({
   statusLeft: {
@@ -74,32 +75,39 @@ const Status = ({
   </Flex>
 );
 
-export function Profile() {
+export function PublicProfile() {
   const { classes } = useStyles();
-  const user = useAppSelector((state) => state.user);
-  const [editMdlOpn, setEdtMdlOpn] = useState(false);
+  const history = useHistory();
+  const { userId } = useParams<{ userId: string }>();
+
+  const userQuery = useQuery({
+    queryKey: ['user', userId],
+    queryFn: () => fetchUserDetails(userId),
+  });
 
   const fetchPostQry = useQuery({
-    queryKey: ['posts'],
-    queryFn: () => fetchPosts(user.id),
+    queryKey: ['posts', userId],
+    queryFn: () => fetchPosts(userQuery.data.id),
     refetchOnWindowFocus: false,
     placeholderData: [] as any,
     enabled: false,
   });
 
   useEffect(() => {
-    if (user.id) fetchPostQry.refetch();
-  }, [user.id]);
+    if (userQuery.data?.id) fetchPostQry.refetch();
+  }, [userQuery.data]);
+
+  if (!userId) return history.goBack();
+  if (userQuery.isLoading) return <>Loading...</>;
 
   return (
     <IonPage style={{ display: 'block' }}>
       <Container p={'lg'}>
-        <EditProfile open={editMdlOpn} setModalOpen={setEdtMdlOpn} />
         <Flex direction={'column'} gap={'xs'} p={'sm'}>
           <Avatar
             src={
-              user.avatarPath
-                ? `${config.STATIC_FILE_BASE_URL}${user.avatarPath}?alt=media`
+              userQuery.data.avatarPath
+                ? `${config.STATIC_FILE_BASE_URL}${userQuery.data.avatarPath}?alt=media`
                 : null
             }
             size="xl"
@@ -108,21 +116,21 @@ export function Profile() {
             alt="it's me"
           />
           <Title order={4} weight={500}>
-            {user.username}
+            {userQuery.data.username}
           </Title>
 
-          <Text size={'sm'}>{user.bio}</Text>
+          <Text size={'sm'}>{userQuery.data.bio}</Text>
         </Flex>
         <Flex align={'center'} justify={'center'} mt={'sm'}>
           <Status
             label="Following"
-            value={user.followers}
+            value={userQuery.data.followers || 0}
             className={classes.statusLeft}
           />
 
           <Status
             label="Following"
-            value={user.following}
+            value={userQuery.data.following || 0}
             className={classes.statusSquare}
           />
           <Status
@@ -131,15 +139,24 @@ export function Profile() {
             className={classes.statusRight}
           />
         </Flex>
-        <Button
-          w={'100%'}
-          mt={'md'}
-          variant="white"
-          style={{ borderColor: 'black', color: 'black' }}
-          onClick={() => setEdtMdlOpn(true)}
-        >
-          Edit Profile
-        </Button>
+        <Flex gap={'lg'}>
+          <Button
+            w={'100%'}
+            mt={'md'}
+            variant="white"
+            style={{ borderColor: 'black', color: 'black' }}
+          >
+            Follow
+          </Button>
+          <Button
+            w={'100%'}
+            mt={'md'}
+            variant="white"
+            style={{ borderColor: 'black', color: 'black' }}
+          >
+            Message
+          </Button>
+        </Flex>
       </Container>
 
       <SimpleGrid

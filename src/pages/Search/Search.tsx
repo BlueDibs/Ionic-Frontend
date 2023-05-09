@@ -14,7 +14,7 @@ import { useEffect, useRef } from 'react';
 import { Avatar } from '@mantine/core';
 import { config } from '../../config';
 import { queryClient } from '../../utils/queryClient';
-import { useHistory } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 
 export function Search() {
   const history = useHistory();
@@ -52,7 +52,7 @@ export function Search() {
       <IonList>
         {Array.isArray(searchQuery.data) &&
           searchQuery.data.map((user) => (
-            <IonItem>
+            <IonItem onClick={() => history.push(`/app/user/${user.id}`)}>
               <Avatar
                 style={{ marginRight: 10, borderRadius: '50%' }}
                 src={
