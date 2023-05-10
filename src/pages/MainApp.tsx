@@ -112,7 +112,7 @@ export const MainLayout = () => {
             <Route path="/app/profile" exact component={Profile} />
             <Route path="/app/search" exact component={Search} />
             <Route path="/app/chat" exact component={Chats} />
-            <Route path="/app/chat/:chatId" exact component={SingleChat} />
+            <Route path="/app/chat/:roomId" exact component={SingleChat} />
 
             <Route path="/app/user/:userId" exact component={PublicProfile} />
           </IonRouterOutlet>

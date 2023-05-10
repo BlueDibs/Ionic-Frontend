@@ -17,6 +17,9 @@ import { IonPage } from '@ionic/react';
 import { useHistory, useParams } from 'react-router';
 import { fetchUserDetails } from './api.user';
 import { fetchPosts } from '../Profile/profile.api';
+import { child, get, push, ref, set } from 'firebase/database';
+import { database } from '../../utils/firebase';
+import CryptoJS from 'crypto-js';
 
 const useStyles = createStyles((theme) => ({
   statusLeft: {
@@ -79,6 +82,7 @@ export function PublicProfile() {
   const { classes } = useStyles();
   const history = useHistory();
   const { userId } = useParams<{ userId: string }>();
+  const user = useAppSelector((state) => state.user);
 
   const userQuery = useQuery({
     queryKey: ['user', userId],
@@ -92,6 +96,29 @@ export function PublicProfile() {
     placeholderData: [] as any,
     enabled: false,
   });
+
+  const fetchRoomFromDorm = async (targetUserId: string) => {
+    const dormURI: string = 'dorm/' + user.id + '/' + targetUserId;
+    const targetUserDORMURI: string = 'dorm/' + targetUserId + '/' + user.id;
+
+    const rawRoomId =
+      user.id < targetUserId
+        ? `${user.id}.${targetUserId}`
+        : `${targetUserId}.${user.id}`;
+
+    const roomId = CryptoJS.SHA256(rawRoomId).toString();
+    console.log(rawRoomId, roomId);
+    const userDorm = set(ref(database, dormURI), {
+      roomId,
+    });
+    const targetUserDorm = set(ref(database, targetUserDORMURI), {
+      roomId,
+    });
+
+    await Promise.all([userDorm, targetUserDorm]);
+
+    history.push(`/app/chat/${roomId}`);
+  };
 
   useEffect(() => {
     if (userQuery.data?.id) fetchPostQry.refetch();
@@ -153,6 +180,7 @@ export function PublicProfile() {
             mt={'md'}
             variant="white"
             style={{ borderColor: 'black', color: 'black' }}
+            onClick={() => fetchRoomFromDorm(userId)}
           >
             Message
           </Button>
