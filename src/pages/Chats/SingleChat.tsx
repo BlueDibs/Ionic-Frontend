@@ -9,7 +9,7 @@ import {
 } from '@mantine/core';
 import { send } from 'ionicons/icons';
 import { database } from '../../utils/firebase';
-import { child, get, onValue, push, ref, set } from 'firebase/database';
+import { child, get, onValue, push, ref, set, update } from 'firebase/database';
 import { useEffect, useRef, useState } from 'react';
 import { useAppSelector } from '../../store/hooks';
 import { useParams } from 'react-router';
@@ -63,6 +63,8 @@ export function SingleChat() {
 
   const storeRefURI = 'room/' + roomId;
   const chatBoxRef = useRef<HTMLDivElement>(null);
+  const targetDormRefURI = 'dorm/' + userId + '/' + user.id;
+  const currentDormRefURI = 'dorm/' + user.id + '/' + userId;
 
   const targetUserQuery = useQuery({
     queryKey: ['user', userId],
@@ -76,6 +78,10 @@ export function SingleChat() {
       from: user.id,
       message: message.current?.value,
     });
+    update(ref(database, storeRefURI), {
+      lastTransport: Date.now(),
+    });
+    update(ref(database, targetDormRefURI), { unread: 1 });
     message.current.value = '';
   };
 
@@ -92,6 +98,7 @@ export function SingleChat() {
     const unsubscribe = onValue(chatsRef, (snapshot) => {
       const data = snapshot.val();
       setMessages(Object.values(data || {}));
+      update(ref(database, currentDormRefURI), { unread: 0 });
     });
 
     return unsubscribe;

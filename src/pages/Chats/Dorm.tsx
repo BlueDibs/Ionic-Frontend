@@ -11,7 +11,7 @@ import { useAppSelector } from '../../store/hooks';
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { get, onValue, ref, remove } from 'firebase/database';
 import { database } from '../../utils/firebase';
-import { ActionIcon, Avatar, Flex, Paper } from '@mantine/core';
+import { ActionIcon, Avatar, Flex, Paper, Text } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
 import { getProfiles } from './api.chat';
 import { chatbubbleEllipsesOutline } from 'ionicons/icons';
@@ -19,10 +19,15 @@ import { Dialog } from '@capacitor/dialog';
 
 import './style.css';
 import { useHistory } from 'react-router';
+import { createDorm } from '../User/createDorm';
 
 export function Dorm() {
   const user = useAppSelector((state) => state.user);
   const history = useHistory();
+  const [dormRooms, setDormRooms] = useState<Record<
+    string,
+    { roomId: string; unread: number }
+  > | null>(null);
 
   const userIdsRef: MutableRefObject<string[]> = useRef([]);
 
@@ -40,6 +45,7 @@ export function Dorm() {
     const dormStoreRef = ref(database, dormStoreRefURI);
     const unsub = onValue(dormStoreRef, (snapshot) => {
       const data = snapshot.val();
+      setDormRooms(data);
       userIdsRef.current = Object.keys(data || {});
       getProfilesQuery.refetch();
     });
@@ -64,8 +70,9 @@ export function Dorm() {
           <IonItemSliding id={`ionic-swiper-${profile.id}`}>
             <IonItem
               href="#"
-              onClick={(e) => {
+              onClick={async (e) => {
                 e.preventDefault();
+                await createDorm(user.id, profile.id);
                 history.push(`/app/chat/${profile.id}`);
               }}
               lines="full"
@@ -74,6 +81,11 @@ export function Dorm() {
               <IonLabel style={{ marginLeft: '10px' }}>
                 {profile.username}
               </IonLabel>
+              {!!dormRooms && dormRooms[profile.id].unread != 0 && (
+                <Text weight={600} size={'xs'}>
+                  Unread
+                </Text>
+              )}
             </IonItem>
 
             <IonItemOptions>

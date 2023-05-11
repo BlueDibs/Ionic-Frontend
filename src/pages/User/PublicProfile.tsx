@@ -19,7 +19,7 @@ import { fetchUserDetails } from './api.user';
 import { fetchPosts } from '../Profile/profile.api';
 import { child, get, push, ref, set } from 'firebase/database';
 import { database } from '../../utils/firebase';
-import CryptoJS from 'crypto-js';
+import { createDorm } from './createDorm';
 
 const useStyles = createStyles((theme) => ({
   statusLeft: {
@@ -98,24 +98,7 @@ export function PublicProfile() {
   });
 
   const fetchRoomFromDorm = async (targetUserId: string) => {
-    const dormURI: string = 'dorm/' + user.id + '/' + targetUserId;
-    const targetUserDORMURI: string = 'dorm/' + targetUserId + '/' + user.id;
-
-    const rawRoomId =
-      user.id < targetUserId
-        ? `${user.id}.${targetUserId}`
-        : `${targetUserId}.${user.id}`;
-
-    const roomId = CryptoJS.SHA256(rawRoomId).toString();
-    console.log(rawRoomId, roomId);
-    const userDorm = set(ref(database, dormURI), {
-      roomId,
-    });
-    const targetUserDorm = set(ref(database, targetUserDORMURI), {
-      roomId,
-    });
-
-    await Promise.all([userDorm, targetUserDorm]);
+    await createDorm(user.id, targetUserId);
 
     history.push(`/app/chat/${targetUserId}`);
   };
