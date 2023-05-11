@@ -10,6 +10,9 @@ dependencies:
   '@capacitor/core':
     specifier: 4.8.0
     version: 4.8.0
+  '@capacitor/dialog':
+    specifier: ^5.0.2
+    version: 5.0.2(@capacitor/core@4.8.0)
   '@capacitor/haptics':
     specifier: 4.1.0
     version: 4.1.0(@capacitor/core@4.8.0)
@@ -23,11 +26,11 @@ dependencies:
     specifier: ^11.10.8
     version: 11.10.8(@types/react@18.0.27)(react@18.2.0)
   '@ionic/react':
-    specifier: ^7.0.0
-    version: 7.0.0(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^7.0.6
+    version: 7.0.6(react-dom@18.2.0)(react@18.2.0)
   '@ionic/react-router':
-    specifier: ^7.0.0
-    version: 7.0.0(react-dom@18.2.0)(react-router-dom@5.3.4)(react-router@5.3.4)(react@18.2.0)
+    specifier: ^7.0.6
+    version: 7.0.6(react-dom@18.2.0)(react-router-dom@5.3.4)(react-router@5.3.4)(react@18.2.0)
   '@mantine/core':
     specifier: ^6.0.9
     version: 6.0.9(@emotion/react@11.10.8)(@mantine/hooks@6.0.9)(@types/react@18.0.27)(react-dom@18.2.0)(react@18.2.0)
@@ -82,6 +85,9 @@ dependencies:
   redux-devtools-extension:
     specifier: ^2.13.9
     version: 2.13.9(redux@4.2.1)
+  swiper:
+    specifier: ^9.3.1
+    version: 9.3.1
   zod:
     specifier: ^3.21.4
     version: 3.21.4
@@ -1361,6 +1367,14 @@ packages:
       tslib: 2.5.0
     dev: false
 
+  /@capacitor/dialog@5.0.2(@capacitor/core@4.8.0):
+    resolution: {integrity: sha512-9SCknNv2Z9Q3MazjA2a8uZbbmbsGViO0k6OcKgirccXbJoz0uj2x8XiNqOaqLZKeZn0zSD3Lu7J4eJYmLFH+AQ==}
+    peerDependencies:
+      '@capacitor/core': ^5.0.0
+    dependencies:
+      '@capacitor/core': 4.8.0
+    dev: false
+
   /@capacitor/haptics@4.1.0(@capacitor/core@4.8.0):
     resolution: {integrity: sha512-gAIFy50e1VZPdokRFLkl8Y+yZYB3e4brd5yu9DRShbWbheruwU34TxtG5C1NANvq4mbXd3tMXzBi59Q5JFyTHA==}
     peerDependencies:
@@ -2280,23 +2294,23 @@ packages:
       - supports-color
     dev: true
 
-  /@ionic/core@7.0.0:
-    resolution: {integrity: sha512-pM8qOaea9ZbqZbGnoIswaeeTiHJKNQ9ziSNHSILDpdd4FjpxZjOeMgNUdvYzh5rX9fA6hEM2wodg7McIWHgvZQ==}
+  /@ionic/core@7.0.6:
+    resolution: {integrity: sha512-ssZs8QzyNPmGCUdK5i5OupA7BDmOjJEOhqfpNGbxwXX3YQ08naVDjNxYn/VSW9O1zSyfecJqJz0Akw/LdKIN/Q==}
     dependencies:
-      '@stencil/core': 3.2.1
+      '@stencil/core': 3.2.2
       ionicons: 7.1.0
       tslib: 2.5.0
     dev: false
 
-  /@ionic/react-router@7.0.0(react-dom@18.2.0)(react-router-dom@5.3.4)(react-router@5.3.4)(react@18.2.0):
-    resolution: {integrity: sha512-rlYWI9Rh8lk3STZ38J7AGx0wnCHYpLg7Ocoxjsvxyuif5PEqQlzZyu0UN9IWVyEMctZEZ2cN0CLayBVaOCMYuA==}
+  /@ionic/react-router@7.0.6(react-dom@18.2.0)(react-router-dom@5.3.4)(react-router@5.3.4)(react@18.2.0):
+    resolution: {integrity: sha512-gBEB5My/mwF/CjrASMGOjPGnkoutvqUfC7HmSFDV5bS/EKFxAr757loCknu0rUH6FGqBQVG+hgcd1AeVIB6BoA==}
     peerDependencies:
       react: '>=16.8.6'
       react-dom: '>=16.8.6'
       react-router: ^5.0.1
       react-router-dom: ^5.0.1
     dependencies:
-      '@ionic/react': 7.0.0(react-dom@18.2.0)(react@18.2.0)
+      '@ionic/react': 7.0.6(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-router: 5.3.4(react@18.2.0)
@@ -2304,14 +2318,14 @@ packages:
       tslib: 2.5.0
     dev: false
 
-  /@ionic/react@7.0.0(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-t9NlHZTiH/NvT3GLcO4yS5Whe9stpsZ9AtNOYS+aPcKM5vhxJSFGXDUvKtABOLi2CniW2kFE8krHwjz9V0GQYA==}
+  /@ionic/react@7.0.6(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-PQIDRVPcjbzxPypbdxIG55nAbrGreCyg8tlNRZw9LuC/IWhDXvMBR+umyF8cwwiiftRxCLukVtfd9M22bJ4slQ==}
     peerDependencies:
       react: '>=16.8.6'
       react-dom: '>=16.8.6'
     dependencies:
-      '@ionic/core': 7.0.0
-      ionicons: 7.0.0
+      '@ionic/core': 7.0.6
+      ionicons: 7.1.0
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       tslib: 2.5.0
@@ -2739,8 +2753,8 @@ packages:
     hasBin: true
     dev: false
 
-  /@stencil/core@3.2.1:
-    resolution: {integrity: sha512-Ybm4NteQBScLq3H0JML/uqo4nWjNpZw1HAAURtR5LlRm7ptzNKO5S8EnHp3m05/uyTzeh9yLpUFHY7bxGNdYLg==}
+  /@stencil/core@3.2.2:
+    resolution: {integrity: sha512-wXb9cVWL0T3cTwYLveekdTFCRGx6+9hpVDEXna+N8K8OPoW6xtFAHRLv+LjOM7k59PkA8MG3IinAfV7Y+xa0Hw==}
     engines: {node: '>=14.10.0', npm: '>=6.0.0'}
     hasBin: true
     dev: false
@@ -6297,6 +6311,10 @@ packages:
       tweetnacl: 0.14.5
     dev: true
 
+  /ssr-window@4.0.2:
+    resolution: {integrity: sha512-ISv/Ch+ig7SOtw7G2+qkwfVASzazUnvlDTwypdLoPoySv+6MqlOV10VwPSE6EWkGjhW50lUmghPmpYZXMu/+AQ==}
+    dev: false
+
   /stack-utils@2.0.6:
     resolution: {integrity: sha512-XlkWvfIm6RmsWtNJx+uqtKLS8eqFbxUg0ZzLXqY0caEy9l7hruX8IpiDnjsLavoBgqCCR71TqWO8MaXYheJ3RQ==}
     engines: {node: '>=10'}
@@ -6443,6 +6461,13 @@ packages:
   /supports-preserve-symlinks-flag@1.0.0:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
+
+  /swiper@9.3.1:
+    resolution: {integrity: sha512-YBDf0DLBLO7O4rwYHfz+HltkY4sDwKSbRf1it56rngpkYHxiKg0NkPMXAFmw2nGvMNQJwV14Dse47hQIifJzzA==}
+    engines: {node: '>= 4.7.0'}
+    dependencies:
+      ssr-window: 4.0.2
+    dev: false
 
   /symbol-tree@3.2.4:
     resolution: {integrity: sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==}
