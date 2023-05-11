@@ -45,7 +45,7 @@ import { Search } from './Search/Search';
 import { PublicProfile } from './User/PublicProfile';
 import { queryClient } from '../utils/queryClient';
 import { config } from '../config';
-import { Chats } from './Chats/Chats';
+import { Chats, Dorm } from './Chats/Dorm';
 import { SingleChat } from './Chats/SingleChat';
 
 export const MainLayout = () => {
@@ -99,6 +99,7 @@ export const MainLayout = () => {
             </Text>
             <IonIcon
               icon={chatbubbleEllipsesOutline}
+              onClick={() => history.push('/app/chats')}
               style={{ fontSize: 25, marginLeft: 'auto' }}
             ></IonIcon>
           </Flex>
@@ -111,8 +112,8 @@ export const MainLayout = () => {
             <Route path="/app/feed" exact component={Feed} />
             <Route path="/app/profile" exact component={Profile} />
             <Route path="/app/search" exact component={Search} />
-            <Route path="/app/chat" exact component={Chats} />
-            <Route path="/app/chat/:roomId" exact component={SingleChat} />
+            <Route path="/app/chats" exact component={Dorm} />
+            <Route path="/app/chat/:userId" exact component={SingleChat} />
 
             <Route path="/app/user/:userId" exact component={PublicProfile} />
           </IonRouterOutlet>

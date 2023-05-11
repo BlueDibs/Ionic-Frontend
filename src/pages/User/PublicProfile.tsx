@@ -117,7 +117,7 @@ export function PublicProfile() {
 
     await Promise.all([userDorm, targetUserDorm]);
 
-    history.push(`/app/chat/${roomId}`);
+    history.push(`/app/chat/${targetUserId}`);
   };
 
   useEffect(() => {

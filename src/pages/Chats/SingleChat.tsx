@@ -9,12 +9,13 @@ import {
 } from '@mantine/core';
 import { send } from 'ionicons/icons';
 import { database } from '../../utils/firebase';
-import { onValue, push, ref, set } from 'firebase/database';
+import { child, get, onValue, push, ref, set } from 'firebase/database';
 import { useEffect, useRef, useState } from 'react';
 import { useAppSelector } from '../../store/hooks';
 import { useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import { fetchUserDetails } from '../User/api.user';
+import CryptoJS from 'crypto-js';
 
 const OutGoing = ({ message }: { message: string }) => (
   <UnstyledButton
@@ -53,14 +54,19 @@ const InComing = ({ message }: { message: string }) => (
 export function SingleChat() {
   const message = useRef<HTMLInputElement>(null);
   const user = useAppSelector((state) => state.user);
-  const { roomId } = useParams<{ roomId: string }>();
+  const { userId } = useParams<{ userId: string }>();
   const [messages, setMessages] = useState([]);
+  const rawRoomId =
+    user.id < userId ? `${user.id}.${userId}` : `${userId}.${user.id}`;
+  const roomId = CryptoJS.SHA256(rawRoomId).toString();
+  console.log(roomId);
+
   const storeRefURI = 'room/' + roomId;
   const chatBoxRef = useRef<HTMLDivElement>(null);
 
   const targetUserQuery = useQuery({
-    queryKey: ['user', roomId],
-    queryFn: () => fetchUserDetails(roomId),
+    queryKey: ['user', userId],
+    queryFn: () => fetchUserDetails(userId),
     refetchOnWindowFocus: false,
   });
 
@@ -85,11 +91,11 @@ export function SingleChat() {
     const chatsRef = ref(database, storeRefURI);
     const unsubscribe = onValue(chatsRef, (snapshot) => {
       const data = snapshot.val();
-      setMessages(Object.values(data || {}) || []);
+      setMessages(Object.values(data || {}));
     });
 
     return unsubscribe;
-  }, []);
+  }, [storeRefURI]);
 
   return (
     <IonPage>
@@ -108,10 +114,11 @@ export function SingleChat() {
       >
         <Avatar />
         <Title order={4} color="#5C5F66" weight={500}>
-          {targetUserQuery.data.name}
+          {targetUserQuery.data?.username}
         </Title>
       </Flex>
       <Flex
+        mt={50}
         ref={chatBoxRef}
         p={'sm'}
         direction={'column'}
