@@ -39,6 +39,15 @@ export function Dorm() {
     enabled: false,
     refetchOnWindowFocus: false,
     placeholderData: [],
+    select(data: { username: string; avatarPath: string; id: string }[]) {
+      const filteredUnread = [];
+      data.forEach((profile) => {
+        if (dormRooms && dormRooms[profile.id].unread)
+          filteredUnread.unshift(profile);
+        else filteredUnread.push(profile);
+      });
+      return filteredUnread;
+    },
   });
 
   useEffect(() => {

@@ -90,6 +90,8 @@ export function SingleChat() {
     chatBoxRef.current.scrollTo(0, chatBoxRef.current.scrollHeight);
 
   useEffect(() => {
+    console.log(messages);
+
     scroll();
   }, [messages]);
 
@@ -133,13 +135,14 @@ export function SingleChat() {
         style={{ overflow: 'auto', overflowX: 'clip' }}
         pb={50}
       >
-        {messages.map(({ from, message }) =>
-          from == user.id ? (
+        {messages.map(({ from, message }) => {
+          if (!from || !message) return;
+          return from == user.id ? (
             <OutGoing message={message} />
           ) : (
             <InComing message={message} />
-          )
-        )}
+          );
+        })}
       </Flex>
       <TextInput
         ref={message}
