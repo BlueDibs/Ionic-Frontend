@@ -145,6 +145,11 @@ export function SingleChat() {
         })}
       </Flex>
       <TextInput
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            sendMessage();
+          }
+        }}
         ref={message}
         size="md"
         style={{

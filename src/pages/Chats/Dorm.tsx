@@ -40,7 +40,11 @@ export function Dorm() {
     refetchOnWindowFocus: false,
     placeholderData: [],
     select(data: { username: string; avatarPath: string; id: string }[]) {
-      const filteredUnread = [];
+      const filteredUnread: {
+        username: string;
+        avatarPath: string;
+        id: string;
+      }[] = [];
       data.forEach((profile) => {
         if (dormRooms && dormRooms[profile.id].unread)
           filteredUnread.unshift(profile);
