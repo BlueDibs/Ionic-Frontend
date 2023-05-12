@@ -16,6 +16,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchPosts } from './profile.api';
 import { config } from '../../config';
 import { IonPage } from '@ionic/react';
+import { imgUrl } from '../../utils/media';
 
 const useStyles = createStyles((theme) => ({
   statusLeft: {
@@ -97,11 +98,7 @@ export function Profile() {
         <EditProfile open={editMdlOpn} setModalOpen={setEdtMdlOpn} />
         <Flex direction={'column'} gap={'xs'} p={'sm'}>
           <Avatar
-            src={
-              user.avatarPath
-                ? `${config.STATIC_FILE_BASE_URL}${user.avatarPath}?alt=media`
-                : null
-            }
+            src={user.avatarPath ? imgUrl(user.avatarPath) : null}
             size="xl"
             radius="md"
             style={{ width: 100, height: 100 }}

@@ -20,6 +20,7 @@ import { Dialog } from '@capacitor/dialog';
 import './style.css';
 import { useHistory } from 'react-router';
 import { createDorm } from '../User/createDorm';
+import { imgUrl } from '../../utils/media';
 
 export function Dorm() {
   const user = useAppSelector((state) => state.user);
@@ -90,7 +91,7 @@ export function Dorm() {
               }}
               lines="full"
             >
-              <Avatar />
+              <Avatar src={imgUrl(profile.avatarPath)} />
               <IonLabel style={{ marginLeft: '10px' }}>
                 {profile.username}
               </IonLabel>

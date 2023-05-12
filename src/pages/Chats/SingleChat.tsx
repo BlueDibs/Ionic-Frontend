@@ -16,6 +16,7 @@ import { useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import { fetchUserDetails } from '../User/api.user';
 import CryptoJS from 'crypto-js';
+import { imgUrl } from '../../utils/media';
 
 const OutGoing = ({ message }: { message: string }) => (
   <UnstyledButton
@@ -121,7 +122,7 @@ export function SingleChat() {
           borderColor: 'gray',
         }}
       >
-        <Avatar />
+        <Avatar src={imgUrl(targetUserQuery.data?.avatarPath)} />
         <Title order={4} color="#5C5F66" weight={500}>
           {targetUserQuery.data?.username}
         </Title>
