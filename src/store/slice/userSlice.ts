@@ -8,8 +8,8 @@ interface UserState {
     email: string;
     username: string;
     bio: string;
-    followers: number;
-    following: number;
+    followersIDs: string[];
+    followingIDs: string[];
     avatarPath?: string;
 }
 
@@ -19,13 +19,21 @@ export const userSlice = createSlice({
     initialState: {} as UserState,
     reducers: {
         setUser(user, action: PayloadAction<any>) {
-            console.log(action.payload)
-            user = { ...action.payload, followers: action.payload.followersIDs.length, following: action.payload.followingIDs.length }
+            user = { ...action.payload }
+            return user
+        },
+        follow(user, action: PayloadAction<string>) {
+            user.followingIDs.push(action.payload)
+            return user
+        },
+        unfollow(user, action: PayloadAction<string>) {
+            user.followingIDs = user.followingIDs.filter((id) => id != action.payload)
             return user
         }
-    }
+    },
+
 })
 
-export const { setUser } = userSlice.actions;
+export const { setUser, follow, unfollow } = userSlice.actions;
 export const selectUser = (state: RootState) => state.user;
 export default userSlice.reducer;

@@ -113,13 +113,13 @@ export function Profile() {
         <Flex align={'center'} justify={'center'} mt={'sm'}>
           <Status
             label="Following"
-            value={user.followers}
+            value={user.followers?.length || 0}
             className={classes.statusLeft}
           />
 
           <Status
             label="Following"
-            value={user.following}
+            value={user.following?.length || 0}
             className={classes.statusSquare}
           />
           <Status

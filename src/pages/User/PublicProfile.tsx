@@ -9,17 +9,19 @@ import {
   Image,
   SimpleGrid,
 } from '@mantine/core';
-import { useAppSelector } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { useEffect, useRef, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { config } from '../../config';
 import { IonPage } from '@ionic/react';
 import { useHistory, useParams } from 'react-router';
-import { fetchUserDetails } from './api.user';
+import { fetchUserDetails, followUser, unFollowUser } from './api.user';
 import { fetchPosts } from '../Profile/profile.api';
 import { child, get, push, ref, set } from 'firebase/database';
 import { database } from '../../utils/firebase';
 import { createDorm } from './createDorm';
+import { follow, unfollow } from '../../store/slice/userSlice';
+import { useDispatch } from 'react-redux';
 
 const useStyles = createStyles((theme) => ({
   statusLeft: {
@@ -83,6 +85,7 @@ export function PublicProfile() {
   const history = useHistory();
   const { userId } = useParams<{ userId: string }>();
   const user = useAppSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   const userQuery = useQuery({
     queryKey: ['user', userId],
@@ -97,6 +100,20 @@ export function PublicProfile() {
     enabled: false,
   });
 
+  const followMut = useMutation({
+    mutationFn: followUser,
+    onSuccess() {
+      dispatch(follow(userId));
+    },
+  });
+
+  const unfollowMut = useMutation({
+    mutationFn: unFollowUser,
+    onSuccess() {
+      dispatch(unfollow(userId));
+    },
+  });
+
   const fetchRoomFromDorm = async (targetUserId: string) => {
     await createDorm(user.id, targetUserId);
 
@@ -105,7 +122,12 @@ export function PublicProfile() {
 
   useEffect(() => {
     if (userQuery.data?.id) fetchPostQry.refetch();
-  }, [userQuery.data]);
+  }, [userQuery.data?.id]);
+
+  const userFollowUnfollow = () => {
+    if (user.followingIDs.includes(userId)) unfollowMut.mutate(userId);
+    else followMut.mutate(userId);
+  };
 
   if (!userId) return history.goBack();
   if (userQuery.isLoading) return <>Loading...</>;
@@ -155,8 +177,9 @@ export function PublicProfile() {
             mt={'md'}
             variant="white"
             style={{ borderColor: 'black', color: 'black' }}
+            onClick={() => userFollowUnfollow()}
           >
-            Follow
+            {user.followingIDs?.includes(userId) ? 'Following' : 'Follow'}
           </Button>
           <Button
             w={'100%'}
