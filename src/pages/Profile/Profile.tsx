@@ -100,9 +100,9 @@ export function Profile() {
       <IonHeader>
         <IonToolbar style={{ padding: '2px 10px' }}>
           <Flex justify={'space-between'} style={{ alignItems: 'center' }}>
-            <Text weight={800} mr={'auto'}>
-              Logo
-            </Text>
+            <Title order={5} mr={'auto'}>
+              Profile
+            </Title>
             <IonIcon
               icon={settingsOutline}
               onClick={() => history.push('/app/chats')}
