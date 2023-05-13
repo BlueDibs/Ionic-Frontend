@@ -36,7 +36,6 @@ export function Feed() {
       new Date().getSeconds() - lastClick.time.getSeconds() < 1 &&
       postId == lastClick.id
     ) {
-      console.log('ss');
       controls.start({
         scale: [0.8, 1, 0.8],
         opacity: [0, 1],
