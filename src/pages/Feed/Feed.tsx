@@ -18,7 +18,9 @@ import { motion, useAnimation } from 'framer-motion';
 export function Feed() {
   const history = useHistory();
   const user = useAppSelector((state) => state.user);
-  const [lastClick, setlastClick] = useState<Date | null>(null);
+  const [lastClick, setlastClick] = useState<{ time: Date; id: string } | null>(
+    null
+  );
   const controls = useAnimation();
 
   const getFeedQuery = useQuery({
@@ -26,20 +28,27 @@ export function Feed() {
     queryFn: getFeed,
   });
 
-  const likeTimer = () => {
-    if (!lastClick) return setlastClick(new Date());
-    else if (new Date().getSeconds() - lastClick.getSeconds() < 1) {
-      setlastClick(null);
+  const likeTimer = (postId: string) => {
+    console.log(lastClick);
+    if (!lastClick)
+      return setlastClick((_) => ({ time: new Date(), id: postId }));
+    else if (
+      new Date().getSeconds() - lastClick.time.getSeconds() < 1 &&
+      postId == lastClick.id
+    ) {
       console.log('ss');
       controls.start({
         scale: [0.8, 1, 0.8],
         opacity: [0, 1],
         transition: { duration: 0.2 },
       });
-      setTimeout(() => controls.start({ opacity: [1, 0] }), 500);
+      setTimeout(() => {
+        controls.start({ opacity: [1, 0] });
+        setlastClick((_) => ({ time: new Date(), id: postId }));
+      }, 500);
       return;
     }
-    setlastClick(new Date());
+    return setlastClick((_) => ({ time: new Date(), id: postId }));
   };
 
   return (
@@ -69,35 +78,37 @@ export function Feed() {
                   <Text weight={500}>{post.User.username}</Text>
                 </Flex>
                 <div
+                  onClick={() => likeTimer(post.id)}
                   style={{
                     position: 'relative',
                     transformOrigin: 'center',
                   }}
                 >
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={controls}
-                    style={{
-                      zIndex: '9999',
-                      position: 'absolute',
-                      top: '50%',
-                      left: '50%',
-                      margin: '-50px -50px',
-                    }}
-                  >
-                    <IonIcon
-                      icon={heart}
+                  {lastClick?.id == post.id && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={controls}
                       style={{
-                        zIndex: '99999',
-                        fontSize: '100px',
+                        zIndex: '9999',
                         position: 'absolute',
-
-                        color: 'white',
+                        top: '50%',
+                        left: '50%',
+                        margin: '-50px -50px',
                       }}
-                    />
-                  </motion.div>
+                    >
+                      <IonIcon
+                        icon={heart}
+                        style={{
+                          zIndex: '99999',
+                          fontSize: '100px',
+                          position: 'absolute',
+
+                          color: 'white',
+                        }}
+                      />
+                    </motion.div>
+                  )}
                   <Image
-                    onClick={likeTimer}
                     mx="auto"
                     height={300}
                     style={{ backgroundColor: 'black' }}
