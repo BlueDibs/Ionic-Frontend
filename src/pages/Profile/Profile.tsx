@@ -112,14 +112,14 @@ export function Profile() {
         </Flex>
         <Flex align={'center'} justify={'center'} mt={'sm'}>
           <Status
-            label="Following"
-            value={user.followers?.length || 0}
+            label="Followers"
+            value={user.followersIDs?.length || 0}
             className={classes.statusLeft}
           />
 
           <Status
             label="Following"
-            value={user.following?.length || 0}
+            value={user.followingIDs?.length || 0}
             className={classes.statusSquare}
           />
           <Status
