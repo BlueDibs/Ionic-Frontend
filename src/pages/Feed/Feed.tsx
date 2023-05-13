@@ -29,7 +29,6 @@ export function Feed() {
   });
 
   const likeTimer = (postId: string) => {
-    console.log(lastClick);
     if (!lastClick)
       return setlastClick((_) => ({ time: new Date(), id: postId }));
     else if (
