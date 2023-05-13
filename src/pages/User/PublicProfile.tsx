@@ -22,6 +22,7 @@ import { database } from '../../utils/firebase';
 import { createDorm } from './createDorm';
 import { follow, unfollow } from '../../store/slice/userSlice';
 import { useDispatch } from 'react-redux';
+import { queryClient } from '../../utils/queryClient';
 
 const useStyles = createStyles((theme) => ({
   statusLeft: {
@@ -102,14 +103,16 @@ export function PublicProfile() {
 
   const followMut = useMutation({
     mutationFn: followUser,
-    onSuccess() {
+    onSuccess({ data }) {
+      userQuery.refetch();
       dispatch(follow(userId));
     },
   });
 
   const unfollowMut = useMutation({
     mutationFn: unFollowUser,
-    onSuccess() {
+    onSuccess({ data }) {
+      userQuery.refetch();
       dispatch(unfollow(userId));
     },
   });
@@ -156,13 +159,13 @@ export function PublicProfile() {
         <Flex align={'center'} justify={'center'} mt={'sm'}>
           <Status
             label="Following"
-            value={userQuery.data.followers || 0}
+            value={userQuery.data?.followersIDs?.length || 0}
             className={classes.statusLeft}
           />
 
           <Status
             label="Following"
-            value={userQuery.data.following || 0}
+            value={userQuery.data?.followingIDs?.length || 0}
             className={classes.statusSquare}
           />
           <Status
