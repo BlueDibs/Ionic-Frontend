@@ -60,7 +60,6 @@ export function SingleChat() {
   const rawRoomId =
     user.id < userId ? `${user.id}.${userId}` : `${userId}.${user.id}`;
   const roomId = CryptoJS.SHA256(rawRoomId).toString();
-  console.log(roomId);
 
   const storeRefURI = 'room/' + roomId;
   const chatBoxRef = useRef<HTMLDivElement>(null);
@@ -91,8 +90,6 @@ export function SingleChat() {
     chatBoxRef.current.scrollTo(0, chatBoxRef.current.scrollHeight);
 
   useEffect(() => {
-    console.log(messages);
-
     scroll();
   }, [messages]);
 
