@@ -1,4 +1,4 @@
-import { IonIcon, IonPage } from '@ionic/react';
+import { IonHeader, IonIcon, IonPage, IonToolbar } from '@ionic/react';
 import {
   ActionIcon,
   Avatar,
@@ -106,24 +106,24 @@ export function SingleChat() {
 
   return (
     <IonPage>
-      <Flex
-        justify={'space-between'}
-        align={'center'}
-        style={{
-          borderBottomStyle: 'solid',
-          borderBottomWidth: 1,
-          position: 'fixed',
-          width: '100%',
-          padding: '5px 15px',
-          backgroundColor: 'white',
-          borderColor: 'gray',
-        }}
-      >
-        <Avatar src={imgUrl(targetUserQuery.data?.avatarPath)} />
-        <Title order={4} color="#5C5F66" weight={500}>
-          {targetUserQuery.data?.username}
-        </Title>
-      </Flex>
+      <IonHeader>
+        <IonToolbar style={{ padding: '2px 10px' }}>
+          <Flex
+            justify={'space-between'}
+            align={'center'}
+            style={{
+              width: '100%',
+              borderColor: 'gray',
+            }}
+          >
+            <Avatar src={imgUrl(targetUserQuery.data?.avatarPath)} />
+            <Title order={4} color="#5C5F66" weight={500}>
+              {targetUserQuery.data?.username}
+            </Title>
+          </Flex>
+        </IonToolbar>
+      </IonHeader>
+
       <Flex
         mt={50}
         ref={chatBoxRef}

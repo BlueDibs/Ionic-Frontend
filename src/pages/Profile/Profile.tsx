@@ -15,8 +15,10 @@ import { useEffect, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPosts } from './profile.api';
 import { config } from '../../config';
-import { IonPage } from '@ionic/react';
+import { IonHeader, IonIcon, IonPage, IonToolbar } from '@ionic/react';
 import { imgUrl } from '../../utils/media';
+import { chatbubbleEllipsesOutline, settingsOutline } from 'ionicons/icons';
+import { useHistory } from 'react-router';
 
 const useStyles = createStyles((theme) => ({
   statusLeft: {
@@ -77,6 +79,7 @@ const Status = ({
 
 export function Profile() {
   const { classes } = useStyles();
+  const history = useHistory();
   const user = useAppSelector((state) => state.user);
   const [editMdlOpn, setEdtMdlOpn] = useState(false);
 
@@ -94,6 +97,21 @@ export function Profile() {
 
   return (
     <IonPage style={{ display: 'block' }}>
+      <IonHeader>
+        <IonToolbar style={{ padding: '2px 10px' }}>
+          <Flex justify={'space-between'} style={{ alignItems: 'center' }}>
+            <Text weight={800} mr={'auto'}>
+              Logo
+            </Text>
+            <IonIcon
+              icon={settingsOutline}
+              onClick={() => history.push('/app/chats')}
+              style={{ fontSize: 25, marginLeft: 'auto' }}
+            ></IonIcon>
+          </Flex>
+        </IonToolbar>
+      </IonHeader>
+
       <Container p={'lg'}>
         <EditProfile open={editMdlOpn} setModalOpen={setEdtMdlOpn} />
         <Flex direction={'column'} gap={'xs'} p={'sm'}>

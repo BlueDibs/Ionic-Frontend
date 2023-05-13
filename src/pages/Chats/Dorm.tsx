@@ -1,4 +1,5 @@
 import {
+  IonHeader,
   IonIcon,
   IonItem,
   IonItemOption,
@@ -6,12 +7,13 @@ import {
   IonItemSliding,
   IonLabel,
   IonPage,
+  IonToolbar,
 } from '@ionic/react';
 import { useAppSelector } from '../../store/hooks';
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { get, onValue, ref, remove } from 'firebase/database';
 import { database } from '../../utils/firebase';
-import { ActionIcon, Avatar, Flex, Paper, Text } from '@mantine/core';
+import { ActionIcon, Avatar, Flex, Paper, Text, Title } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
 import { getProfiles } from './api.chat';
 import { chatbubbleEllipsesOutline } from 'ionicons/icons';
@@ -79,6 +81,12 @@ export function Dorm() {
 
   return (
     <IonPage style={{ display: 'block' }}>
+      <IonHeader>
+        <IonToolbar style={{ padding: '2px 10px' }}>
+          <Title order={4}>Chats</Title>
+        </IonToolbar>
+      </IonHeader>
+
       {getProfilesQuery.data?.map(
         (profile: { username: string; avatarPath: string; id: string }) => (
           <IonItemSliding id={`ionic-swiper-${profile.id}`}>

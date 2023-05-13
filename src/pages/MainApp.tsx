@@ -91,21 +91,6 @@ export const MainLayout = () => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar style={{ padding: '2px 10px' }}>
-          <Flex justify={'space-between'} style={{ alignItems: 'center' }}>
-            <Text weight={800} mr={'auto'}>
-              Logo
-            </Text>
-            <IonIcon
-              icon={chatbubbleEllipsesOutline}
-              onClick={() => history.push('/app/chats')}
-              style={{ fontSize: 25, marginLeft: 'auto' }}
-            ></IonIcon>
-          </Flex>
-        </IonToolbar>
-      </IonHeader>
-
       <IonContent>
         <IonTabs>
           <IonRouterOutlet>
