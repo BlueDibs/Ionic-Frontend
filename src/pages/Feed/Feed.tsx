@@ -12,15 +12,35 @@ import {
   chatbubbleEllipsesOutline,
 } from 'ionicons/icons';
 import { useHistory } from 'react-router';
+import { useState } from 'react';
+import { motion, useAnimation } from 'framer-motion';
 
 export function Feed() {
   const history = useHistory();
   const user = useAppSelector((state) => state.user);
+  const [lastClick, setlastClick] = useState<Date | null>(null);
+  const controls = useAnimation();
 
   const getFeedQuery = useQuery({
     queryKey: ['feeds', user.id],
     queryFn: getFeed,
   });
+
+  const likeTimer = () => {
+    if (!lastClick) return setlastClick(new Date());
+    else if (new Date().getSeconds() - lastClick.getSeconds() < 1) {
+      setlastClick(null);
+      console.log('ss');
+      controls.start({
+        scale: [0.8, 1, 0.8],
+        opacity: [0, 1],
+        transition: { duration: 0.2 },
+      });
+      setTimeout(() => controls.start({ opacity: [1, 0] }), 500);
+      return;
+    }
+    setlastClick(new Date());
+  };
 
   return (
     <IonPage>
@@ -48,14 +68,44 @@ export function Feed() {
                   <Avatar src={imgUrl(post.User.avatarPath)} />
                   <Text weight={500}>{post.User.username}</Text>
                 </Flex>
-                <Image
-                  mx="auto"
-                  height={300}
-                  style={{ backgroundColor: 'black' }}
-                  fit="scale-down"
-                  src={imgUrl(post.path)}
-                  withPlaceholder
-                />
+                <div
+                  style={{
+                    position: 'relative',
+                    transformOrigin: 'center',
+                  }}
+                >
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={controls}
+                    style={{
+                      zIndex: '9999',
+                      position: 'absolute',
+                      top: '50%',
+                      left: '50%',
+                      margin: '-50px -50px',
+                    }}
+                  >
+                    <IonIcon
+                      icon={heart}
+                      style={{
+                        zIndex: '99999',
+                        fontSize: '100px',
+                        position: 'absolute',
+
+                        color: 'white',
+                      }}
+                    />
+                  </motion.div>
+                  <Image
+                    onClick={likeTimer}
+                    mx="auto"
+                    height={300}
+                    style={{ backgroundColor: 'black' }}
+                    fit="scale-down"
+                    src={imgUrl(post.path)}
+                    withPlaceholder
+                  ></Image>
+                </div>
                 <Flex
                   style={{ padding: '4px 15px' }}
                   gap={'sm'}
