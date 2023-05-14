@@ -1,4 +1,10 @@
-import { IonHeader, IonIcon, IonPage, IonToolbar } from '@ionic/react';
+import {
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonPage,
+  IonToolbar,
+} from '@ionic/react';
 import {
   ActionIcon,
   Avatar,
@@ -124,49 +130,51 @@ export function SingleChat() {
         </IonToolbar>
       </IonHeader>
 
-      <Flex
-        mt={50}
-        ref={chatBoxRef}
-        p={'sm'}
-        direction={'column'}
-        gap={'sm'}
-        style={{ overflow: 'auto', overflowX: 'clip' }}
-        pb={50}
-      >
-        {messages.map(({ from, message }) => {
-          if (!from || !message) return;
-          return from == user.id ? (
-            <OutGoing message={message} />
-          ) : (
-            <InComing message={message} />
-          );
-        })}
-      </Flex>
-      <TextInput
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') {
-            sendMessage();
+      <IonContent>
+        <Flex
+          mt={50}
+          ref={chatBoxRef}
+          p={'sm'}
+          direction={'column'}
+          gap={'sm'}
+          style={{ overflow: 'auto', overflowX: 'clip' }}
+          pb={50}
+        >
+          {messages.map(({ from, message }) => {
+            if (!from || !message) return;
+            return from == user.id ? (
+              <OutGoing message={message} />
+            ) : (
+              <InComing message={message} />
+            );
+          })}
+        </Flex>
+        <TextInput
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              sendMessage();
+            }
+          }}
+          ref={message}
+          size="md"
+          style={{
+            position: 'fixed',
+            bottom: 0,
+            width: '100%',
+          }}
+          styles={{
+            root: {
+              borderRadius: 0,
+            },
+          }}
+          placeholder="Message..."
+          rightSection={
+            <ActionIcon onClick={() => sendMessage()}>
+              <IonIcon icon={send} />
+            </ActionIcon>
           }
-        }}
-        ref={message}
-        size="md"
-        style={{
-          position: 'fixed',
-          bottom: 0,
-          width: '100%',
-        }}
-        styles={{
-          root: {
-            borderRadius: 0,
-          },
-        }}
-        placeholder="Message..."
-        rightSection={
-          <ActionIcon onClick={() => sendMessage()}>
-            <IonIcon icon={send} />
-          </ActionIcon>
-        }
-      />
+        />
+      </IonContent>
     </IonPage>
   );
 }

@@ -165,7 +165,9 @@ export function Feed() {
                         icon={isLikedByCurrentUser ? heart : heartOutline}
                       />
                     </ActionIcon>{' '}
-                    <ActionIcon>
+                    <ActionIcon
+                      onClick={() => history.push(`/app/comments/${post.id}`)}
+                    >
                       <IonIcon size="large" icon={chatboxOutline} />
                     </ActionIcon>{' '}
                     <ActionIcon>

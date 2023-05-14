@@ -1,4 +1,5 @@
 import {
+  IonContent,
   IonHeader,
   IonIcon,
   IonItem,
@@ -87,40 +88,42 @@ export function Dorm() {
         </IonToolbar>
       </IonHeader>
 
-      {getProfilesQuery.data?.map(
-        (profile: { username: string; avatarPath: string; id: string }) => (
-          <IonItemSliding id={`ionic-swiper-${profile.id}`}>
-            <IonItem
-              href="#"
-              onClick={async (e) => {
-                e.preventDefault();
-                await createDorm(user.id, profile.id);
-                history.push(`/app/chat/${profile.id}`);
-              }}
-              lines="full"
-            >
-              <Avatar src={imgUrl(profile.avatarPath)} />
-              <IonLabel style={{ marginLeft: '10px' }}>
-                {profile.username}
-              </IonLabel>
-              {!!dormRooms && dormRooms[profile.id].unread != 0 && (
-                <Text weight={600} size={'xs'}>
-                  Unread
-                </Text>
-              )}
-            </IonItem>
-
-            <IonItemOptions>
-              <IonItemOption
-                onClick={() => deleteDorm(profile.id)}
-                color="danger"
+      <IonContent>
+        {getProfilesQuery.data?.map(
+          (profile: { username: string; avatarPath: string; id: string }) => (
+            <IonItemSliding id={`ionic-swiper-${profile.id}`}>
+              <IonItem
+                href="#"
+                onClick={async (e) => {
+                  e.preventDefault();
+                  await createDorm(user.id, profile.id);
+                  history.push(`/app/chat/${profile.id}`);
+                }}
+                lines="full"
               >
-                Delete
-              </IonItemOption>
-            </IonItemOptions>
-          </IonItemSliding>
-        )
-      )}
+                <Avatar src={imgUrl(profile.avatarPath)} />
+                <IonLabel style={{ marginLeft: '10px' }}>
+                  {profile.username}
+                </IonLabel>
+                {!!dormRooms && dormRooms[profile.id].unread != 0 && (
+                  <Text weight={600} size={'xs'}>
+                    Unread
+                  </Text>
+                )}
+              </IonItem>
+
+              <IonItemOptions>
+                <IonItemOption
+                  onClick={() => deleteDorm(profile.id)}
+                  color="danger"
+                >
+                  Delete
+                </IonItemOption>
+              </IonItemOptions>
+            </IonItemSliding>
+          )
+        )}
+      </IonContent>
     </IonPage>
   );
 }

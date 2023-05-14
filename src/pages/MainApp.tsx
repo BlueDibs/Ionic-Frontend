@@ -47,6 +47,7 @@ import { queryClient } from '../utils/queryClient';
 import { config } from '../config';
 import { Chats, Dorm } from './Chats/Dorm';
 import { SingleChat } from './Chats/SingleChat';
+import { CommentsPage } from './Comments/Comments';
 
 export const MainLayout = () => {
   const dispatch = useAppDispatch();
@@ -99,6 +100,13 @@ export const MainLayout = () => {
             <Route path="/app/profile" exact component={Profile} />
             <Route path="/app/search" exact component={Search} />
             <Route path="/app/chats" exact component={Dorm} />
+
+            <Route
+              path="/app/comments/:postId"
+              exact
+              component={CommentsPage}
+            />
+
             <Route path="/app/chat/:userId" exact component={SingleChat} />
 
             <Route path="/app/user/:userId" exact component={PublicProfile} />
