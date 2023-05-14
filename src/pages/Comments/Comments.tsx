@@ -21,30 +21,10 @@ import { imgUrl } from '../../utils/media';
 import { addPost } from '../main.api';
 import { useRef } from 'react';
 import { queryClient } from '../../utils/queryClient';
-
-const Comment = ({
-  User,
-  id,
-  comment,
-}: {
-  User: any;
-  id: string;
-  comment: string;
-}) => (
-  <Flex gap={'md'} pr={'sm'}>
-    <Avatar src={imgUrl(User?.avatarPath)} style={{ borderRadius: '25%' }} />
-    <Flex direction={'column'}>
-      <Title order={6} weight={500} style={{ lineHeight: 1 }}>
-        {User?.username}
-      </Title>
-      <Text style={{ wordBreak: 'break-all' }} size={'sm'}>
-        {comment}{' '}
-      </Text>
-    </Flex>
-  </Flex>
-);
+import { useAppSelector } from '../../store/hooks';
 
 export function CommentsPage() {
+  const user = useAppSelector((state) => state.user);
   const { postId } = useParams<{ postId: string }>();
   const commentInputBoxRef = useRef<HTMLInputElement>(null);
 
@@ -85,11 +65,50 @@ export function CommentsPage() {
         <Flex direction={'column'} p={'sm'} gap={'sm'}>
           {getCommentsQueries.data.map(
             (comment: { User: any; content: string; id: string }) => (
-              <Comment
-                User={comment.User}
-                comment={comment.content}
-                id={comment.id}
-              />
+              <Flex gap={'md'} pr={'sm'}>
+                <Avatar
+                  src={imgUrl(comment.User?.avatarPath)}
+                  style={{ borderRadius: '25%' }}
+                />
+                <Flex direction={'column'}>
+                  <Title order={6} weight={500} style={{ lineHeight: 1 }}>
+                    {comment.User?.username}
+                  </Title>
+                  <Text style={{ wordBreak: 'break-all' }} size={'sm'}>
+                    {(() => {
+                      return (
+                        <>
+                          {comment.content.split(' ').map((item) => {
+                            if (item.includes('@'))
+                              return (
+                                <Anchor
+                                  style={{ textDecoration: 'none' }}
+                                  href={'/app/user/' + item.replace('@', '')}
+                                >
+                                  {item}{' '}
+                                </Anchor>
+                              );
+                            else return item;
+                          })}
+                        </>
+                      );
+                    })()}{' '}
+                  </Text>
+                  {comment.User.id != user.id && (
+                    <Anchor
+                      onClick={() => {
+                        if (commentInputBoxRef.current) {
+                          commentInputBoxRef.current.value = `@${comment.User.username}  `;
+                        }
+                      }}
+                      size={'xs'}
+                      style={{ textDecoration: 'none' }}
+                    >
+                      Reply
+                    </Anchor>
+                  )}
+                </Flex>
+              </Flex>
             )
           )}
         </Flex>
