@@ -60,6 +60,7 @@ export const MainLayout = () => {
     refetchOnWindowFocus: false,
     enabled: false,
     onSuccess(user) {
+      console.log(user);
       dispatch(setUser(user));
     },
   });
