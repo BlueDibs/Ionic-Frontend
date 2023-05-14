@@ -46,12 +46,10 @@ export function Feed() {
       postId == lastClick.id
     ) {
       const liked = user.PostLikedIDs.includes(postId);
-      console.log('liked? ', liked);
       const likeCounter = document.getElementById(`post-like-${postId}`);
       if (!likeCounter) return console.error('no counter found');
       let likes = parseInt(likeCounter?.innerText.split(' ')[0] || '0');
       if (liked) {
-        console.log('unlike', postId);
         dispatch(unLikePostUser(postId));
         likeCounter.textContent = --likes + ' likes';
         unlikePostMut.mutate(lastClick.id);
