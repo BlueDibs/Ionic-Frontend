@@ -10,11 +10,13 @@ import {
   heart,
   paperPlaneOutline,
   chatbubbleEllipsesOutline,
+  notificationsOutline,
 } from 'ionicons/icons';
 import { useHistory } from 'react-router';
 import { useState } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { likePostUser, unLikePostUser } from '../../store/slice/userSlice';
+import { NotifyUser } from '../../utils/notification';
 
 export function Feed() {
   const history = useHistory();
@@ -38,7 +40,7 @@ export function Feed() {
     mutationFn: unLikePost,
   });
 
-  const likeTimer = (postId: string) => {
+  const likeTimer = (postId: string, User: any) => {
     if (!lastClick)
       return setlastClick((_) => ({ time: new Date(), id: postId }));
     else if (
@@ -53,6 +55,10 @@ export function Feed() {
         dispatch(unLikePostUser(postId));
         likeCounter.textContent = --likes + ' likes';
         unlikePostMut.mutate(lastClick.id);
+        NotifyUser(User.id, {
+          message: `${User.username} has liked your post`,
+          relativeHref: `/app/user/${User.id}`,
+        });
       } else {
         dispatch(likePostUser(postId));
         likeCounter.textContent = ++likes + ' likes';
@@ -81,9 +87,14 @@ export function Feed() {
               Logo
             </Text>
             <IonIcon
+              icon={notificationsOutline}
+              onClick={() => history.push('/app/notifications')}
+              style={{ fontSize: 25, marginLeft: 'auto' }}
+            ></IonIcon>
+            <IonIcon
               icon={chatbubbleEllipsesOutline}
               onClick={() => history.push('/app/chats')}
-              style={{ fontSize: 25, marginLeft: 'auto' }}
+              style={{ fontSize: 25, marginLeft: 10 }}
             ></IonIcon>
           </Flex>
         </IonToolbar>
@@ -111,7 +122,7 @@ export function Feed() {
                     <Text weight={500}>{post.User.username}</Text>
                   </Flex>
                   <div
-                    onClick={() => likeTimer(post.id)}
+                    onClick={() => likeTimer(post.id, post.User)}
                     style={{
                       position: 'relative',
                       transformOrigin: 'center',

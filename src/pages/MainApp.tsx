@@ -48,6 +48,7 @@ import { config } from '../config';
 import { Chats, Dorm } from './Chats/Dorm';
 import { SingleChat } from './Chats/SingleChat';
 import { CommentsPage } from './Comments/Comments';
+import Notifications from './Notification/Notifications';
 
 export const MainLayout = () => {
   const dispatch = useAppDispatch();
@@ -97,6 +98,7 @@ export const MainLayout = () => {
         <IonTabs>
           <IonRouterOutlet>
             <Route path="/app/feed" exact component={Feed} />
+            <Route path="/app/notifications" exact component={Notifications} />
             <Route path="/app/profile" exact component={Profile} />
             <Route path="/app/search" exact component={Search} />
             <Route path="/app/chats" exact component={Dorm} />

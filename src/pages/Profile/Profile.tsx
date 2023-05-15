@@ -171,6 +171,7 @@ export function Profile() {
         {Array.isArray(fetchPostQry.data) &&
           fetchPostQry.data.map((post, i) => (
             <Image
+              key={post.path}
               height={150}
               src={`${config.STATIC_FILE_BASE_URL}${post.path}?alt=media`}
               alt="Random image"
