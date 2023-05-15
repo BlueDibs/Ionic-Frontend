@@ -172,6 +172,9 @@ export function Profile() {
           fetchPostQry.data.map((post, i) => (
             <Image
               key={post.path}
+              onClick={() =>
+                history.push(`/app/feed/${user.username}?post=${i}`)
+              }
               height={150}
               src={`${config.STATIC_FILE_BASE_URL}${post.path}?alt=media`}
               alt="Random image"

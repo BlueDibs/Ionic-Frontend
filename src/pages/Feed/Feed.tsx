@@ -32,12 +32,6 @@ export function Feed() {
   const getFeedQuery = useQuery({
     queryKey: ['feeds', user.id],
     queryFn: getFeed,
-    select(data) {
-      for (let i = 0; i < 100; i++) {
-        data.push(data[0]);
-      }
-      return data;
-    },
   });
 
   return (

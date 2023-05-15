@@ -10,14 +10,15 @@ import {
 import { imgUrl } from '../utils/media';
 import { useHistory } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { likePost, unLikePost } from '../pages/Feed/feed.api';
 import { unLikePostUser, likePostUser } from '../store/slice/userSlice';
 import { NotifyUser } from '../utils/notification';
-import { useVirtualizer } from '@tanstack/react-virtual';
+import { useVirtual } from 'react-virtual';
+import React from 'react';
 
-function Feeds({ feeds }: { feeds: any[] }) {
+function Feeds({ feeds, index }: { feeds: any[]; index?: number | null }) {
   const history = useHistory();
   const user = useAppSelector((state) => state.user);
   const [lastClick, setlastClick] = useState<{ time: Date; id: string } | null>(
@@ -74,136 +75,138 @@ function Feeds({ feeds }: { feeds: any[] }) {
     return setlastClick((_) => ({ time: new Date(), id: postId }));
   };
 
-  const rowVirtualizer = useVirtualizer({
-    count: feeds?.length || 0,
-    getScrollElement: () => parentRef.current,
-    estimateSize: () => 400,
+  const rowVirtualizer = useVirtual({
+    size: feeds?.length || 0,
+    parentRef,
+    estimateSize: React.useCallback(() => 400, []),
+    overscan: 10,
   });
+
+  useLayoutEffect(() => {
+    if (typeof index == 'number' && feeds.length) {
+      rowVirtualizer.scrollToIndex(index, {
+        align: 'start',
+      });
+    }
+  }, [feeds, index]);
 
   return (
     <Flex
       direction={'column'}
-      style={{ overflowY: 'auto', height: '100%' }}
+      style={{ overflow: 'auto', height: '100%' }}
       ref={parentRef}
     >
       <div
         style={{
           width: '100%',
           position: 'relative',
-          height: `${rowVirtualizer.getTotalSize()}px`,
+          height: rowVirtualizer.totalSize,
         }}
       >
-        {!!feeds &&
-          rowVirtualizer.getVirtualItems().map((virtualItem: any) => {
-            let isLikedByCurrentUser = user.PostLikedIDs.includes(
-              feeds[virtualItem.index].id
-            );
-            return (
-              <Paper
-                withBorder
-                key={virtualItem.key}
+        {rowVirtualizer.virtualItems.map((virtualItem: any) => {
+          let isLikedByCurrentUser = user.PostLikedIDs.includes(
+            feeds[virtualItem.index].id
+          );
+          return (
+            <Paper
+              withBorder
+              key={virtualItem.index}
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: virtualItem.size,
+                transform: `translateY(${virtualItem.start}px)`,
+              }}
+            >
+              <Flex style={{ padding: '7px 10px' }} gap={10} align={'center'}>
+                <Avatar
+                  src={imgUrl(feeds[virtualItem.index].User.avatarPath)}
+                />
+                <Text weight={500}>
+                  {feeds[virtualItem.index].User.username} {virtualItem.index}
+                </Text>
+              </Flex>
+              <div
+                onClick={() =>
+                  likeTimer(
+                    feeds[virtualItem.index].id,
+                    feeds[virtualItem.index].User
+                  )
+                }
                 style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: `${virtualItem.size}px`,
-                  transform: `translateY(${virtualItem.start}px)`,
+                  position: 'relative',
+                  transformOrigin: 'center',
                 }}
               >
-                <Flex style={{ padding: '7px 10px' }} gap={10} align={'center'}>
-                  <Avatar
-                    src={imgUrl(feeds[virtualItem.index].User.avatarPath)}
-                  />
-                  <Text weight={500}>
-                    {feeds[virtualItem.index].User.username}
-                  </Text>
-                </Flex>
-                <div
-                  onClick={() =>
-                    likeTimer(
-                      feeds[virtualItem.index].id,
-                      feeds[virtualItem.index].User
-                    )
-                  }
-                  style={{
-                    position: 'relative',
-                    transformOrigin: 'center',
-                  }}
-                >
-                  {lastClick?.id == feeds[virtualItem.index].id && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={controls}
-                      style={{
-                        zIndex: '9999',
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        margin: '-50px -50px',
-                      }}
-                    >
-                      <IonIcon
-                        icon={heart}
-                        style={{
-                          zIndex: '99999',
-                          fontSize: '100px',
-                          position: 'absolute',
-
-                          color: 'white',
-                        }}
-                      />
-                    </motion.div>
-                  )}
-                  <Image
-                    mx="auto"
-                    height={300}
-                    style={{ backgroundColor: 'black' }}
-                    fit="scale-down"
-                    src={imgUrl(feeds[virtualItem.index].path)}
-                    withPlaceholder
-                  ></Image>
-                </div>
-                <Flex
-                  style={{ padding: '4px 15px' }}
-                  gap={'sm'}
-                  align={'center'}
-                >
-                  <ActionIcon
+                {lastClick?.id == feeds[virtualItem.index].id && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={controls}
                     style={{
-                      color: isLikedByCurrentUser ? '#E03131' : 'black',
+                      zIndex: '9999',
+                      position: 'absolute',
+                      top: '50%',
+                      left: '50%',
+                      margin: '-50px -50px',
                     }}
                   >
                     <IonIcon
-                      size="large"
-                      icon={isLikedByCurrentUser ? heart : heartOutline}
+                      icon={heart}
+                      style={{
+                        zIndex: '99999',
+                        fontSize: '100px',
+                        position: 'absolute',
+
+                        color: 'white',
+                      }}
                     />
-                  </ActionIcon>{' '}
-                  <ActionIcon
-                    onClick={() =>
-                      history.push(
-                        `/app/comments/${feeds[virtualItem.index].id}`
-                      )
-                    }
-                  >
-                    <IonIcon size="large" icon={chatboxOutline} />
-                  </ActionIcon>{' '}
-                  <ActionIcon>
-                    <IonIcon size="large" icon={paperPlaneOutline} />
-                  </ActionIcon>{' '}
-                  <Text
-                    ml={'auto'}
-                    size={'sm'}
-                    color="#5C5F66"
-                    weight={500}
-                    id={`post-like-${feeds[virtualItem.index].id}`}
-                  >
-                    {feeds[virtualItem.index].UserLikedIDs.length} likes
-                  </Text>
-                </Flex>
-              </Paper>
-            );
-          })}
+                  </motion.div>
+                )}
+                <Image
+                  mx="auto"
+                  height={300}
+                  style={{ backgroundColor: 'black' }}
+                  fit="scale-down"
+                  src={imgUrl(feeds[virtualItem.index].path)}
+                  withPlaceholder
+                ></Image>
+              </div>
+              <Flex style={{ padding: '4px 15px' }} gap={'sm'} align={'center'}>
+                <ActionIcon
+                  style={{
+                    color: isLikedByCurrentUser ? '#E03131' : 'black',
+                  }}
+                >
+                  <IonIcon
+                    size="large"
+                    icon={isLikedByCurrentUser ? heart : heartOutline}
+                  />
+                </ActionIcon>{' '}
+                <ActionIcon
+                  onClick={() =>
+                    history.push(`/app/comments/${feeds[virtualItem.index].id}`)
+                  }
+                >
+                  <IonIcon size="large" icon={chatboxOutline} />
+                </ActionIcon>{' '}
+                <ActionIcon>
+                  <IonIcon size="large" icon={paperPlaneOutline} />
+                </ActionIcon>{' '}
+                <Text
+                  ml={'auto'}
+                  size={'sm'}
+                  color="#5C5F66"
+                  weight={500}
+                  id={`post-like-${feeds[virtualItem.index].id}`}
+                >
+                  {feeds[virtualItem.index].UserLikedIDs.length} likes
+                </Text>
+              </Flex>
+            </Paper>
+          );
+        })}
       </div>
     </Flex>
   );
