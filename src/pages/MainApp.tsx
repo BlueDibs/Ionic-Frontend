@@ -34,6 +34,7 @@ import Notifications from './Notification/Notifications';
 import { ProfileFeeds } from './ProfileFeeds/ProfileFeeds';
 import { onValue, ref } from 'firebase/database';
 import { setNotifications } from '../store/slice/notificationSlice';
+import { setNotificationUnread } from '../store/slice/notificationUnreadSlice';
 
 export const MainLayout = () => {
   const dispatch = useAppDispatch();
@@ -76,7 +77,7 @@ export const MainLayout = () => {
       ref(database, notificationRefURI),
       (snapshot) => {
         const notif = snapshot.val();
-        console.log(notif, notificationRefURI);
+        dispatch(setNotificationUnread(true));
         dispatch(setNotifications(notif));
       }
     );

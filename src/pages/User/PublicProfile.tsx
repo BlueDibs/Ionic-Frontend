@@ -145,7 +145,7 @@ export function PublicProfile() {
   return (
     <IonPage style={{ display: 'block' }}>
       <IonHeader>
-        <IonToolbar style={{ padding: '2px 10px' }}>
+        <IonToolbar style={{ padding: '2px 10px', '--background': 'white' }}>
           <Flex justify={'space-between'} style={{ alignItems: 'center' }}>
             <Title order={5} mr={'auto'}>
               Profile

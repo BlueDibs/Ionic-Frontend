@@ -83,7 +83,7 @@ export function Dorm() {
   return (
     <IonPage style={{ display: 'block' }}>
       <IonHeader>
-        <IonToolbar style={{ padding: '2px 10px' }}>
+        <IonToolbar style={{ padding: '2px 10px', '--background': 'white' }}>
           <Title order={4}>Chats</Title>
         </IonToolbar>
       </IonHeader>

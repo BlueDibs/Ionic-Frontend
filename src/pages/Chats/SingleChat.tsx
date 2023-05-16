@@ -113,7 +113,7 @@ export function SingleChat() {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar style={{ padding: '2px 10px' }}>
+        <IonToolbar style={{ padding: '2px 10px', '--background': 'white' }}>
           <Flex
             justify={'space-between'}
             align={'center'}

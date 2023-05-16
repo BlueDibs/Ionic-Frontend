@@ -27,30 +27,15 @@ import { chatbubbleEllipsesOutline, settingsOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router';
 
 const useStyles = createStyles((theme) => ({
-  statusLeft: {
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: '#DADADA',
-    padding: '10px 20px',
-    borderEndStartRadius: 20,
-    borderTopLeftRadius: 20,
-  },
+  statusLeft: {},
   statusSquare: {
     borderStyle: 'solid',
     borderWidth: 1,
     borderColor: '#DADADA',
-    padding: '10px 20px',
-    borderLeft: 0,
+    borderTop: 0,
+    borderBottom: 0,
   },
-  statusRight: {
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: '#DADADA',
-    padding: '10px 20px',
-    borderLeft: 0,
-    borderTopRightRadius: 20,
-    borderEndEndRadius: 20,
-  },
+  statusRight: {},
 }));
 
 const Status = ({
@@ -67,17 +52,20 @@ const Status = ({
     direction={'column'}
     justify={'center'}
     className={className}
+    style={{
+      padding: '15px 0px',
+    }}
   >
     <Text
       weight={400}
       size={'sm'}
       align="center"
       color="gray"
-      style={{ lineHeight: 1 }}
+      style={{ lineHeight: 0.5 }}
     >
       {label}
     </Text>
-    <Text weight={600} align="center" pt={'xs'} style={{ lineHeight: 0.8 }}>
+    <Text weight={600} align="center" pt={'xs'} style={{ lineHeight: 0.5 }}>
       {value}
     </Text>
   </Flex>
@@ -104,7 +92,7 @@ export function Profile() {
   return (
     <IonPage style={{ display: 'block' }}>
       <IonHeader>
-        <IonToolbar style={{ padding: '2px 10px' }}>
+        <IonToolbar style={{ padding: '2px 10px', '--background': 'white' }}>
           <Flex justify={'space-between'} style={{ alignItems: 'center' }}>
             <Title order={5} mr={'auto'}>
               Profile
@@ -135,13 +123,23 @@ export function Profile() {
 
             <Text size={'sm'}>{user.bio}</Text>
           </Flex>
-          <Flex align={'center'} justify={'center'} mt={'sm'}>
+          <SimpleGrid
+            cols={3}
+            spacing={'xs'}
+            w={'100%'}
+            mt={'sm'}
+            style={{
+              borderStyle: 'solid',
+              borderWidth: 1,
+              borderColor: '#DADADA',
+              borderRadius: 20,
+            }}
+          >
             <Status
               label="Followers"
               value={user.followersIDs?.length || 0}
               className={classes.statusLeft}
             />
-
             <Status
               label="Following"
               value={user.followingIDs?.length || 0}
@@ -152,7 +150,7 @@ export function Profile() {
               value={fetchPostQry.data.length || 0}
               className={classes.statusRight}
             />
-          </Flex>
+          </SimpleGrid>
           <Button
             w={'100%'}
             mt={'md'}

@@ -40,28 +40,29 @@ function Notifications() {
 
       <IonContent>
         {!!Object.values(notifications || {})?.length &&
-          Object.values(notifications).map((notification) => (
-            <Paper
-              withBorder
-              style={{
-                padding: '10px 10px',
-                display: 'flex',
-                justifyContent: 'space-between',
-                backgroundColor: notification.unread ? '#F1F3F5' : 'white',
-              }}
-              onClick={() => history.push(notification.relativeHref)}
-            >
-              <Text>
-                <span style={{ fontWeight: 600 }}>
-                  @{notification.username}{' '}
-                </span>
-                {notification.message}
-              </Text>
-              <Text size={'xs'} color="gray" mr={'xs'}>
-                {dayjs(notification.time).fromNow()}
-              </Text>
-            </Paper>
-          ))}
+          Object.values(notifications)
+            .reverse()
+            .map((notification) => (
+              <Paper
+                withBorder
+                style={{
+                  padding: '10px 10px',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                }}
+                onClick={() => history.push(notification.relativeHref)}
+              >
+                <Text>
+                  <span style={{ fontWeight: 600 }}>
+                    @{notification.username}{' '}
+                  </span>
+                  {notification.message}
+                </Text>
+                <Text size={'xs'} color="gray" mr={'xs'}>
+                  {dayjs(notification.time).fromNow()}
+                </Text>
+              </Paper>
+            ))}
       </IonContent>
     </IonPage>
   );
