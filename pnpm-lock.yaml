@@ -61,6 +61,9 @@ dependencies:
   crypto-js:
     specifier: ^4.1.1
     version: 4.1.1
+  dayjs:
+    specifier: ^1.11.7
+    version: 1.11.7
   firebase:
     specifier: ^9.21.0
     version: 9.21.0
@@ -3748,7 +3751,6 @@ packages:
 
   /dayjs@1.11.7:
     resolution: {integrity: sha512-+Yw9U6YO5TQohxLcIkrXBeY73WP3ejHWVvx8XCk3gxvQDCTEmS48ZrSZCKciI7Bhl/uCMyxYtE9UqRILmFphkQ==}
-    dev: true
 
   /debug@3.2.7(supports-color@8.1.1):
     resolution: {integrity: sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==}

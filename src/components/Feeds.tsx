@@ -52,11 +52,11 @@ function Feeds({ feeds, index }: { feeds: any[]; index?: number | null }) {
         dispatch(unLikePostUser(postId));
         likeCounter.textContent = --likes + ' likes';
         unlikePostMut.mutate(lastClick.id);
-        NotifyUser(User.id, {
-          message: `${User.username} has liked your post`,
-          relativeHref: `/app/user/${User.id}`,
-        });
       } else {
+        NotifyUser(User.id, {
+          message: `has liked your post`,
+          relativeHref: `/app/user/${user.id}`,
+        });
         dispatch(likePostUser(postId));
         likeCounter.textContent = ++likes + ' likes';
         likePostMut.mutate(lastClick.id);
@@ -125,7 +125,7 @@ function Feeds({ feeds, index }: { feeds: any[]; index?: number | null }) {
                   src={imgUrl(feeds[virtualItem.index].User.avatarPath)}
                 />
                 <Text weight={500}>
-                  {feeds[virtualItem.index].User.username} {virtualItem.index}
+                  {feeds[virtualItem.index].User.username}
                 </Text>
               </Flex>
               <div

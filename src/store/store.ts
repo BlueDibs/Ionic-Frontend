@@ -1,13 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import userSlice from './slice/userSlice';
 
-import { composeWithDevTools } from 'redux-devtools-extension';
-import { devToolsEnhancer } from 'redux-devtools-extension';
+import notificationSlice from './slice/notificationSlice';
 
 export const store = configureStore({
     devTools: true,
     reducer: {
-        user: userSlice
+        user: userSlice,
+        notifications: notificationSlice
     }
 })
 

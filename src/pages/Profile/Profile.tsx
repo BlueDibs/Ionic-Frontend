@@ -15,7 +15,13 @@ import { useEffect, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPosts } from './profile.api';
 import { config } from '../../config';
-import { IonHeader, IonIcon, IonPage, IonToolbar } from '@ionic/react';
+import {
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonPage,
+  IonToolbar,
+} from '@ionic/react';
 import { imgUrl } from '../../utils/media';
 import { chatbubbleEllipsesOutline, settingsOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router';
@@ -112,75 +118,77 @@ export function Profile() {
         </IonToolbar>
       </IonHeader>
 
-      <Container p={'lg'}>
-        <EditProfile open={editMdlOpn} setModalOpen={setEdtMdlOpn} />
-        <Flex direction={'column'} gap={'xs'} p={'sm'}>
-          <Avatar
-            src={user.avatarPath ? imgUrl(user.avatarPath) : null}
-            size="xl"
-            radius="md"
-            style={{ width: 100, height: 100 }}
-            alt="it's me"
-          />
-          <Title order={4} weight={500}>
-            {user.username}
-          </Title>
-
-          <Text size={'sm'}>{user.bio}</Text>
-        </Flex>
-        <Flex align={'center'} justify={'center'} mt={'sm'}>
-          <Status
-            label="Followers"
-            value={user.followersIDs?.length || 0}
-            className={classes.statusLeft}
-          />
-
-          <Status
-            label="Following"
-            value={user.followingIDs?.length || 0}
-            className={classes.statusSquare}
-          />
-          <Status
-            label="Posts"
-            value={fetchPostQry.data.length || 0}
-            className={classes.statusRight}
-          />
-        </Flex>
-        <Button
-          w={'100%'}
-          mt={'md'}
-          variant="white"
-          style={{ borderColor: 'black', color: 'black' }}
-          onClick={() => setEdtMdlOpn(true)}
-        >
-          Edit Profile
-        </Button>
-      </Container>
-
-      <SimpleGrid
-        cols={3}
-        style={{
-          gap: 0,
-          borderColor: '#DADADA',
-          borderStyle: 'solid',
-          borderWidth: 1,
-          borderBottom: 'none',
-          boxSizing: 'border-box',
-        }}
-      >
-        {Array.isArray(fetchPostQry.data) &&
-          fetchPostQry.data.map((post, i) => (
-            <Image
-              key={post.path}
-              onClick={() =>
-                history.push(`/app/feed/${user.username}?post=${i}`)
-              }
-              height={150}
-              src={`${config.STATIC_FILE_BASE_URL}${post.path}?alt=media`}
-              alt="Random image"
+      <IonContent>
+        <Container p={'lg'}>
+          <EditProfile open={editMdlOpn} setModalOpen={setEdtMdlOpn} />
+          <Flex direction={'column'} gap={'xs'} p={'sm'}>
+            <Avatar
+              src={user.avatarPath ? imgUrl(user.avatarPath) : null}
+              size="xl"
+              radius="md"
+              style={{ width: 100, height: 100 }}
+              alt="it's me"
             />
-          ))}
-      </SimpleGrid>
+            <Title order={4} weight={500}>
+              {user.username}
+            </Title>
+
+            <Text size={'sm'}>{user.bio}</Text>
+          </Flex>
+          <Flex align={'center'} justify={'center'} mt={'sm'}>
+            <Status
+              label="Followers"
+              value={user.followersIDs?.length || 0}
+              className={classes.statusLeft}
+            />
+
+            <Status
+              label="Following"
+              value={user.followingIDs?.length || 0}
+              className={classes.statusSquare}
+            />
+            <Status
+              label="Posts"
+              value={fetchPostQry.data.length || 0}
+              className={classes.statusRight}
+            />
+          </Flex>
+          <Button
+            w={'100%'}
+            mt={'md'}
+            variant="white"
+            style={{ borderColor: 'black', color: 'black' }}
+            onClick={() => setEdtMdlOpn(true)}
+          >
+            Edit Profile
+          </Button>
+        </Container>
+
+        <SimpleGrid
+          cols={3}
+          style={{
+            gap: 0,
+            borderColor: '#DADADA',
+            borderStyle: 'solid',
+            borderWidth: 1,
+            borderBottom: 'none',
+            boxSizing: 'border-box',
+          }}
+        >
+          {Array.isArray(fetchPostQry.data) &&
+            fetchPostQry.data.map((post, i) => (
+              <Image
+                key={post.path}
+                onClick={() =>
+                  history.push(`/app/feed/${user.username}?post=${i}`)
+                }
+                height={150}
+                src={`${config.STATIC_FILE_BASE_URL}${post.path}?alt=media`}
+                alt="Random image"
+              />
+            ))}
+        </SimpleGrid>
+      </IonContent>
     </IonPage>
   );
 }

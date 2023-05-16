@@ -1,61 +1,46 @@
 import {
   IonContent,
-  IonHeader,
   IonIcon,
-  IonLabel,
   IonPage,
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
   IonTabs,
-  IonTitle,
-  IonToolbar,
 } from '@ionic/react';
 import { Redirect, Route, useHistory } from 'react-router';
 import {
-  call,
-  library,
-  person,
-  playCircle,
-  radio,
-  search,
-  settings,
   walletOutline,
   homeOutline,
   searchOutline,
   addOutline,
   personOutline,
 } from 'ionicons/icons';
-import { IonReactRouter } from '@ionic/react-router';
 import { Profile } from './Profile/Profile';
 import { Feed } from './Feed/Feed';
-import { useEffect, useLayoutEffect, useRef } from 'react';
-import { ActionIcon, Button, Group, Text, Flex } from '@mantine/core';
-import { chatbubbleEllipsesOutline } from 'ionicons/icons';
+import { useEffect } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { addPost, getUserDetails } from './main.api';
-import { axiosInstance } from '../utils/axios';
-import { getAuth } from 'firebase/auth';
-import { app, auth } from '../utils/firebase';
+import { auth, database } from '../utils/firebase';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { setUser } from '../store/slice/userSlice';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { useFirebaseAuth } from '../hooks/auth.hook';
 import { Search } from './Search/Search';
 import { PublicProfile } from './User/PublicProfile';
 import { queryClient } from '../utils/queryClient';
-import { config } from '../config';
-import { Chats, Dorm } from './Chats/Dorm';
+import { Dorm } from './Chats/Dorm';
 import { SingleChat } from './Chats/SingleChat';
 import { CommentsPage } from './Comments/Comments';
 import Notifications from './Notification/Notifications';
 import { ProfileFeeds } from './ProfileFeeds/ProfileFeeds';
+import { onValue, ref } from 'firebase/database';
+import { setNotifications } from '../store/slice/notificationSlice';
 
 export const MainLayout = () => {
   const dispatch = useAppDispatch();
   const history = useHistory();
   const [authLoading, user] = useFirebaseAuth();
   const userDet = useAppSelector((state) => state.user);
+  const notificationRefURI = 'notifications/' + userDet.id;
 
   const getUserQuery = useQuery({
     queryKey: ['user'],
@@ -87,8 +72,20 @@ export const MainLayout = () => {
       if (!userR) history.push('/auth/login');
     });
 
-    return unsubscribe;
-  }, [history]);
+    const unsubscribeNotifs = onValue(
+      ref(database, notificationRefURI),
+      (snapshot) => {
+        const notif = snapshot.val();
+        console.log(notif, notificationRefURI);
+        dispatch(setNotifications(notif));
+      }
+    );
+
+    return () => {
+      unsubscribe();
+      unsubscribeNotifs();
+    };
+  }, [history, notificationRefURI]);
 
   if (authLoading) return <>Loading...</>;
   if (!user) return <Redirect to={'/auth/login'} exact />;

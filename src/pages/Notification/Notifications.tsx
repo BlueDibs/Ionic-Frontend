@@ -1,7 +1,33 @@
 import { IonContent, IonHeader, IonPage, IonToolbar } from '@ionic/react';
-import { Flex, Text, Title } from '@mantine/core';
+import { Avatar, Flex, Paper, Text, Title } from '@mantine/core';
+import { useAppSelector } from '../../store/hooks';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import { useHistory } from 'react-router';
+import { useEffect } from 'react';
+import { ref, set } from 'firebase/database';
+import { database } from '../../utils/firebase';
+dayjs.extend(relativeTime);
 
 function Notifications() {
+  const notifications = useAppSelector((state) => state.notifications);
+  const history = useHistory();
+  const user = useAppSelector((state) => state.user);
+
+  // unread notifs
+  // useEffect(() => {
+  //   return () => {
+  //     console.log('called');
+  //     set(
+  //       ref(database, 'notifications/' + user.id),
+  //       Object.keys(notifications).map((key: string) => ({
+  //         ...notifications[key],
+  //         unread: false,
+  //       }))
+  //     );
+  //   };
+  // }, []);
+
   return (
     <IonPage>
       <IonHeader>
@@ -12,7 +38,31 @@ function Notifications() {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent>s</IonContent>
+      <IonContent>
+        {!!Object.values(notifications || {})?.length &&
+          Object.values(notifications).map((notification) => (
+            <Paper
+              withBorder
+              style={{
+                padding: '10px 10px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                backgroundColor: notification.unread ? '#F1F3F5' : 'white',
+              }}
+              onClick={() => history.push(notification.relativeHref)}
+            >
+              <Text>
+                <span style={{ fontWeight: 600 }}>
+                  @{notification.username}{' '}
+                </span>
+                {notification.message}
+              </Text>
+              <Text size={'xs'} color="gray" mr={'xs'}>
+                {dayjs(notification.time).fromNow()}
+              </Text>
+            </Paper>
+          ))}
+      </IonContent>
     </IonPage>
   );
 }
