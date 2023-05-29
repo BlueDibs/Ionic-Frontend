@@ -8,6 +8,7 @@ import {
   Button,
   Image,
   SimpleGrid,
+  Paper,
 } from '@mantine/core';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { useEffect, useRef, useState } from 'react';
@@ -15,6 +16,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { config } from '../../config';
 import {
   IonContent,
+  IonFooter,
   IonHeader,
   IonIcon,
   IonPage,
@@ -23,13 +25,12 @@ import {
 import { useHistory, useParams } from 'react-router';
 import { fetchUserDetails, followUser, unFollowUser } from './api.user';
 import { fetchPosts } from '../Profile/profile.api';
-import { child, get, push, ref, set } from 'firebase/database';
-import { database } from '../../utils/firebase';
 import { createDorm } from './createDorm';
 import { follow, unfollow } from '../../store/slice/userSlice';
 import { useDispatch } from 'react-redux';
-import { queryClient } from '../../utils/queryClient';
 import { settingsOutline } from 'ionicons/icons';
+import { ProfileEquityStats } from '../../components/Profile/ProfileEquityStats';
+import { BuySellModal } from './BuySellModal';
 
 const useStyles = createStyles((theme) => ({
   statusLeft: {
@@ -141,6 +142,7 @@ export function PublicProfile() {
 
   if (!userId) return history.goBack();
   if (userQuery.isLoading) return <>Loading...</>;
+  console.log(userQuery.data);
 
   return (
     <IonPage style={{ display: 'block' }}>
@@ -160,7 +162,7 @@ export function PublicProfile() {
       </IonHeader>
 
       <IonContent>
-        <Container p={'lg'}>
+        <Container p={'lg'} pb={0}>
           <Flex direction={'column'} gap={'xs'} p={'sm'}>
             <Avatar
               src={
@@ -173,12 +175,36 @@ export function PublicProfile() {
               style={{ width: 100, height: 100 }}
               alt="it's me"
             />
-            <Title order={4} weight={500}>
-              {userQuery.data.username}
-            </Title>
+            <div>
+              <Title order={4} weight={500}>
+                {userQuery.data.username}
+              </Title>
+              <Flex gap={'md'}>
+                <Text weight={500} size={'sm'}>
+                  ₹{userQuery.data.price.toFixed(2)}
+                </Text>
+                <Text weight={400} size={'sm'}>
+                  EQ {userQuery.data.equity}%
+                </Text>
+              </Flex>
+            </div>
 
             <Text size={'sm'}>{userQuery.data.bio}</Text>
           </Flex>
+        </Container>
+
+        <ProfileEquityStats
+          stats={[
+            { label: 'Total Shares', value: userQuery.data.shares },
+            {
+              label: 'Market Cap',
+              value: `₹${userQuery.data.shares * userQuery.data.price}`,
+            },
+            { label: 'INR Locked', value: userQuery.data.equity },
+          ]}
+        />
+
+        <Container p={'lg'} pt={0}>
           <SimpleGrid
             cols={3}
             spacing={'xs'}
@@ -252,6 +278,7 @@ export function PublicProfile() {
               />
             ))}
         </SimpleGrid>
+        <BuySellModal userData={userQuery.data} />
       </IonContent>
     </IonPage>
   );
