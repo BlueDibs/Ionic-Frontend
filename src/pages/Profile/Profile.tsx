@@ -25,6 +25,7 @@ import {
 import { imgUrl } from '../../utils/media';
 import { chatbubbleEllipsesOutline, settingsOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router';
+import { ProfileEquityStats } from '../../components/Profile/ProfileEquityStats';
 
 const useStyles = createStyles((theme) => ({
   statusLeft: {},
@@ -107,7 +108,7 @@ export function Profile() {
       </IonHeader>
 
       <IonContent>
-        <Container p={'lg'}>
+        <Container p={'lg'} pb={0}>
           <EditProfile open={editMdlOpn} setModalOpen={setEdtMdlOpn} />
           <Flex direction={'column'} gap={'xs'} p={'sm'}>
             <Avatar
@@ -117,12 +118,33 @@ export function Profile() {
               style={{ width: 100, height: 100 }}
               alt="it's me"
             />
-            <Title order={4} weight={500}>
-              {user.username}
-            </Title>
+            <div>
+              <Title order={4} weight={500}>
+                {user.username}
+              </Title>
+              <Flex gap={'md'}>
+                <Text weight={500} size={'sm'}>
+                  ₹{user.price.toFixed(2)}
+                </Text>
+                <Text weight={400} size={'sm'}>
+                  EQ {user.equity}%
+                </Text>
+              </Flex>
+            </div>
 
             <Text size={'sm'}>{user.bio}</Text>
           </Flex>
+        </Container>
+
+        <ProfileEquityStats
+          stats={[
+            { label: 'Total Shares', value: user.shares },
+            { label: 'Market Cap', value: `₹${user.shares * user.price}` },
+            { label: 'INR Locked', value: user.equity },
+          ]}
+        />
+
+        <Container p={'lg'} pt={0}>
           <SimpleGrid
             cols={3}
             spacing={'xs'}
@@ -161,7 +183,6 @@ export function Profile() {
             Edit Profile
           </Button>
         </Container>
-
         <SimpleGrid
           cols={3}
           style={{

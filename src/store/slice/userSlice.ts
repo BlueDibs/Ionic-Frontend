@@ -12,6 +12,10 @@ interface UserState {
     followingIDs: string[];
     PostLikedIDs: string[];
     avatarPath?: string;
+    shares: number;
+    equity: number;
+    balance: number;
+    price: number;
 }
 
 

@@ -20,8 +20,8 @@ import { signupSchema } from './schemas';
 import { z } from 'zod';
 import { useEffect, useState } from 'react';
 import { IonRouterLink } from '@ionic/react';
-import { useMutation } from '@tanstack/react-query';
-import { createUser } from './auth.api';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { checkUsernameAPI, createUser } from './auth.api';
 
 interface ISignUpForm
   extends Omit<z.infer<typeof signupSchema>, 'firebaseId'> {}
@@ -52,6 +52,9 @@ export function SignUp() {
     setLoading(true);
 
     try {
+      const userExsists = await checkUsernameAPI(vals.username);
+      if (!!userExsists)
+        return form.setFieldError('username', 'Username already exsist');
       const resp = await createUserWithEmailAndPassword(
         auth,
         vals.email,

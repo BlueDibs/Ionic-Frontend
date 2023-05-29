@@ -179,16 +179,26 @@ export function PublicProfile() {
 
             <Text size={'sm'}>{userQuery.data.bio}</Text>
           </Flex>
-          <Flex align={'center'} justify={'center'} mt={'sm'}>
+          <SimpleGrid
+            cols={3}
+            spacing={'xs'}
+            w={'100%'}
+            mt={'sm'}
+            style={{
+              borderStyle: 'solid',
+              borderWidth: 1,
+              borderColor: '#DADADA',
+              borderRadius: 20,
+            }}
+          >
             <Status
-              label="Following"
-              value={userQuery.data?.followersIDs?.length || 0}
+              label="Followers"
+              value={user.followersIDs?.length || 0}
               className={classes.statusLeft}
             />
-
             <Status
               label="Following"
-              value={userQuery.data?.followingIDs?.length || 0}
+              value={user.followingIDs?.length || 0}
               className={classes.statusSquare}
             />
             <Status
@@ -196,7 +206,7 @@ export function PublicProfile() {
               value={fetchPostQry.data.length || 0}
               className={classes.statusRight}
             />
-          </Flex>
+          </SimpleGrid>
           <Flex gap={'lg'}>
             <Button
               w={'100%'}
