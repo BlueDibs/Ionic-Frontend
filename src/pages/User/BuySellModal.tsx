@@ -10,7 +10,7 @@ import {
   IonItem,
   IonLabel,
 } from '@ionic/react';
-import { Flex, Button, Tabs, TextInput } from '@mantine/core';
+import { Flex, Button, Tabs, TextInput, Text, Group } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useRef, useState } from 'react';
 
@@ -78,12 +78,26 @@ export function BuySellModal({ userData }: { userData: any }) {
             </Tabs.List>
 
             <Tabs.Panel value="buy" pt="xs">
-              <Flex direction={'column'} gap={'lg'} p={'lg'}>
+              <Flex direction={'column'} gap={'md'} p={'lg'}>
                 <TextInput
                   variant="filled"
-                  label="At Price"
+                  label="Market Rate"
                   style={{ pointerEvents: 'none' }}
                   value={`₹ ${userData.price}`}
+                />
+
+                <TextInput
+                  variant="filled"
+                  label="Total Shares Allocated"
+                  style={{ pointerEvents: 'none' }}
+                  value={`${userData.shares}`}
+                />
+
+                <TextInput
+                  variant="filled"
+                  label="Shares Available"
+                  style={{ pointerEvents: 'none' }}
+                  value={`${userData.shares}`}
                 />
 
                 <TextInput
@@ -91,7 +105,9 @@ export function BuySellModal({ userData }: { userData: any }) {
                   label="Total"
                   style={{ pointerEvents: 'none' }}
                   {...buySellForm.getInputProps('amount')}
-                  value={`₹ ${buySellForm.values.amount * userData.price}`}
+                  value={`₹ ${
+                    (buySellForm.values.amount || 0) * userData.price
+                  }`}
                 />
 
                 <TextInput
@@ -106,6 +122,19 @@ export function BuySellModal({ userData }: { userData: any }) {
                     });
                   }}
                 />
+
+                <Flex gap={'xs'}>
+                  <Text size={'sm'} weight={500}>
+                    Platform Fees:{' '}
+                  </Text>
+
+                  <Text size={'sm'}> 2.5% </Text>
+                  <Text size={'sm'} weight={500} ml={'auto'}>
+                    Balance:{' '}
+                  </Text>
+
+                  <Text size={'sm'}> ₹ 10000 </Text>
+                </Flex>
               </Flex>
 
               <Button

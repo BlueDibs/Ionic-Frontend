@@ -124,7 +124,7 @@ export function Profile() {
               </Title>
               <Flex gap={'md'}>
                 <Text weight={500} size={'sm'}>
-                  ₹{user.price.toFixed(2)}
+                  ₹{user.price?.toFixed(2)}
                 </Text>
                 <Text weight={400} size={'sm'}>
                   EQ {user.equity}%
