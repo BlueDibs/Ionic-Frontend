@@ -13,6 +13,8 @@ import {
 import { Flex, Button, Tabs, TextInput, Text, Group } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useRef, useState } from 'react';
+import { BuyFrom } from './BuySell/BuyForm';
+import { SellForm } from './BuySell/SellForm';
 
 export function BuySellModal({ userData }: { userData: any }) {
   const modal = useRef<HTMLIonModalElement>(null);
@@ -78,82 +80,11 @@ export function BuySellModal({ userData }: { userData: any }) {
             </Tabs.List>
 
             <Tabs.Panel value="buy" pt="xs">
-              <Flex direction={'column'} gap={'md'} p={'lg'}>
-                <TextInput
-                  variant="filled"
-                  label="Market Rate"
-                  style={{ pointerEvents: 'none' }}
-                  value={`₹ ${userData.price}`}
-                />
-
-                <TextInput
-                  variant="filled"
-                  label="Total Shares Allocated"
-                  style={{ pointerEvents: 'none' }}
-                  value={`${userData.shares}`}
-                />
-
-                <TextInput
-                  variant="filled"
-                  label="Shares Available"
-                  style={{ pointerEvents: 'none' }}
-                  value={`${userData.shares}`}
-                />
-
-                <TextInput
-                  variant="filled"
-                  label="Total"
-                  style={{ pointerEvents: 'none' }}
-                  {...buySellForm.getInputProps('amount')}
-                  value={`₹ ${
-                    (buySellForm.values.amount || 0) * userData.price
-                  }`}
-                />
-
-                <TextInput
-                  type="number"
-                  variant="filled"
-                  label="Amount"
-                  {...buySellForm.getInputProps('total')}
-                  onChange={(e) => {
-                    buySellForm.setValues({
-                      amount: parseInt(e.target.value),
-                      total: parseInt(e.target.value) * userData.price,
-                    });
-                  }}
-                />
-
-                <Flex gap={'xs'}>
-                  <Text size={'sm'} weight={500}>
-                    Platform Fees:{' '}
-                  </Text>
-
-                  <Text size={'sm'}> 2.5% </Text>
-                  <Text size={'sm'} weight={500} ml={'auto'}>
-                    Balance:{' '}
-                  </Text>
-
-                  <Text size={'sm'}> ₹ 10000 </Text>
-                </Flex>
-              </Flex>
-
-              <Button
-                size="md"
-                variant="filled"
-                color="green"
-                style={{
-                  bottom: 0,
-                  position: 'fixed',
-                  width: '100%',
-                  borderRadius: 0,
-                }}
-              >
-                Buy
-              </Button>
+              <BuyFrom userData={userData} form={buySellForm} />
             </Tabs.Panel>
 
             <Tabs.Panel value="sell" pt="xs">
-              Messages tab content
+              <SellForm userData={userData} form={buySellForm} />
             </Tabs.Panel>
           </Tabs>
         </IonContent>
