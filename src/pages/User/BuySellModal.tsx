@@ -80,11 +80,11 @@ export function BuySellModal({ userData }: { userData: any }) {
             </Tabs.List>
 
             <Tabs.Panel value="buy" pt="xs">
-              <BuyFrom userData={userData} form={buySellForm} />
+              <BuyFrom userData={userData} />
             </Tabs.Panel>
 
             <Tabs.Panel value="sell" pt="xs">
-              <SellForm userData={userData} form={buySellForm} />
+              <SellForm userData={userData} />
             </Tabs.Panel>
           </Tabs>
         </IonContent>

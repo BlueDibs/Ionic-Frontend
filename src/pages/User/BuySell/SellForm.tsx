@@ -1,6 +1,6 @@
 import { Flex, TextInput, Button, Text } from '@mantine/core';
 
-export function SellForm({ userData, form }: { userData: any; form: any }) {
+export function SellForm({ userData }: { userData: any }) {
   return (
     <>
       <Flex direction={'column'} gap={'md'} p={'lg'}>
@@ -18,7 +18,7 @@ export function SellForm({ userData, form }: { userData: any; form: any }) {
           value={`${userData.shares}`}
         />
 
-        <TextInput
+        {/* <TextInput
           variant="filled"
           label="Total"
           style={{ pointerEvents: 'none' }}
@@ -37,7 +37,7 @@ export function SellForm({ userData, form }: { userData: any; form: any }) {
               total: parseInt(e.target.value) * userData.price,
             });
           }}
-        />
+        /> */}
 
         <Flex gap={'xs'}>
           <Text size={'sm'} weight={500}>

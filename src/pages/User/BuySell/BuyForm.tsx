@@ -1,6 +1,16 @@
 import { Flex, TextInput, Button, Text } from '@mantine/core';
+import { useMutation } from '@tanstack/react-query';
+import { buySharesAPI } from './buySell.api';
+import { useForm } from '@mantine/form';
 
-export function BuyFrom({ userData, form }: { userData: any; form: any }) {
+export function BuyFrom({ userData }: { userData: any }) {
+  const buySharesMut = useMutation({
+    mutationFn: (vals: any) => buySharesAPI(userData.id, vals),
+  });
+
+  const buyForm = useForm();
+  console.log(buyForm.errors);
+
   return (
     <>
       <Flex direction={'column'} gap={'md'} p={'lg'}>
@@ -22,24 +32,25 @@ export function BuyFrom({ userData, form }: { userData: any; form: any }) {
           variant="filled"
           label="Shares Available"
           style={{ pointerEvents: 'none' }}
-          value={`${userData.shares}`}
+          value={`${userData.shares - (userData.sold || 0)}`}
         />
 
         <TextInput
+          mt={'lg'}
           variant="filled"
           label="Total"
           style={{ pointerEvents: 'none' }}
-          {...form.getInputProps('amount')}
-          value={`₹ ${(form.values.amount || 0) * userData.price}`}
+          {...buyForm.getInputProps('total')}
+          value={`₹ ${(buyForm.values.amount || 0) * userData.price}`}
         />
 
         <TextInput
           type="number"
           variant="filled"
           label="Amount"
-          {...form.getInputProps('total')}
+          {...buyForm.getInputProps('amount')}
           onChange={(e) => {
-            form.setValues({
+            buyForm.setValues({
               amount: parseInt(e.target.value),
               total: parseInt(e.target.value) * userData.price,
             });
@@ -61,6 +72,10 @@ export function BuyFrom({ userData, form }: { userData: any; form: any }) {
       </Flex>
 
       <Button
+        onClick={(e) => {
+          e.preventDefault();
+          buySharesMut.mutate(buyForm.values as any);
+        }}
         size="md"
         variant="filled"
         color="green"

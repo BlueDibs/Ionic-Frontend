@@ -181,10 +181,10 @@ export function PublicProfile() {
               </Title>
               <Flex gap={'md'}>
                 <Text weight={500} size={'sm'}>
-                  ₹{userQuery.data.price.toFixed(2)}
+                  ₹{userQuery.data?.price?.toFixed(2)}
                 </Text>
                 <Text weight={400} size={'sm'}>
-                  EQ {userQuery.data.equity}%
+                  EQ {userQuery.data?.equity}%
                 </Text>
               </Flex>
             </div>
