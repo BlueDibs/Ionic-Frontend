@@ -35,6 +35,7 @@ import { ProfileFeeds } from './ProfileFeeds/ProfileFeeds';
 import { onValue, ref } from 'firebase/database';
 import { setNotifications } from '../store/slice/notificationSlice';
 import { setNotificationUnread } from '../store/slice/notificationUnreadSlice';
+import { Wallet } from './Wallet/Wallet';
 
 export const MainLayout = () => {
   const dispatch = useAppDispatch();
@@ -102,6 +103,7 @@ export const MainLayout = () => {
             <Route path="/app/feed/:username" exact component={ProfileFeeds} />
             <Route path="/app/search" exact component={Search} />
             <Route path="/app/chats" exact component={Dorm} />
+            <Route path="/app/wallet" exact component={Wallet} />
 
             <Route
               path="/app/comments/:postId"
@@ -139,14 +141,7 @@ export const MainLayout = () => {
               <IonIcon icon={addOutline} />
             </IonTabButton>
 
-            <IonTabButton
-              tab="wallet"
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                auth.signOut();
-              }}
-            >
+            <IonTabButton tab="wallet" href="/app/wallet">
               <IonIcon icon={walletOutline} />
             </IonTabButton>
 

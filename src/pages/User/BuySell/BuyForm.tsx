@@ -2,6 +2,7 @@ import { Flex, TextInput, Button, Text } from '@mantine/core';
 import { useMutation } from '@tanstack/react-query';
 import { buySharesAPI } from './buySell.api';
 import { useForm } from '@mantine/form';
+import { Chart } from '../../../components/Chart';
 
 export function BuyFrom({ userData }: { userData: any }) {
   const buySharesMut = useMutation({
@@ -9,10 +10,31 @@ export function BuyFrom({ userData }: { userData: any }) {
   });
 
   const buyForm = useForm();
-  console.log(buyForm.errors);
 
   return (
     <>
+      <div style={{ height: 200 }}>
+        <Chart
+          data={[
+            {
+              id: 1,
+              data: [{ x: 0, y: 1 }],
+            },
+            {
+              id: 1,
+              data: [{ x: 0, y: 2 }],
+            },
+            {
+              id: 1,
+              data: [{ x: 0, y: 3 }],
+            },
+            {
+              id: 1,
+              data: [{ x: 1, y: 1 }],
+            },
+          ]}
+        />
+      </div>
       <Flex direction={'column'} gap={'md'} p={'lg'}>
         <TextInput
           variant="filled"
