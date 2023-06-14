@@ -18,8 +18,11 @@ import {
   TextInput,
   Table,
 } from '@mantine/core';
+import { useQuery } from '@tanstack/react-query';
 import { settingsOutline, searchOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router';
+import { getHoldings } from './wallt.api';
+import { useAppSelector } from '../../store/hooks';
 
 type TStatement = {
   label: string;
@@ -49,6 +52,22 @@ const Statement = (data: TStatement) => (
 
 export function Wallet() {
   const history = useHistory();
+
+  const user = useAppSelector((state) => state.user);
+
+  const getHoldingQuery = useQuery({
+    queryKey: ['holdings'],
+    queryFn: getHoldings,
+    placeholderData: {
+      holdings: [],
+      balance: 0,
+      ttlInvestment: 0,
+      ttlReturns: 0,
+    },
+  });
+
+  console.log(getHoldingQuery.data);
+
   return (
     <IonPage>
       <IonHeader>
@@ -68,9 +87,18 @@ export function Wallet() {
               <Button variant="outline">TIIYS</Button>
             </SimpleGrid>
             <Divider my={'sm'} />
-            <Statement label="Balance" value={'$ 2509'} />
-            <Statement label="Total Investment" value={'$ 68634'} />
-            <Statement label="Total Returns" value={'$ 68634'} />
+            <Statement
+              label="Balance"
+              value={`$ ${getHoldingQuery.data?.balance || 0}`}
+            />
+            <Statement
+              label="Total Investment"
+              value={`$ ${getHoldingQuery.data?.ttlInvestment || 0}`}
+            />
+            <Statement
+              label="Total Returns"
+              value={`$ ${getHoldingQuery.data?.ttlReturns || 0}`}
+            />
             <Button color="green">Add Money</Button>
             <Divider my={'sm'} />
             <Paper>
@@ -87,10 +115,18 @@ export function Wallet() {
                   <tr>
                     <th>Name</th>
                     <th>Held</th>
-                    <th>Value`</th>
+                    <th>Value</th>
                   </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody>
+                  {getHoldingQuery.data?.holdings.map((item) => (
+                    <tr>
+                      <td>{item.sellerUser.username}</td>
+                      <td>{item.amount}</td>
+                      <td>{item.value}</td>
+                    </tr>
+                  ))}
+                </tbody>
               </Table>
             </Paper>
           </Stack>
