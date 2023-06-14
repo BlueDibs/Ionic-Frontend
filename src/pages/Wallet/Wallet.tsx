@@ -23,35 +23,13 @@ import { settingsOutline, searchOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router';
 import { getHoldings } from './wallt.api';
 import { useAppSelector } from '../../store/hooks';
-
-type TStatement = {
-  label: string;
-  value: string | number;
-};
-
-const Statement = (data: TStatement) => (
-  <Flex
-    style={{
-      padding: '4px 20px',
-      borderStyle: 'solid',
-      borderColor: 'black',
-      borderWidth: 2,
-      borderRadius: '8px',
-      backgroundColor: 'white',
-    }}
-    justify={'space-between'}
-  >
-    <Text weight={700} size={'md'}>
-      {data.label}
-    </Text>
-    <Text weight={500} size={'md'}>
-      {data.value}
-    </Text>
-  </Flex>
-);
+import { useState } from 'react';
+import { Holdings } from './Holdings';
+import { Tiiys } from './Tiiys';
 
 export function Wallet() {
   const history = useHistory();
+  const [tab, setTab] = useState<'HOLDINGS' | 'TIIYS'>('HOLDINGS');
 
   const user = useAppSelector((state) => state.user);
 
@@ -81,55 +59,25 @@ export function Wallet() {
       </IonHeader>
       <IonContent>
         <Container p={'lg'}>
-          <Stack>
-            <SimpleGrid cols={2}>
-              <Button>Holdings</Button>
-              <Button variant="outline">TIIYS</Button>
-            </SimpleGrid>
-            <Divider my={'sm'} />
-            <Statement
-              label="Balance"
-              value={`$ ${getHoldingQuery.data?.balance || 0}`}
-            />
-            <Statement
-              label="Total Investment"
-              value={`$ ${getHoldingQuery.data?.ttlInvestment || 0}`}
-            />
-            <Statement
-              label="Total Returns"
-              value={`$ ${getHoldingQuery.data?.ttlReturns || 0}`}
-            />
-            <Button color="green">Add Money</Button>
-            <Divider my={'sm'} />
-            <Paper>
-              <Flex justify={'space-between'}>
-                <Text weight={600}>Current Statistics</Text>
-                <TextInput
-                  placeholder="search"
-                  size="xs"
-                  icon={<IonIcon icon={searchOutline} />}
-                />
-              </Flex>
-              <Table mt={'sm'}>
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Held</th>
-                    <th>Value</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {getHoldingQuery.data?.holdings.map((item) => (
-                    <tr>
-                      <td>{item.sellerUser.username}</td>
-                      <td>{item.amount}</td>
-                      <td>{item.value}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </Paper>
-          </Stack>
+          <SimpleGrid cols={2}>
+            <Button
+              variant={tab == 'HOLDINGS' ? 'filled' : 'outline'}
+              onClick={() => setTab('HOLDINGS')}
+            >
+              Holdings
+            </Button>
+            <Button
+              variant={tab == 'TIIYS' ? 'filled' : 'outline'}
+              onClick={() => setTab('TIIYS')}
+            >
+              TIIYS
+            </Button>
+          </SimpleGrid>
+          {tab == 'HOLDINGS' ? (
+            <Holdings query={getHoldingQuery} />
+          ) : (
+            <Tiiys query={getHoldingQuery} />
+          )}
         </Container>
       </IonContent>
     </IonPage>
