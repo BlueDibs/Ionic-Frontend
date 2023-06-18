@@ -26,6 +26,7 @@ import { imgUrl } from '../../utils/media';
 import { chatbubbleEllipsesOutline, settingsOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router';
 import { ProfileEquityStats } from '../../components/Profile/ProfileEquityStats';
+import { auth } from '../../utils/firebase';
 
 const useStyles = createStyles((theme) => ({
   statusLeft: {},
@@ -76,6 +77,7 @@ export function Profile() {
   const { classes } = useStyles();
   const history = useHistory();
   const user = useAppSelector((state) => state.user);
+
   const [editMdlOpn, setEdtMdlOpn] = useState(false);
 
   const fetchPostQry = useQuery({
@@ -100,7 +102,7 @@ export function Profile() {
             </Title>
             <IonIcon
               icon={settingsOutline}
-              onClick={() => history.push('/app/chats')}
+              onClick={() => auth.signOut()}
               style={{ fontSize: 25, marginLeft: 'auto' }}
             ></IonIcon>
           </Flex>
