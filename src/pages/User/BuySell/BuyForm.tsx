@@ -3,6 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import { buySharesAPI } from './buySell.api';
 import { useForm } from '@mantine/form';
 import { Chart } from '../../../components/Chart';
+import dayjs from 'dayjs';
 
 export function BuyFrom({ userData }: { userData: any }) {
   const buySharesMut = useMutation({
@@ -18,19 +19,31 @@ export function BuyFrom({ userData }: { userData: any }) {
           data={[
             {
               id: 1,
-              data: [{ x: 0, y: 1 }],
-            },
-            {
-              id: 1,
-              data: [{ x: 0, y: 2 }],
-            },
-            {
-              id: 1,
-              data: [{ x: 0, y: 3 }],
-            },
-            {
-              id: 1,
-              data: [{ x: 1, y: 1 }],
+              color: 'hsl(140, 70%, 50%)',
+              data: [
+                { x: dayjs().format('YYYY-MM-DD HH:MM').toString(), y: 1 },
+                {
+                  x: dayjs()
+                    .add(1, 'day')
+                    .format('YYYY-MM-DD HH:MM')
+                    .toString(),
+                  y: 1,
+                },
+                {
+                  x: dayjs()
+                    .add(2, 'day')
+                    .format('YYYY-MM-DD HH:MM')
+                    .toString(),
+                  y: 2,
+                },
+                {
+                  x: dayjs()
+                    .add(3, 'day')
+                    .format('YYYY-MM-DD HH:MM')
+                    .toString(),
+                  y: 4,
+                },
+              ],
             },
           ]}
         />

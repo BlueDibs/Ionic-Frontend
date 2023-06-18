@@ -18,7 +18,7 @@ import { SellForm } from './BuySell/SellForm';
 
 export function BuySellModal({ userData }: { userData: any }) {
   const modal = useRef<HTMLIonModalElement>(null);
-  const [modalOpenned, setOpen] = useState(false);
+  const [modalOpenned, setOpen] = useState<'buy' | 'sell' | false>(false);
 
   const buySellForm = useForm({
     initialValues: {
@@ -43,7 +43,7 @@ export function BuySellModal({ userData }: { userData: any }) {
           style={{ flexGrow: 1, borderColor: '#2f9e44', color: '#2f9e44' }}
           variant="outline"
           color="#2f9e44"
-          onClick={() => setOpen(true)}
+          onClick={() => setOpen('sell')}
         >
           Sell
         </Button>
@@ -51,12 +51,12 @@ export function BuySellModal({ userData }: { userData: any }) {
           style={{ flexGrow: 1, color: 'white' }}
           variant="filled"
           color="green"
-          onClick={() => setOpen(true)}
+          onClick={() => setOpen('buy')}
         >
           Buy
         </Button>
       </Flex>
-      <IonModal ref={modal} trigger="open-modal" isOpen={modalOpenned}>
+      <IonModal ref={modal} trigger="open-modal" isOpen={modalOpenned != false}>
         <IonHeader>
           <IonToolbar>
             <IonButtons slot="start">
@@ -73,7 +73,7 @@ export function BuySellModal({ userData }: { userData: any }) {
           </IonToolbar>
         </IonHeader>
         <IonContent>
-          <Tabs variant="outline" defaultValue="buy">
+          <Tabs variant="outline" defaultValue={modalOpenned as 'buy' | 'sell'}>
             <Tabs.List grow>
               <Tabs.Tab value="buy">Buy</Tabs.Tab>
               <Tabs.Tab value="sell">Sell</Tabs.Tab>
