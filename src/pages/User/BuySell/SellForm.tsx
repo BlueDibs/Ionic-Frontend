@@ -3,7 +3,13 @@ import { useForm } from '@mantine/form';
 import { useMutation } from '@tanstack/react-query';
 import { sellSharesAPI } from './buySell.api';
 
-export function SellForm({ userData }: { userData: any }) {
+export function SellForm({
+  userData,
+  CharHOC,
+}: {
+  userData: any;
+  CharHOC: any;
+}) {
   const sellForm = useForm();
   const sell_shares_mut = useMutation({
     mutationFn: (vals: any) => sellSharesAPI(userData.id, vals),
@@ -11,6 +17,7 @@ export function SellForm({ userData }: { userData: any }) {
 
   return (
     <>
+      <div style={{ height: 200 }}>{CharHOC}</div>
       <Flex direction={'column'} gap={'md'} p={'lg'}>
         <TextInput
           variant="filled"

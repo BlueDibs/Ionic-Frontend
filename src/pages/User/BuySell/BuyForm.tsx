@@ -3,9 +3,15 @@ import { useMutation } from '@tanstack/react-query';
 import { buySharesAPI } from './buySell.api';
 import { useForm } from '@mantine/form';
 import { Chart } from '../../../components/Chart';
-import dayjs from 'dayjs';
+import React from 'react';
 
-export function BuyFrom({ userData }: { userData: any }) {
+export function BuyFrom({
+  userData,
+  CharHOC,
+}: {
+  userData: any;
+  CharHOC: any;
+}) {
   const buySharesMut = useMutation({
     mutationFn: (vals: any) => buySharesAPI(userData.id, vals),
   });
@@ -14,40 +20,7 @@ export function BuyFrom({ userData }: { userData: any }) {
 
   return (
     <>
-      <div style={{ height: 200 }}>
-        <Chart
-          data={[
-            {
-              id: 1,
-              color: 'hsl(140, 70%, 50%)',
-              data: [
-                { x: dayjs().format('YYYY-MM-DD HH:MM').toString(), y: 1 },
-                {
-                  x: dayjs()
-                    .add(1, 'day')
-                    .format('YYYY-MM-DD HH:MM')
-                    .toString(),
-                  y: 1,
-                },
-                {
-                  x: dayjs()
-                    .add(2, 'day')
-                    .format('YYYY-MM-DD HH:MM')
-                    .toString(),
-                  y: 2,
-                },
-                {
-                  x: dayjs()
-                    .add(3, 'day')
-                    .format('YYYY-MM-DD HH:MM')
-                    .toString(),
-                  y: 4,
-                },
-              ],
-            },
-          ]}
-        />
-      </div>
+      <div style={{ height: 200 }}>{CharHOC}</div>
       <Flex direction={'column'} gap={'md'} p={'lg'}>
         <TextInput
           variant="filled"

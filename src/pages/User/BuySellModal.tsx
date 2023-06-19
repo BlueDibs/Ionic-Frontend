@@ -16,7 +16,13 @@ import { useRef, useState } from 'react';
 import { BuyFrom } from './BuySell/BuyForm';
 import { SellForm } from './BuySell/SellForm';
 
-export function BuySellModal({ userData }: { userData: any }) {
+export function BuySellModal({
+  userData,
+  CharHOC,
+}: {
+  userData: any;
+  CharHOC: any;
+}) {
   const modal = useRef<HTMLIonModalElement>(null);
   const [modalOpenned, setOpen] = useState<'buy' | 'sell' | false>(false);
 
@@ -80,11 +86,11 @@ export function BuySellModal({ userData }: { userData: any }) {
             </Tabs.List>
 
             <Tabs.Panel value="buy" pt="xs">
-              <BuyFrom userData={userData} />
+              <BuyFrom userData={userData} CharHOC={CharHOC} />
             </Tabs.Panel>
 
             <Tabs.Panel value="sell" pt="xs">
-              <SellForm userData={userData} />
+              <SellForm userData={userData} CharHOC={CharHOC} />
             </Tabs.Panel>
           </Tabs>
         </IonContent>

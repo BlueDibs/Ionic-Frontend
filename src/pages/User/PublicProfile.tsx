@@ -31,6 +31,7 @@ import { useDispatch } from 'react-redux';
 import { settingsOutline } from 'ionicons/icons';
 import { ProfileEquityStats } from '../../components/Profile/ProfileEquityStats';
 import { BuySellModal } from './BuySellModal';
+import { Chart } from '../../components/Chart';
 
 const useStyles = createStyles((theme) => ({
   statusLeft: {
@@ -142,7 +143,23 @@ export function PublicProfile() {
 
   if (!userId) return history.goBack();
   if (userQuery.isLoading) return <>Loading...</>;
-  console.log(userQuery.data);
+
+  const chartsData = userQuery?.data?.graphData?.map((item: any) => ({
+    x: new Date(item.date),
+    y: item.price,
+  }));
+
+  const CharHOC = (
+    <Chart
+      data={[
+        {
+          id: 1,
+          color: 'hsl(140, 70%, 50%)',
+          data: chartsData,
+        },
+      ]}
+    />
+  );
 
   return (
     <IonPage style={{ display: 'block' }}>
@@ -278,7 +295,7 @@ export function PublicProfile() {
               />
             ))}
         </SimpleGrid>
-        <BuySellModal userData={userQuery.data} />
+        <BuySellModal userData={userQuery.data} CharHOC={CharHOC} />
       </IonContent>
     </IonPage>
   );
