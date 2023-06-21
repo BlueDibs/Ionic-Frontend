@@ -36,6 +36,7 @@ import { onValue, ref } from 'firebase/database';
 import { setNotifications } from '../store/slice/notificationSlice';
 import { setNotificationUnread } from '../store/slice/notificationUnreadSlice';
 import { Wallet } from './Wallet/Wallet';
+import { Confirmation } from './Wallet/Confirmation';
 
 export const MainLayout = () => {
   const dispatch = useAppDispatch();
@@ -104,6 +105,8 @@ export const MainLayout = () => {
             <Route path="/app/search" exact component={Search} />
             <Route path="/app/chats" exact component={Dorm} />
             <Route path="/app/wallet" exact component={Wallet} />
+            <Route path="/app/wallet/confirmation" exact component={Confirmation} />
+
 
             <Route
               path="/app/comments/:postId"
