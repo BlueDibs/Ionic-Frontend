@@ -15,7 +15,6 @@ export function BuyFrom({
   CharHOC: any;
 }) {
   const [confirm, setConfirm] = useState(false);
-  const history = useHistory();
   const buySharesMut = useMutation({
     mutationFn: (vals: any) => buySharesAPI(userData.id, vals),
   });

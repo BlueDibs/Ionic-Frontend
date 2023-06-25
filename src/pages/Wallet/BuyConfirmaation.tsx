@@ -10,6 +10,7 @@ import {
 } from '@ionic/react';
 import { Title, Text, Flex, Button } from '@mantine/core';
 import { useAppSelector } from '../../store/hooks';
+import { HeaderComponent } from '../../components/Header';
 
 const LabelVale = (data: any) => (
   <Flex justify={'space-between'}>
@@ -43,28 +44,7 @@ export function BuyConfirmation({
     >
       <IonHeader>
         <IonToolbar>
-          <Flex justify={'space-between'} px={10}>
-            <Title
-              mr={'auto'}
-              weight={400}
-              order={5}
-              onClick={() => onWillDismiss()}
-            >
-              Cancel
-            </Title>
-
-            <Title
-              left={'50%'}
-              pos={'absolute'}
-              weight={500}
-              order={4}
-              style={{
-                transform: `translateX(-50%)`,
-              }}
-            >
-              Confirm Buy
-            </Title>
-          </Flex>
+          <HeaderComponent title={'Confirm Buy'} back={onWillDismiss} />
         </IonToolbar>
       </IonHeader>
       <IonContent>

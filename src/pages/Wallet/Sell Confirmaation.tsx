@@ -1,6 +1,13 @@
-import { IonContent, IonModal, IonPage } from '@ionic/react';
+import {
+  IonContent,
+  IonHeader,
+  IonModal,
+  IonPage,
+  IonToolbar,
+} from '@ionic/react';
 import { Title, Text, Flex, Button } from '@mantine/core';
 import { useAppSelector } from '../../store/hooks';
+import { HeaderComponent } from '../../components/Header';
 
 const LabelVale = (data: any) => (
   <Flex justify={'space-between'}>
@@ -33,6 +40,11 @@ export function SellConfirmation({
       trigger="open-modal"
       onWillDismiss={(ev) => onWillDismiss(ev)}
     >
+      <IonHeader>
+        <IonToolbar>
+          <HeaderComponent title={'Confirm Buy'} back={onWillDismiss} />
+        </IonToolbar>
+      </IonHeader>
       <IonContent>
         <Title color="#495057" order={1} align="center" mt={'50%'}>
           Confirm Order
