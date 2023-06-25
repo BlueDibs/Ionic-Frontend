@@ -1,5 +1,33 @@
 import { ResponsiveLine } from '@nivo/line';
 
+export function MinChart({ data }: { data: any[] }) {
+  return (
+    <ResponsiveLine
+      data={data}
+      margin={{ top: 30, bottom: 10, left: 10, right: 10 }}
+      xScale={{
+        type: 'time',
+        format: '%Y-%m-%d %H:%M',
+        precision: 'day',
+      }}
+      xFormat="time:%H:%M:%S.%L"
+      axisTop={null}
+      axisRight={null}
+      enableGridX={false}
+      axisBottom={null}
+      axisLeft={null}
+      enableArea={true}
+      colors={(d) => d.color}
+      pointBorderWidth={2}
+      pointBorderColor={{ from: 'serieColor' }}
+      pointLabelYOffset={-12}
+      tooltip={({ point: { data: pointData } }) => {
+        return null;
+      }}
+    />
+  );
+}
+
 export function Chart({ data }: { data: any[] }) {
   return (
     <ResponsiveLine

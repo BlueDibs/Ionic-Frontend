@@ -3,7 +3,9 @@ import { useMutation } from '@tanstack/react-query';
 import { buySharesAPI } from './buySell.api';
 import { useForm } from '@mantine/form';
 import { Chart } from '../../../components/Chart';
-import React from 'react';
+import React, { useRef, useState } from 'react';
+import { useHistory } from 'react-router';
+import { BuyConfirmation } from '../../Wallet/BuyConfirmaation';
 
 export function BuyFrom({
   userData,
@@ -12,14 +14,38 @@ export function BuyFrom({
   userData: any;
   CharHOC: any;
 }) {
+  const [confirm, setConfirm] = useState(false);
+  const history = useHistory();
   const buySharesMut = useMutation({
     mutationFn: (vals: any) => buySharesAPI(userData.id, vals),
   });
 
-  const buyForm = useForm();
+  const buyForm = useForm({
+    validate: {
+      amount: (val) => {
+        if (!val) return 'Amount must not be empty';
+      },
+    },
+  });
+
+  console.log(buyForm.errors);
 
   return (
-    <>
+    <form onSubmit={buyForm.onSubmit(() => setConfirm(true))}>
+      <BuyConfirmation
+        isOpen={confirm}
+        txn={() => buySharesMut.mutate(buyForm.values)}
+        onWillDismiss={() => setConfirm(false)}
+        data={{
+          share_amont: buyForm.values.amount,
+          share_price: userData.price,
+          total_amount:
+            userData.price * parseInt(buyForm.values.amount as string),
+          txn_fee:
+            (userData.price * parseInt(buyForm.values.amount as string) * 0.2) /
+            100,
+        }}
+      />
       <div style={{ height: 200 }}>{CharHOC}</div>
       <Flex direction={'column'} gap={'md'} p={'lg'}>
         <TextInput
@@ -80,10 +106,7 @@ export function BuyFrom({
       </Flex>
 
       <Button
-        onClick={(e) => {
-          e.preventDefault();
-          buySharesMut.mutate(buyForm.values as any);
-        }}
+        type="submit"
         size="md"
         variant="filled"
         color="green"
@@ -96,6 +119,6 @@ export function BuyFrom({
       >
         Buy
       </Button>
-    </>
+    </form>
   );
 }

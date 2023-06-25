@@ -31,7 +31,7 @@ import { useDispatch } from 'react-redux';
 import { settingsOutline } from 'ionicons/icons';
 import { ProfileEquityStats } from '../../components/Profile/ProfileEquityStats';
 import { BuySellModal } from './BuySellModal';
-import { Chart } from '../../components/Chart';
+import { Chart, MinChart } from '../../components/Chart';
 
 const useStyles = createStyles((theme) => ({
   statusLeft: {
@@ -179,7 +179,7 @@ export function PublicProfile() {
       </IonHeader>
 
       <IonContent>
-        <Container p={'lg'} pb={0}>
+        <Flex p={'lg'} pb={0} justify={'space-between'} align={'centers'}>
           <Flex direction={'column'} gap={'xs'} p={'sm'}>
             <Avatar
               src={
@@ -208,7 +208,18 @@ export function PublicProfile() {
 
             <Text size={'sm'}>{userQuery.data.bio}</Text>
           </Flex>
-        </Container>
+          <div style={{ height: '150px', width: '100%', marginTop: '10px' }}>
+            <MinChart
+              data={[
+                {
+                  id: 1,
+                  color: 'hsl(140, 70%, 50%)',
+                  data: chartsData,
+                },
+              ]}
+            />
+          </div>
+        </Flex>
 
         <ProfileEquityStats
           stats={[
