@@ -1,5 +1,6 @@
-import { IonContent, IonPage } from '@ionic/react';
+import { IonContent, IonModal, IonPage } from '@ionic/react';
 import { Title, Text, Flex, Button } from '@mantine/core';
+import { useAppSelector } from '../../store/hooks';
 
 const LabelVale = (data: any) => (
   <Flex justify={'space-between'}>
@@ -12,9 +13,26 @@ const LabelVale = (data: any) => (
   </Flex>
 );
 
-export function SellConfirmation({ txn }: { txn: () => void }) {
+export function SellConfirmation({
+  txn,
+  data,
+  onWillDismiss,
+  isOpen,
+}: {
+  txn: () => void;
+  data: any;
+  onWillDismiss: any;
+  isOpen: boolean;
+}) {
+  const user = useAppSelector((state) => state.user);
+  const final_amount = data.amount_receive - (data.amount_receive * 0.2) / 100;
+
   return (
-    <IonPage>
+    <IonModal
+      isOpen={isOpen}
+      trigger="open-modal"
+      onWillDismiss={(ev) => onWillDismiss(ev)}
+    >
       <IonContent>
         <Title color="#495057" order={1} align="center" mt={'50%'}>
           Confirm Order
@@ -24,18 +42,21 @@ export function SellConfirmation({ txn }: { txn: () => void }) {
             You Will Receive
           </Text>
           <Title align="center" order={1} size={70}>
-            567
+            {final_amount}
           </Title>
           <Text align="center" size={'lg'}>
             Rupees
           </Text>
         </div>
         <div style={{ margin: '15%' }}>
-          <LabelVale label="Share Price" value="3040" />
-          <LabelVale label="Total Amount" value="3040" />
-          <LabelVale label="Fee (%0.2)" value="3040" />
+          <LabelVale label="Share Price" value={data.share_price} />
+          <LabelVale label="Total Amount" value={data.shares_amount} />
+          <LabelVale
+            label="Fee (%0.2)"
+            value={(data.amount_receive * 0.2) / 100}
+          />
 
-          <LabelVale label="Balance" value="3040" />
+          <LabelVale label="Balance" value={user.balance} />
         </div>
         <Button
           size="md"
@@ -52,6 +73,6 @@ export function SellConfirmation({ txn }: { txn: () => void }) {
           Confirm
         </Button>
       </IonContent>
-    </IonPage>
+    </IonModal>
   );
 }

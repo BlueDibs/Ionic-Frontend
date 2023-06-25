@@ -34,7 +34,7 @@ export function BuyConfirmation({
   isOpen: boolean;
 }) {
   const user = useAppSelector((state) => state.user);
-  console.log(data);
+
   return (
     <IonModal
       isOpen={isOpen}

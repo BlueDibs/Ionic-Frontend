@@ -2,6 +2,8 @@ import { Flex, TextInput, Button, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useMutation } from '@tanstack/react-query';
 import { sellSharesAPI } from './buySell.api';
+import { useState } from 'react';
+import { SellConfirmation } from '../../Wallet/Sell Confirmaation';
 
 export function SellForm({
   userData,
@@ -10,13 +12,29 @@ export function SellForm({
   userData: any;
   CharHOC: any;
 }) {
-  const sellForm = useForm();
+  const [confirm, setConfirm] = useState(false);
+  const sellForm = useForm({
+    validate: {
+      amount: (vals) => (!vals ? 'Amont but not be empty' : null),
+    },
+  });
   const sell_shares_mut = useMutation({
     mutationFn: (vals: any) => sellSharesAPI(userData.id, vals),
   });
 
   return (
-    <>
+    <form onSubmit={sellForm.onSubmit((vals) => setConfirm(true))}>
+      <SellConfirmation
+        txn={() => sell_shares_mut.mutate(sellForm.values)}
+        data={{
+          shares_amount: sellForm.values.amount,
+          amount_receive:
+            parseInt(sellForm.values.amount as string) * userData.price,
+          share_price: userData.price,
+        }}
+        onWillDismiss={() => setConfirm(false)}
+        isOpen={confirm}
+      />
       <div style={{ height: 200 }}>{CharHOC}</div>
       <Flex direction={'column'} gap={'md'} p={'lg'}>
         <TextInput
@@ -70,7 +88,7 @@ export function SellForm({
 
       <Button
         size="md"
-        onClick={() => sell_shares_mut.mutate(sellForm.values)}
+        type="submit"
         variant="filled"
         color="red"
         style={{
@@ -82,6 +100,6 @@ export function SellForm({
       >
         Sell
       </Button>
-    </>
+    </form>
   );
 }
