@@ -21,7 +21,7 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 // import './theme/variables.css';
 import { Login } from './pages/Auth/login';
-import { SignUp } from './pages/Auth/signup';
+import { SignUp } from './pages/Auth/Signup/signup';
 import { MainLayout } from './pages/MainApp';
 
 setupIonicReact();

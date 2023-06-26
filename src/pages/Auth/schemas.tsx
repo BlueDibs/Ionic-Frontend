@@ -8,4 +8,6 @@ export const loginSchema = z.object({
 export const signupSchema = loginSchema.extend({
   username: z.string(),
   firebaseId: z.string(),
+  email: z.string().email(),
+  shares_dilute: z.bigint(),
 });

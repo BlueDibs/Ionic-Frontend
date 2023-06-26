@@ -10,25 +10,33 @@ import {
   Button,
   Text,
 } from '@mantine/core';
-import { IonPage } from '@ionic/react';
+import { IonContent, IonPage } from '@ionic/react';
 
 import { Redirect, useHistory } from 'react-router';
-import { app } from '../../utils/firebase';
+import { app } from '../../../utils/firebase';
 import { useForm, zodResolver } from '@mantine/form';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import { signupSchema } from './schemas';
+import { signupSchema } from '../schemas';
 import { z } from 'zod';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IonRouterLink } from '@ionic/react';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { checkUsernameAPI, createUser } from './auth.api';
+import { signupValidationAPI, createUser } from '../auth.api';
+import { ProfileSetup } from './profile';
+import { DiluteShares } from './diluteShares';
 
 interface ISignUpForm
   extends Omit<z.infer<typeof signupSchema>, 'firebaseId'> {}
 
+const signup_screns = (props: any) => ({
+  PROFILE: <ProfileSetup {...props} />,
+  SHARES_DILUTE: <DiluteShares {...props} />,
+});
+
 export function SignUp() {
   const auth = getAuth(app);
   const [loading, setLoading] = useState(false);
+  const [screen, setScreen] = useState<'PROFILE' | 'SHARES_DILUTE'>('PROFILE');
   const history = useHistory();
   // could not have used these many states
   const [error, setError] = useState('');
@@ -37,12 +45,13 @@ export function SignUp() {
     mutationFn: createUser,
   });
 
-  const form = useForm<ISignUpForm>({
+  const signupForm = useForm<ISignUpForm>({
     validate: zodResolver(signupSchema.omit({ firebaseId: true })),
   });
 
   useEffect(() => {
     const user = auth.currentUser;
+    setScreen('PROFILE');
     if (user) {
       history.push('/app/feed');
     }
@@ -52,9 +61,11 @@ export function SignUp() {
     setLoading(true);
 
     try {
-      const userExsists = await checkUsernameAPI(vals.username);
+      const userExsists = await signupValidationAPI({
+        username: vals.username,
+      });
       if (!!userExsists)
-        return form.setFieldError('username', 'Username already exsist');
+        return signupForm.setFieldError('username', 'Username already exsist');
       const resp = await createUserWithEmailAndPassword(
         auth,
         vals.email,
@@ -80,62 +91,9 @@ export function SignUp() {
 
   return (
     <IonPage style={{ display: 'block', margin: '10px 20px' }}>
-      <Title
-        mt={200}
-        align="center"
-        sx={(theme) => ({
-          fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-          fontWeight: 900,
-        })}
-      >
-        Welcome!
-      </Title>
-      <Text color="dimmed" size="sm" align="center" mt={5}>
-        Already have an account?{' '}
-        <IonRouterLink routerLink="/auth/login">Login</IonRouterLink>
-      </Text>
-
-      <Paper
-        withBorder
-        shadow="md"
-        p={30}
-        m={20}
-        mt={30}
-        radius="md"
-        component="form"
-        onSubmit={form.onSubmit((vals) => signup(vals))}
-      >
-        <TextInput
-          label="Username"
-          placeholder="someone"
-          {...form.getInputProps('username')}
-          disabled={loading}
-        />
-        <TextInput
-          label="Email"
-          mt={'sm'}
-          placeholder="you@email.dev"
-          {...form.getInputProps('email')}
-          disabled={loading}
-        />
-        <PasswordInput
-          label="Password"
-          placeholder="Your password"
-          mt="md"
-          {...form.getInputProps('password')}
-          disabled={loading}
-        />
-
-        {error && (
-          <Text mt={'sm'} color="red" size={'sm'}>
-            {error}
-          </Text>
-        )}
-
-        <Button type="submit" fullWidth mt="xl" loading={loading}>
-          Sign Up
-        </Button>
-      </Paper>
+      <IonContent>
+        {signup_screns({ rootForm: signupForm, setScreen })[screen]}
+      </IonContent>
     </IonPage>
   );
 }

@@ -10,7 +10,7 @@ import {
   Button,
   Text,
 } from '@mantine/core';
-import { IonPage } from '@ionic/react';
+import { IonContent, IonPage } from '@ionic/react';
 import { Redirect, useHistory } from 'react-router';
 import { app, auth } from '../../utils/firebase';
 import {
@@ -66,55 +66,59 @@ export function Login() {
 
   return (
     <IonPage style={{ display: 'block', margin: '10px 20px' }}>
-      <Title
-        mt={220}
-        align="center"
-        sx={(theme) => ({
-          fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-          fontWeight: 900,
-        })}
-      >
-        Welcome back!
-      </Title>
-      <Text color="dimmed" size="sm" align="center" mt={5}>
-        Do not have an account yet?{' '}
-        <IonRouterLink routerLink="/auth/signup">Create account</IonRouterLink>
-      </Text>
+      <IonContent>
+        <Title
+          mt={220}
+          align="center"
+          sx={(theme) => ({
+            fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+            fontWeight: 900,
+          })}
+        >
+          Welcome back!
+        </Title>
+        <Text color="dimmed" size="sm" align="center" mt={5}>
+          Do not have an account yet?{' '}
+          <IonRouterLink routerLink="/auth/signup">
+            Create account
+          </IonRouterLink>
+        </Text>
 
-      <Paper
-        withBorder
-        shadow="md"
-        p={30}
-        m={20}
-        mt={30}
-        radius="md"
-        component="form"
-        onSubmit={form.onSubmit((vals) => login(vals))}
-      >
-        <TextInput
-          label="Email"
-          placeholder="you@email.dev"
-          {...form.getInputProps('email')}
-          disabled={loading}
-        />
-        <PasswordInput
-          label="Password"
-          placeholder="Your password"
-          mt="md"
-          {...form.getInputProps('password')}
-          disabled={loading}
-        />
+        <Paper
+          withBorder
+          shadow="md"
+          p={30}
+          m={20}
+          mt={30}
+          radius="md"
+          component="form"
+          onSubmit={form.onSubmit((vals) => login(vals))}
+        >
+          <TextInput
+            label="Email"
+            placeholder="you@email.dev"
+            {...form.getInputProps('email')}
+            disabled={loading}
+          />
+          <PasswordInput
+            label="Password"
+            placeholder="Your password"
+            mt="md"
+            {...form.getInputProps('password')}
+            disabled={loading}
+          />
 
-        {error && (
-          <Text mt={'sm'} color="red" size={'sm'}>
-            {error}
-          </Text>
-        )}
+          {error && (
+            <Text mt={'sm'} color="red" size={'sm'}>
+              {error}
+            </Text>
+          )}
 
-        <Button type="submit" fullWidth mt="xl" loading={loading}>
-          Sign in
-        </Button>
-      </Paper>
+          <Button type="submit" fullWidth mt="xl" loading={loading}>
+            Sign in
+          </Button>
+        </Paper>
+      </IonContent>
     </IonPage>
   );
 }
