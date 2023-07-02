@@ -26,6 +26,7 @@ import { checkboxOutline, checkmarkCircle, ticketSharp } from 'ionicons/icons';
 export function GetStarted() {
   const userDet = useAppSelector((state) => state.user);
   const [loading, setLoading] = useState();
+  const [error, setError] = useState<string | null>(null);
 
   const userInfoMut = useMutation({
     mutationFn: setupAPI,
@@ -36,25 +37,35 @@ export function GetStarted() {
     <IonPage>
       <IonContent>
         <Title
-          mt={200}
+          mt={50}
           align="center"
+          order={2}
+          color="#373A40"
           sx={(theme) => ({
             fontFamily: `Greycliff CF, ${theme.fontFamily}`,
             fontWeight: 900,
           })}
         >
-          Dilute Shares
+          Complete Profile
         </Title>
-        <Text color="dimmed" size="sm" align="center" mt={5}>
-          *Recommend - 100 cr to 500 cr.
-        </Text>
+
         <form
-          onSubmit={userInfoForm.onSubmit((vals: any) =>
-            userInfoMut.mutate(vals)
-          )}
+          onSubmit={userInfoForm.onSubmit((vals: any) => {
+            if (!userInfoForm.values.shares_dilute)
+              return setError('Please dilute shares');
+            return userInfoMut.mutate(vals);
+          })}
         >
           <Paper withBorder shadow="md" p={30} m={20} mt={30} radius="md">
-            <Flex direction={'column'} gap={'sm'} px={50}>
+            <Flex
+              direction={'column'}
+              gap={'sm'}
+              px={50}
+              style={{ justifyContent: 'center', textAlign: 'center' }}
+            >
+              <Title color="#373A40" order={5}>
+                Dilute Shares
+              </Title>
               <Button
                 color="green"
                 loading={loading}
@@ -125,10 +136,43 @@ export function GetStarted() {
               >
                 1000 Crore
               </Button>
+              <Text color="dimmed" size="sm" align="center" mt={5}>
+                *Recommend - 100 cr to 500 cr.
+              </Text>
             </Flex>
 
+            <Flex
+              mt={'lg'}
+              direction={'column'}
+              style={{ justifyContent: 'center', textAlign: 'center' }}
+              gap={'xl'}
+            >
+              <div>
+                <Title color="#373A40" order={5}>
+                  Your Equity in Shares
+                </Title>
+                <TextInput mt={'sm'} defaultValue={'10%'} />
+                <Text color="dimmed" size="sm" align="center" mt={5}>
+                  *Recommend - 10%
+                </Text>
+              </div>
+
+              <div>
+                <Title color="#373A40" order={5}>
+                  Platform Equity of all shares
+                </Title>
+                <TextInput mt={'sm'} defaultValue={'2.5%'} />
+              </div>
+            </Flex>
+
+            {error && (
+              <Text size="sm" align="center" color="red" mt={'sm'}>
+                {error}
+              </Text>
+            )}
+
             <Button type="submit" fullWidth mt="xl" loading={loading}>
-              Next
+              Complete
             </Button>
           </Paper>
         </form>
