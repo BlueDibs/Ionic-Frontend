@@ -37,7 +37,7 @@ export function GetStarted() {
     <IonPage>
       <IonContent>
         <Title
-          mt={50}
+          mt={100}
           align="center"
           order={2}
           color="#373A40"
@@ -136,7 +136,7 @@ export function GetStarted() {
               >
                 1000 Crore
               </Button>
-              <Text color="dimmed" size="sm" align="center" mt={5}>
+              <Text color="dimmed" size="sm" align="center">
                 *Recommend - 100 cr to 500 cr.
               </Text>
             </Flex>
@@ -151,19 +151,25 @@ export function GetStarted() {
                 <Title color="#373A40" order={5}>
                   Your Equity in Shares
                 </Title>
-                <TextInput mt={'sm'} defaultValue={'10%'} />
+                <TextInput
+                  styles={{
+                    input: {
+                      textAlign: 'center',
+                    },
+                  }}
+                  mt={'xs'}
+                  defaultValue={'10%'}
+                  size="xs"
+                />
                 <Text color="dimmed" size="sm" align="center" mt={5}>
                   *Recommend - 10%
                 </Text>
               </div>
-
-              <div>
-                <Title color="#373A40" order={5}>
-                  Platform Equity of all shares
-                </Title>
-                <TextInput mt={'sm'} defaultValue={'2.5%'} />
-              </div>
             </Flex>
+
+            <Text color="#373A40" size={'sm'} mt={'xl'} weight={500}>
+              Note: Platform Equity of all shares : 2.5%
+            </Text>
 
             {error && (
               <Text size="sm" align="center" color="red" mt={'sm'}>
