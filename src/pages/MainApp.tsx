@@ -109,7 +109,6 @@ export const MainLayout = () => {
             <Route path="/app/search" exact component={Search} />
             <Route path="/app/chats" exact component={Dorm} />
             <Route path="/app/wallet" exact component={Wallet} />
-            <Route path="/app/get-started" exact component={Wallet} />
 
             <Route
               path="/app/wallet/buy-confirm"

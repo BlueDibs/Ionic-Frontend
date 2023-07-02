@@ -1,4 +1,10 @@
-import { IonCard, IonContent, IonPage, IonRouterLink } from '@ionic/react';
+import {
+  IonCard,
+  IonContent,
+  IonIcon,
+  IonPage,
+  IonRouterLink,
+} from '@ionic/react';
 import {
   Title,
   Paper,
@@ -15,6 +21,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useForm } from '@mantine/form';
 import { useState } from 'react';
 import { setupAPI } from '../auth.api';
+import { checkboxOutline, checkmarkCircle, ticketSharp } from 'ionicons/icons';
 
 export function GetStarted() {
   const userDet = useAppSelector((state) => state.user);
@@ -51,15 +58,11 @@ export function GetStarted() {
               <Button
                 color="green"
                 loading={loading}
-                onClick={() =>
-                  userInfoForm.setFieldValue('shares_dilute', 1_00_00_000)
+                rightIcon={
+                  userInfoForm.values.shares_dilute == 10_00_00_000 && (
+                    <IonIcon icon={checkmarkCircle} />
+                  )
                 }
-              >
-                1 Crore
-              </Button>
-              <Button
-                color="green"
-                loading={loading}
                 onClick={() =>
                   userInfoForm.setFieldValue('shares_dilute', 10_00_00_000)
                 }
@@ -69,6 +72,11 @@ export function GetStarted() {
               <Button
                 color="green"
                 loading={loading}
+                rightIcon={
+                  userInfoForm.values.shares_dilute == 1_00_00_00_000 && (
+                    <IonIcon icon={checkmarkCircle} />
+                  )
+                }
                 onClick={() =>
                   userInfoForm.setFieldValue('shares_dilute', 1_00_00_00_000)
                 }
@@ -78,6 +86,11 @@ export function GetStarted() {
               <Button
                 color="green"
                 loading={loading}
+                rightIcon={
+                  userInfoForm.values.shares_dilute == 2_00_00_00_000 && (
+                    <IonIcon icon={checkmarkCircle} />
+                  )
+                }
                 onClick={() =>
                   userInfoForm.setFieldValue('shares_dilute', 2_00_00_00_000)
                 }
@@ -87,6 +100,11 @@ export function GetStarted() {
               <Button
                 color="green"
                 loading={loading}
+                rightIcon={
+                  userInfoForm.values.shares_dilute == 5_00_00_00_000 && (
+                    <IonIcon icon={checkmarkCircle} />
+                  )
+                }
                 onClick={() =>
                   userInfoForm.setFieldValue('shares_dilute', 5_00_00_00_000)
                 }
@@ -96,6 +114,11 @@ export function GetStarted() {
               <Button
                 color="green"
                 loading={loading}
+                rightIcon={
+                  userInfoForm.values.shares_dilute == 10_00_00_00_000 && (
+                    <IonIcon icon={checkmarkCircle} />
+                  )
+                }
                 onClick={() =>
                   userInfoForm.setFieldValue('shares_dilute', 10_00_00_00_000)
                 }
@@ -105,7 +128,7 @@ export function GetStarted() {
             </Flex>
 
             <Button type="submit" fullWidth mt="xl" loading={loading}>
-              Complete
+              Next
             </Button>
           </Paper>
         </form>
