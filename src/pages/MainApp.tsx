@@ -38,6 +38,7 @@ import { setNotificationUnread } from '../store/slice/notificationUnreadSlice';
 import { Wallet } from './Wallet/Wallet';
 import { BuyConfirmation } from './Wallet/BuyConfirmaation';
 import { SellConfirmation } from './Wallet/Sell Confirmaation';
+import { GetStarted } from './Auth/Signup/diluteShares';
 
 export const MainLayout = () => {
   const dispatch = useAppDispatch();
@@ -91,6 +92,8 @@ export const MainLayout = () => {
     };
   }, [history, notificationRefURI]);
 
+  if (userDet.shares < 1) return <GetStarted />;
+
   if (authLoading) return <>Loading...</>;
   if (!user) return <Redirect to={'/auth/login'} exact />;
 
@@ -106,6 +109,8 @@ export const MainLayout = () => {
             <Route path="/app/search" exact component={Search} />
             <Route path="/app/chats" exact component={Dorm} />
             <Route path="/app/wallet" exact component={Wallet} />
+            <Route path="/app/get-started" exact component={Wallet} />
+
             <Route
               path="/app/wallet/buy-confirm"
               exact

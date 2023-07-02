@@ -5,9 +5,12 @@ export const loginSchema = z.object({
   password: z.string(),
 });
 
-export const signupSchema = loginSchema.extend({
-  username: z.string(),
-  firebaseId: z.string(),
-  email: z.string().email(),
-  shares_dilute: z.bigint(),
-});
+export const signupSchema = loginSchema
+  .extend({
+    username: z.string(),
+    firebaseId: z.string(),
+    email: z.string().email(),
+  })
+  .omit({
+    password: true,
+  });
