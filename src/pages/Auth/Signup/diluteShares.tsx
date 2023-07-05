@@ -15,23 +15,48 @@ import {
   Stack,
   Flex,
   Anchor,
+  NumberInput,
 } from '@mantine/core';
 import { useAppSelector } from '../../../store/hooks';
 import { useMutation } from '@tanstack/react-query';
-import { useForm } from '@mantine/form';
-import { useState } from 'react';
+import { useForm, zodResolver } from '@mantine/form';
+import { useEffect, useState } from 'react';
 import { setupAPI } from '../auth.api';
 import { checkboxOutline, checkmarkCircle, ticketSharp } from 'ionicons/icons';
+import { z } from 'zod';
+import { Redirect, useHistory } from 'react-router';
+import { updateUser } from '../../../store/slice/userSlice';
+import { useDispatch } from 'react-redux';
 
 export function GetStarted() {
   const userDet = useAppSelector((state) => state.user);
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState();
   const [error, setError] = useState<string | null>(null);
+  const history = useHistory();
 
   const userInfoMut = useMutation({
     mutationFn: setupAPI,
+    onSuccess(data) {
+      dispatch(updateUser({ shares: data.shares }));
+      history.push('/app/feed');
+    },
   });
-  const userInfoForm = useForm();
+  const userInfoForm = useForm({
+    validate: zodResolver(
+      z.object({ equity_shares: z.number().min(0).max(10) })
+    ),
+    initialValues: {
+      equity_shares: 10,
+      shares_dilute: null,
+    },
+  });
+
+  useEffect(() => {
+    if (userInfoForm.values?.shares_dilute) setError(null);
+  }, [userInfoForm.values?.shares_dilute]);
+
+  if (userDet.shares > 1) return <Redirect to={'/app/feed'} />;
 
   return (
     <IonPage>
@@ -152,14 +177,18 @@ export function GetStarted() {
                   Your Equity in Shares
                 </Title>
                 <TextInput
+                  type="number"
                   styles={{
                     input: {
                       textAlign: 'center',
                     },
                   }}
                   mt={'xs'}
-                  defaultValue={'10%'}
+                  defaultValue={10}
                   size="xs"
+                  max={100}
+                  min={0}
+                  {...userInfoForm.getInputProps('equity_shares')}
                 />
                 <Text color="dimmed" size="sm" align="center" mt={5}>
                   *Recommend - 10%
