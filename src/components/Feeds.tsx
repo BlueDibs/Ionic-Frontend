@@ -37,6 +37,27 @@ function Feeds({ feeds, index }: { feeds: any[]; index?: number | null }) {
     mutationFn: unLikePost,
   });
 
+  function toggleLikePost(postId: string, User: any) {
+    const liked = user.PostLikedIDs.includes(postId);
+    console.log(user.PostLikedIDs);
+    const likeCounter = document.getElementById(`post-like-${postId}`);
+    if (!likeCounter) return console.error("no counter found");
+    let likes = parseInt(likeCounter?.innerText.split(" ")[0] || "0");
+    if (liked) {
+      dispatch(unLikePostUser(postId));
+      likeCounter.textContent = --likes + " likes";
+      lastClick && unlikePostMut.mutate(lastClick.id);
+    } else {
+      NotifyUser(User.id, {
+        message: `has liked your post`,
+        relativeHref: `/app/user/${user.id}`,
+      });
+      dispatch(likePostUser(postId));
+      likeCounter.textContent = ++likes + " likes";
+      lastClick && likePostMut.mutate(lastClick.id);
+    }
+  }
+
   const likeTimer = (postId: string, User: any) => {
     if (!lastClick)
       return setlastClick((_) => ({ time: new Date(), id: postId }));
@@ -44,23 +65,8 @@ function Feeds({ feeds, index }: { feeds: any[]; index?: number | null }) {
       (new Date().getTime() - lastClick?.time?.getTime()) / 1000 < 0.3 &&
       postId == lastClick.id
     ) {
-      const liked = user.PostLikedIDs.includes(postId);
-      const likeCounter = document.getElementById(`post-like-${postId}`);
-      if (!likeCounter) return console.error("no counter found");
-      let likes = parseInt(likeCounter?.innerText.split(" ")[0] || "0");
-      if (liked) {
-        dispatch(unLikePostUser(postId));
-        likeCounter.textContent = --likes + " likes";
-        unlikePostMut.mutate(lastClick.id);
-      } else {
-        NotifyUser(User.id, {
-          message: `has liked your post`,
-          relativeHref: `/app/user/${user.id}`,
-        });
-        dispatch(likePostUser(postId));
-        likeCounter.textContent = ++likes + " likes";
-        likePostMut.mutate(lastClick.id);
-      }
+      toggleLikePost(postId, User);
+
       controls.start({
         scale: [0.8, 1, 0.8],
         opacity: [0, 1],
@@ -78,7 +84,7 @@ function Feeds({ feeds, index }: { feeds: any[]; index?: number | null }) {
   const rowVirtualizer = useVirtual({
     size: feeds?.length || 0,
     parentRef,
-    estimateSize: React.useCallback(() => 400, []),
+    estimateSize: React.useCallback(() => 390, []),
     overscan: 10,
   });
 
@@ -95,6 +101,11 @@ function Feeds({ feeds, index }: { feeds: any[]; index?: number | null }) {
       direction={"column"}
       style={{ overflow: "auto", height: "100%" }}
       ref={parentRef}
+      sx={{
+        "ion-icon": {
+          fontSize: 20,
+        },
+      }}
     >
       <div
         style={{
@@ -107,6 +118,7 @@ function Feeds({ feeds, index }: { feeds: any[]; index?: number | null }) {
           let isLikedByCurrentUser = user.PostLikedIDs.includes(
             feeds[virtualItem.index].id
           );
+
           return (
             <Paper
               withBorder
@@ -125,7 +137,7 @@ function Feeds({ feeds, index }: { feeds: any[]; index?: number | null }) {
                   src={imgUrl(feeds[virtualItem.index].User.avatarPath)}
                   radius={999}
                 />
-                {feeds[virtualItem.index].User.avatarPath}
+
                 <Text weight={500}>
                   {feeds[virtualItem.index].User.username}
                 </Text>
@@ -160,7 +172,6 @@ function Feeds({ feeds, index }: { feeds: any[]; index?: number | null }) {
                         zIndex: "99999",
                         fontSize: "100px",
                         position: "absolute",
-
                         color: "white",
                       }}
                     />
@@ -180,22 +191,32 @@ function Feeds({ feeds, index }: { feeds: any[]; index?: number | null }) {
                   style={{
                     color: isLikedByCurrentUser ? "#E03131" : "black",
                   }}
+                  onClick={() =>
+                    toggleLikePost(
+                      feeds[virtualItem.index].id,
+                      feeds[virtualItem.index].User
+                    )
+                  }
                 >
-                  <IonIcon
-                    size="large"
-                    icon={isLikedByCurrentUser ? heart : heartOutline}
-                  />
-                </ActionIcon>{" "}
+                  <IonIcon icon={isLikedByCurrentUser ? heart : heartOutline} />
+                </ActionIcon>
+
                 <ActionIcon
                   onClick={() =>
                     history.push(`/app/comments/${feeds[virtualItem.index].id}`)
                   }
                 >
-                  <IonIcon size="large" icon={chatboxOutline} />
-                </ActionIcon>{" "}
+                  <IonIcon icon={chatboxOutline} />
+                </ActionIcon>
+
                 <ActionIcon>
-                  <IonIcon size="large" icon={paperPlaneOutline} />
-                </ActionIcon>{" "}
+                  <IonIcon icon={paperPlaneOutline} />
+                </ActionIcon>
+
+                <ActionIcon>
+                  <IonIcon icon={"/resell.svg"} />
+                </ActionIcon>
+
                 <Text
                   ml={"auto"}
                   size={"sm"}
