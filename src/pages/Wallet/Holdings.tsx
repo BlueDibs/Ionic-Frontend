@@ -1,4 +1,19 @@
-import { IonIcon } from '@ionic/react';
+import {
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonItem,
+  IonItemOption,
+  IonItemOptions,
+  IonItemSliding,
+  IonLabel,
+  IonList,
+  IonModal,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/react';
 import {
   Stack,
   Divider,
@@ -8,53 +23,132 @@ import {
   Text,
   TextInput,
   Table,
+  Grid,
+  Tabs,
 } from '@mantine/core';
 import { searchOutline } from 'ionicons/icons';
 import { Statement } from './Statement';
+import { BuyFrom } from '../User/BuySell/BuyForm';
+import { SellForm } from '../User/BuySell/SellForm';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Chart } from '../../components/Chart';
+import { useQuery } from '@tanstack/react-query';
+import { fetchUserDetails } from '../User/api.user';
 
 export function Holdings({ query }: { query: any }) {
+  const [modalOpenned, setOpen] = useState<boolean>(false);
+  const [userDet, setUserDet] = useState<any | null>();
+
+  const fetchUserProfile = async (id: string) => {
+    const details = await fetchUserDetails(id);
+    setUserDet(details);
+    setOpen(true);
+  };
+
+  const chart = useMemo(() => {
+    const chartsData = userDet?.graphData?.map((item: any) => ({
+      x: new Date(item.date),
+      y: item.price,
+    }));
+
+    return (
+      <Chart
+        data={[
+          {
+            id: 1,
+            color: 'hsl(140, 70%, 50%)',
+            data: chartsData,
+          },
+        ]}
+      />
+    );
+  }, [userDet]);
+
   return (
-    <Stack mt={'sm'}>
-      <Divider my={'sm'} />
-      <Statement label="Balance" value={`$ ${query.data?.balance || 0}`} />
-      <Statement
-        label="Total Investment"
-        value={`$ ${query.data?.ttlInvestment || 0}`}
-      />
-      <Statement
-        label="Total Returns"
-        value={`$ ${query.data?.ttlReturns || 0}`}
-      />
-      <Button color="green">Add Money</Button>
-      <Divider my={'sm'} />
-      <Paper>
-        <Flex justify={'space-between'}>
-          <Text weight={600}>Current Statistics</Text>
-          <TextInput
-            placeholder="search"
-            size="xs"
-            icon={<IonIcon icon={searchOutline} />}
-          />
-        </Flex>
-        <Table mt={'sm'}>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Held</th>
-              <th>Value</th>
-            </tr>
-          </thead>
-          <tbody>
+    <div>
+      <IonModal trigger="open-modal" isOpen={modalOpenned}>
+        <IonHeader>
+          <IonToolbar>
+            <IonButtons slot="start">
+              <IonButton
+                onClick={() => {
+                  setOpen(false);
+                }}
+              >
+                Cancel
+              </IonButton>
+            </IonButtons>
+            <IonTitle> Shares</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent>
+          {!!userDet && <SellForm userData={userDet} CharHOC={chart} />}
+        </IonContent>
+      </IonModal>
+      <Stack mt={'sm'}>
+        <Divider my={'sm'} />
+        <Statement label="Balance" value={`$ ${query.data?.balance || 0}`} />
+        <Statement
+          label="Total Investment"
+          value={`$ ${query.data?.ttlInvestment || 0}`}
+        />
+        <Statement
+          label="Total Returns"
+          value={`$ ${query.data?.ttlReturns || 0}`}
+        />
+        <Button color="green">Add Money</Button>
+        <Divider my={'sm'} />
+        <Paper>
+          <Flex justify={'space-between'}>
+            <Text weight={600}>Current Statistics</Text>
+            <TextInput
+              placeholder="search"
+              size="xs"
+              icon={<IonIcon icon={searchOutline} />}
+            />
+          </Flex>
+          <div style={{ padding: '10px 15px' }}>
+            <Grid
+              w={'100%'}
+              style={{ fontSize: '0.8rem', fontWeight: 550, color: '#495057' }}
+            >
+              <Grid.Col span={4}>Name</Grid.Col>
+              <Grid.Col span={3}>Held</Grid.Col>
+              <Grid.Col span={5}>Value</Grid.Col>
+            </Grid>
+          </div>
+          <IonList style={{ padding: 0, margin: 0 }}>
             {query.data?.holdings.map((item: any) => (
-              <tr>
-                <td>{item.sellerUser.username}</td>
-                <td>{item.amount}</td>
-                <td>{item.value}</td>
-              </tr>
+              <IonItemSliding style={{ padding: 0, margin: 0 }}>
+                <IonItem>
+                  <Grid w={'100%'} style={{ fontSize: '0.8rem' }}>
+                    <Grid.Col span={4}>{item.sellerUser.username}</Grid.Col>
+                    <Grid.Col span={3}>{item.amount}</Grid.Col>
+                    <Grid.Col span={5}>{item.value}</Grid.Col>
+                  </Grid>
+                </IonItem>
+
+                <IonItemOptions style={{ padding: 0, margin: 0 }}>
+                  <IonItemOption
+                    style={{ backgroundColor: '#228be6', fontWeight: 600 }}
+                  >
+                    Visit
+                  </IonItemOption>
+                  <IonItemOption
+                    color="danger"
+                    style={{ backgroundColor: '#fa5252', fontWeight: 600 }}
+                    onClick={() => {
+                      fetchUserProfile(item.sellerUser.id);
+                    }}
+                  >
+                    Sell
+                  </IonItemOption>
+                </IonItemOptions>
+              </IonItemSliding>
             ))}
-          </tbody>
-        </Table>
-      </Paper>
-    </Stack>
+          </IonList>
+        </Paper>
+      </Stack>
+    </div>
   );
 }

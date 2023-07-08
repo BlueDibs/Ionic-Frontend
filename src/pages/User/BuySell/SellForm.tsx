@@ -22,6 +22,8 @@ export function SellForm({
     mutationFn: (vals: any) => sellSharesAPI(userData.id, vals),
   });
 
+  console.log(userData?.graphData);
+
   return (
     <form onSubmit={sellForm.onSubmit((vals) => setConfirm(true))}>
       <SellConfirmation
@@ -35,7 +37,7 @@ export function SellForm({
         onWillDismiss={() => setConfirm(false)}
         isOpen={confirm}
       />
-      <div style={{ height: 200 }}>{CharHOC}</div>
+      {!!userData?.graphData && <div style={{ height: 200 }}>{CharHOC}</div>}
       <Flex direction={'column'} gap={'md'} p={'lg'}>
         <TextInput
           variant="filled"
