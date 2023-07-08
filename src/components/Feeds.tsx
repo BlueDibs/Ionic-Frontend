@@ -1,22 +1,22 @@
-import { IonIcon } from '@ionic/react';
-import { Paper, Flex, Avatar, ActionIcon, Text, Image } from '@mantine/core';
-import { motion, useAnimation } from 'framer-motion';
+import { IonIcon } from "@ionic/react";
+import { Paper, Flex, Avatar, ActionIcon, Text, Image } from "@mantine/core";
+import { motion, useAnimation } from "framer-motion";
 import {
   heart,
   heartOutline,
   chatboxOutline,
   paperPlaneOutline,
-} from 'ionicons/icons';
-import { imgUrl } from '../utils/media';
-import { useHistory } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
-import { likePost, unLikePost } from '../pages/Feed/feed.api';
-import { unLikePostUser, likePostUser } from '../store/slice/userSlice';
-import { NotifyUser } from '../utils/notification';
-import { useVirtual } from 'react-virtual';
-import React from 'react';
+} from "ionicons/icons";
+import { imgUrl } from "../utils/media";
+import { useHistory } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { likePost, unLikePost } from "../pages/Feed/feed.api";
+import { unLikePostUser, likePostUser } from "../store/slice/userSlice";
+import { NotifyUser } from "../utils/notification";
+import { useVirtual } from "react-virtual";
+import React from "react";
 
 function Feeds({ feeds, index }: { feeds: any[]; index?: number | null }) {
   const history = useHistory();
@@ -46,11 +46,11 @@ function Feeds({ feeds, index }: { feeds: any[]; index?: number | null }) {
     ) {
       const liked = user.PostLikedIDs.includes(postId);
       const likeCounter = document.getElementById(`post-like-${postId}`);
-      if (!likeCounter) return console.error('no counter found');
-      let likes = parseInt(likeCounter?.innerText.split(' ')[0] || '0');
+      if (!likeCounter) return console.error("no counter found");
+      let likes = parseInt(likeCounter?.innerText.split(" ")[0] || "0");
       if (liked) {
         dispatch(unLikePostUser(postId));
-        likeCounter.textContent = --likes + ' likes';
+        likeCounter.textContent = --likes + " likes";
         unlikePostMut.mutate(lastClick.id);
       } else {
         NotifyUser(User.id, {
@@ -58,7 +58,7 @@ function Feeds({ feeds, index }: { feeds: any[]; index?: number | null }) {
           relativeHref: `/app/user/${user.id}`,
         });
         dispatch(likePostUser(postId));
-        likeCounter.textContent = ++likes + ' likes';
+        likeCounter.textContent = ++likes + " likes";
         likePostMut.mutate(lastClick.id);
       }
       controls.start({
@@ -83,23 +83,23 @@ function Feeds({ feeds, index }: { feeds: any[]; index?: number | null }) {
   });
 
   useLayoutEffect(() => {
-    if (typeof index == 'number' && feeds.length) {
+    if (typeof index == "number" && feeds.length) {
       rowVirtualizer.scrollToIndex(index, {
-        align: 'start',
+        align: "start",
       });
     }
   }, [feeds, index]);
 
   return (
     <Flex
-      direction={'column'}
-      style={{ overflow: 'auto', height: '100%' }}
+      direction={"column"}
+      style={{ overflow: "auto", height: "100%" }}
       ref={parentRef}
     >
       <div
         style={{
-          width: '100%',
-          position: 'relative',
+          width: "100%",
+          position: "relative",
           height: rowVirtualizer.totalSize,
         }}
       >
@@ -112,18 +112,20 @@ function Feeds({ feeds, index }: { feeds: any[]; index?: number | null }) {
               withBorder
               key={virtualItem.index}
               style={{
-                position: 'absolute',
+                position: "absolute",
                 top: 0,
                 left: 0,
-                width: '100%',
+                width: "100%",
                 height: virtualItem.size,
                 transform: `translateY(${virtualItem.start}px)`,
               }}
             >
-              <Flex style={{ padding: '7px 10px' }} gap={10} align={'center'}>
+              <Flex style={{ padding: "7px 10px" }} gap={10} align={"center"}>
                 <Avatar
                   src={imgUrl(feeds[virtualItem.index].User.avatarPath)}
+                  radius={999}
                 />
+                {feeds[virtualItem.index].User.avatarPath}
                 <Text weight={500}>
                   {feeds[virtualItem.index].User.username}
                 </Text>
@@ -136,8 +138,8 @@ function Feeds({ feeds, index }: { feeds: any[]; index?: number | null }) {
                   )
                 }
                 style={{
-                  position: 'relative',
-                  transformOrigin: 'center',
+                  position: "relative",
+                  transformOrigin: "center",
                 }}
               >
                 {lastClick?.id == feeds[virtualItem.index].id && (
@@ -145,21 +147,21 @@ function Feeds({ feeds, index }: { feeds: any[]; index?: number | null }) {
                     initial={{ opacity: 0, y: 10 }}
                     animate={controls}
                     style={{
-                      zIndex: '9999',
-                      position: 'absolute',
-                      top: '50%',
-                      left: '50%',
-                      margin: '-50px -50px',
+                      zIndex: "9999",
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      margin: "-50px -50px",
                     }}
                   >
                     <IonIcon
                       icon={heart}
                       style={{
-                        zIndex: '99999',
-                        fontSize: '100px',
-                        position: 'absolute',
+                        zIndex: "99999",
+                        fontSize: "100px",
+                        position: "absolute",
 
-                        color: 'white',
+                        color: "white",
                       }}
                     />
                   </motion.div>
@@ -167,36 +169,36 @@ function Feeds({ feeds, index }: { feeds: any[]; index?: number | null }) {
                 <Image
                   mx="auto"
                   height={300}
-                  style={{ backgroundColor: 'black' }}
+                  style={{ backgroundColor: "black" }}
                   fit="scale-down"
                   src={imgUrl(feeds[virtualItem.index].path)}
                   withPlaceholder
                 ></Image>
               </div>
-              <Flex style={{ padding: '4px 15px' }} gap={'sm'} align={'center'}>
+              <Flex style={{ padding: "4px 15px" }} gap={"sm"} align={"center"}>
                 <ActionIcon
                   style={{
-                    color: isLikedByCurrentUser ? '#E03131' : 'black',
+                    color: isLikedByCurrentUser ? "#E03131" : "black",
                   }}
                 >
                   <IonIcon
                     size="large"
                     icon={isLikedByCurrentUser ? heart : heartOutline}
                   />
-                </ActionIcon>{' '}
+                </ActionIcon>{" "}
                 <ActionIcon
                   onClick={() =>
                     history.push(`/app/comments/${feeds[virtualItem.index].id}`)
                   }
                 >
                   <IonIcon size="large" icon={chatboxOutline} />
-                </ActionIcon>{' '}
+                </ActionIcon>{" "}
                 <ActionIcon>
                   <IonIcon size="large" icon={paperPlaneOutline} />
-                </ActionIcon>{' '}
+                </ActionIcon>{" "}
                 <Text
-                  ml={'auto'}
-                  size={'sm'}
+                  ml={"auto"}
+                  size={"sm"}
                   color="#5C5F66"
                   weight={500}
                   id={`post-like-${feeds[virtualItem.index].id}`}
