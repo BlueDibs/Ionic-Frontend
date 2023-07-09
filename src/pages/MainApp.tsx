@@ -6,49 +6,49 @@ import {
   IonTabBar,
   IonTabButton,
   IonTabs,
-} from '@ionic/react';
-import { Redirect, Route, useHistory } from 'react-router';
+} from "@ionic/react";
+import { Redirect, Route, useHistory } from "react-router";
 import {
   walletOutline,
   homeOutline,
   searchOutline,
   addOutline,
   personOutline,
-} from 'ionicons/icons';
-import { Profile } from './Profile/Profile';
-import { Feed } from './Feed/Feed';
-import { useEffect } from 'react';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { addPost, getUserDetails } from './main.api';
-import { auth, database } from '../utils/firebase';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { setUser } from '../store/slice/userSlice';
-import { useFirebaseAuth } from '../hooks/auth.hook';
-import { Search } from './Search/Search';
-import { PublicProfile } from './User/PublicProfile';
-import { queryClient } from '../utils/queryClient';
-import { Dorm } from './Chats/Dorm';
-import { SingleChat } from './Chats/SingleChat';
-import { CommentsPage } from './Comments/Comments';
-import Notifications from './Notification/Notifications';
-import { ProfileFeeds } from './ProfileFeeds/ProfileFeeds';
-import { onValue, ref } from 'firebase/database';
-import { setNotifications } from '../store/slice/notificationSlice';
-import { setNotificationUnread } from '../store/slice/notificationUnreadSlice';
-import { Wallet } from './Wallet/Wallet';
-import { BuyConfirmation } from './Wallet/BuyConfirmaation';
-import { SellConfirmation } from './Wallet/Sell Confirmaation';
-import { GetStarted } from './Auth/Signup/diluteShares';
+} from "ionicons/icons";
+import { Profile } from "./Profile/Profile";
+import { Feed } from "./Feed/Feed";
+import { useEffect } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { addPost, getUserDetails } from "./main.api";
+import { auth, database } from "../utils/firebase";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { setUser } from "../store/slice/userSlice";
+import { useFirebaseAuth } from "../hooks/auth.hook";
+import { Search } from "./Search/Search";
+import { PublicProfile } from "./User/PublicProfile";
+import { queryClient } from "../utils/queryClient";
+import { Dorm } from "./Chats/Dorm";
+import { SingleChat } from "./Chats/SingleChat";
+import { CommentsPage } from "./Comments/Comments";
+import Notifications from "./Notification/Notifications";
+import { ProfileFeeds } from "./ProfileFeeds/ProfileFeeds";
+import { onValue, ref } from "firebase/database";
+import { setNotifications } from "../store/slice/notificationSlice";
+import { setNotificationUnread } from "../store/slice/notificationUnreadSlice";
+import { Wallet } from "./Wallet/Wallet";
+import { BuyConfirmation } from "./Wallet/BuyConfirmaation";
+import { SellConfirmation } from "./Wallet/Sell Confirmaation";
+import { GetStarted } from "./Auth/Signup/diluteShares";
 
 export const MainLayout = () => {
   const dispatch = useAppDispatch();
   const history = useHistory();
   const [authLoading, user] = useFirebaseAuth();
   const userDet = useAppSelector((state) => state.user);
-  const notificationRefURI = 'notifications/' + userDet.id;
+  const notificationRefURI = "notifications/" + userDet.id;
 
   const getUserQuery = useQuery({
-    queryKey: ['user'],
+    queryKey: ["user"],
     queryFn: getUserDetails,
     refetchOnWindowFocus: false,
     enabled: false,
@@ -61,8 +61,8 @@ export const MainLayout = () => {
   const postUploadMutation = useMutation({
     mutationFn: (file: File) => addPost(userDet.id, file),
     onSuccess({ data }) {
-      queryClient.setQueryData(['posts'], () => [
-        ...((queryClient.getQueryData(['posts']) as []) || []),
+      queryClient.setQueryData(["posts"], () => [
+        ...((queryClient.getQueryData(["posts"]) as []) || []),
         data,
       ]);
     },
@@ -74,7 +74,7 @@ export const MainLayout = () => {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((userR) => {
-      if (!userR) history.push('/auth/login');
+      if (!userR) history.push("/auth/login");
     });
 
     const unsubscribeNotifs = onValue(
@@ -95,7 +95,7 @@ export const MainLayout = () => {
   if (userDet.shares < 1) return <GetStarted />;
 
   if (authLoading) return <>Loading...</>;
-  if (!user) return <Redirect to={'/auth/login'} exact />;
+  if (!user) return <Redirect to={"/auth/login"} exact />;
 
   return (
     <IonPage>
@@ -132,6 +132,7 @@ export const MainLayout = () => {
 
             <Route path="/app/user/:userId" exact component={PublicProfile} />
           </IonRouterOutlet>
+
           <IonTabBar slot="bottom">
             <IonTabButton tab="home" href="/app/feed">
               <IonIcon icon={homeOutline} />
@@ -146,8 +147,8 @@ export const MainLayout = () => {
               href="#"
               onClick={(e) => {
                 e.preventDefault();
-                const input = document.createElement('input');
-                input.type = 'file';
+                const input = document.createElement("input");
+                input.type = "file";
                 input.onchange = (_) => {
                   const [file] = Array.from(input.files);
                   postUploadMutation.mutate(file);

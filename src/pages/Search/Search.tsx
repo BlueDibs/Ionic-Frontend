@@ -8,7 +8,18 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { searchUsername } from "./search.api";
 import { useEffect, useState } from "react";
-import { Avatar, Loader, Popover, ScrollArea, Text } from "@mantine/core";
+import {
+  Avatar,
+  Box,
+  Flex,
+  Loader,
+  Paper,
+  Popover,
+  ScrollArea,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
 import { config } from "../../config";
 import { queryClient } from "../../utils/queryClient";
 import { useHistory } from "react-router";
@@ -45,7 +56,7 @@ export function Search() {
   }, [history.location]);
 
   return (
-    <IonPage style={{ display: "block" }}>
+    <IonPage style={{ display: "block", innerHeight: "calc(100% - 50px)" }}>
       <Popover
         withinPortal
         withArrow
@@ -103,6 +114,34 @@ export function Search() {
           </ScrollArea.Autosize>
         </Popover.Dropdown>
       </Popover>
+
+      <Box pt="xl" style={{ height: "calc(100% - 60px) " }}>
+        <Box px={"md"} mb={"xl"}>
+          <Title order={3} mb={"sm"}>
+            You May Like
+          </Title>
+        </Box>
+
+        <ScrollArea style={{ height: "calc(100% - 55px)" }}>
+          <Stack spacing={"xs"} px={"md"}>
+            <Flex
+              align={"center"}
+              sx={(theme) => ({
+                background: theme.colors.gray[1],
+                borderRadius: theme.radius.md,
+                padding: 4,
+              })}
+            >
+              <Avatar
+                style={{ marginRight: 10, borderRadius: "50%" }}
+                src={null}
+              />
+
+              <Title order={5}>User Name</Title>
+            </Flex>
+          </Stack>
+        </ScrollArea>
+      </Box>
     </IonPage>
   );
 }
