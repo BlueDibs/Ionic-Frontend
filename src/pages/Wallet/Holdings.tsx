@@ -84,7 +84,13 @@ export function Holdings({ query }: { query: any }) {
           </IonToolbar>
         </IonHeader>
         <IonContent>
-          {!!userDet && <SellForm userData={userDet} CharHOC={chart} />}
+          {!!userDet && (
+            <SellForm
+              userData={userDet}
+              CharHOC={chart}
+              closeModal={() => setOpen(false)}
+            />
+          )}
         </IonContent>
       </IonModal>
 
