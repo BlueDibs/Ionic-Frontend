@@ -1,6 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
-import type { RootState } from '../store';
+import { createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
+import type { RootState } from "../store";
 
 interface UserState {
   id: string;
@@ -16,17 +16,18 @@ interface UserState {
   equity: number;
   balance: number;
   price: number;
+  userEquity: number;
 }
 
 export const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState: {} as UserState,
   reducers: {
     setUser(user, action: PayloadAction<any>) {
       user = { ...action.payload };
       return user;
     },
-    updateUser(user, action: PayloadAction<any>) {
+    updateUser(user, action: PayloadAction<Partial<UserState>>) {
       user = { ...user, ...action.payload };
       return user;
     },

@@ -8,6 +8,7 @@ import {
 import { Title, Text, Flex, Button } from "@mantine/core";
 import { useAppSelector } from "../../store/hooks";
 import { HeaderComponent } from "../../components/Header";
+import { roundOff } from "../../utils";
 
 const LabelVale = (data: any) => (
   <Flex justify={"space-between"}>
@@ -56,7 +57,7 @@ export function SellConfirmation({
             You Will Receive
           </Text>
           <Title align="center" order={1} size={70}>
-            {final_amount.toFixed(6)}
+            {roundOff(final_amount)}
           </Title>
           <Text align="center" size={"lg"}>
             Rupees
