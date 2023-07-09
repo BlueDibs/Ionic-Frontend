@@ -39,7 +39,6 @@ function Feeds({ feeds, index }: { feeds: any[]; index?: number | null }) {
 
   function toggleLikePost(postId: string, User: any) {
     const liked = user.PostLikedIDs.includes(postId);
-    console.log(user.PostLikedIDs);
     const likeCounter = document.getElementById(`post-like-${postId}`);
     if (!likeCounter) return console.error("no counter found");
     let likes = parseInt(likeCounter?.innerText.split(" ")[0] || "0");

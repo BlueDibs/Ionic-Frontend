@@ -7,17 +7,17 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-} from '@ionic/react';
-import { Title, Text, Flex, Button } from '@mantine/core';
-import { useAppSelector } from '../../store/hooks';
-import { HeaderComponent } from '../../components/Header';
+} from "@ionic/react";
+import { Title, Text, Flex, Button } from "@mantine/core";
+import { useAppSelector } from "../../store/hooks";
+import { HeaderComponent } from "../../components/Header";
 
 const LabelVale = (data: any) => (
-  <Flex justify={'space-between'}>
-    <Text size={'xl'} weight={500} color="#868E96">
+  <Flex justify={"space-between"}>
+    <Text size={"xl"} weight={500} color="#868E96">
       {data.label}
     </Text>
-    <Text size={'md'} weight={600} lh={2} color="#868E96">
+    <Text size={"md"} weight={600} lh={2} color="#868E96">
       {parseInt(data.value).toFixed(2)}
     </Text>
   </Flex>
@@ -28,11 +28,13 @@ export function BuyConfirmation({
   data,
   onWillDismiss,
   isOpen,
+  isLoading,
 }: {
   txn: () => void;
   data: any;
   onWillDismiss: any;
   isOpen: boolean;
+  isLoading: boolean;
 }) {
   const user = useAppSelector((state) => state.user);
 
@@ -44,25 +46,25 @@ export function BuyConfirmation({
     >
       <IonHeader>
         <IonToolbar>
-          <HeaderComponent title={'Confirm Buy'} back={onWillDismiss} />
+          <HeaderComponent title={"Confirm Buy"} back={onWillDismiss} />
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <Title color="#495057" order={1} align="center" mt={'50%'}>
+        <Title color="#495057" order={1} align="center" mt={"50%"}>
           Confirm Order
         </Title>
-        <div style={{ alignItems: 'center', marginTop: '50px' }}>
-          <Text align="center" size={'lg'}>
+        <div style={{ alignItems: "center", marginTop: "50px" }}>
+          <Text align="center" size={"lg"}>
             You Will Receive
           </Text>
           <Title align="center" order={1} size={70}>
             {data.share_amont}
           </Title>
-          <Text align="center" size={'lg'}>
+          <Text align="center" size={"lg"}>
             Shares
           </Text>
         </div>
-        <div style={{ margin: '15%' }}>
+        <div style={{ margin: "15%" }}>
           <LabelVale label="Share Price" value={data.share_price} />
           <LabelVale label="Total Spend" value={data.total_amount} />
           <LabelVale label="Fee (%0.2)" value={data.txn_fee} />
@@ -72,12 +74,13 @@ export function BuyConfirmation({
         <Button
           size="md"
           onClick={() => txn()}
+          loading={isLoading}
           variant="filled"
           color="green"
           style={{
             bottom: 0,
-            position: 'fixed',
-            width: '100%',
+            position: "fixed",
+            width: "100%",
             borderRadius: 0,
           }}
         >

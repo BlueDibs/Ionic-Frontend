@@ -1,33 +1,40 @@
-import { Flex, TextInput, Button, Text } from '@mantine/core';
-import { useMutation } from '@tanstack/react-query';
-import { buySharesAPI } from './buySell.api';
-import { useForm } from '@mantine/form';
-import { Chart } from '../../../components/Chart';
-import React, { useRef, useState } from 'react';
-import { useHistory } from 'react-router';
-import { BuyConfirmation } from '../../Wallet/BuyConfirmaation';
+import { Flex, TextInput, Button, Text, NumberInput } from "@mantine/core";
+import { useMutation } from "@tanstack/react-query";
+import { buySharesAPI } from "./buySell.api";
+import { useForm } from "@mantine/form";
+import { Chart } from "../../../components/Chart";
+import React, { useRef, useState } from "react";
+import { useHistory } from "react-router";
+import { BuyConfirmation } from "../../Wallet/BuyConfirmaation";
 
 export function BuyFrom({
   userData,
   CharHOC,
+  closeModal,
 }: {
   userData: any;
   CharHOC: any;
+  closeModal: () => void;
 }) {
   const [confirm, setConfirm] = useState(false);
   const buySharesMut = useMutation({
     mutationFn: (vals: any) => buySharesAPI(userData.id, vals),
-  });
 
-  const buyForm = useForm({
-    validate: {
-      amount: (val) => {
-        if (!val) return 'Amount must not be empty';
-      },
+    onSuccess() {
+      closeModal();
     },
   });
 
-  console.log(buyForm.errors);
+  const buyForm = useForm<{
+    amount: number;
+    total?: number;
+  }>({
+    validate: {
+      amount: (val) => {
+        if (!val) return "Amount must not be empty";
+      },
+    },
+  });
 
   return (
     <form onSubmit={buyForm.onSubmit(() => setConfirm(true))}>
@@ -38,69 +45,69 @@ export function BuyFrom({
         data={{
           share_amont: buyForm.values.amount,
           share_price: userData.price,
-          total_amount:
-            userData.price * parseInt(buyForm.values.amount as string),
-          txn_fee:
-            (userData.price * parseInt(buyForm.values.amount as string) * 0.2) /
-            100,
+          total_amount: userData.price * buyForm.values.amount,
+          txn_fee: (userData.price * buyForm.values.amount * 0.2) / 100,
         }}
+        isLoading={buySharesMut.isLoading}
       />
+
       <div style={{ height: 200 }}>{CharHOC}</div>
-      <Flex direction={'column'} gap={'md'} p={'lg'}>
+      <Flex direction={"column"} gap={"md"} p={"lg"}>
         <TextInput
           variant="filled"
           label="Market Rate"
-          style={{ pointerEvents: 'none' }}
+          style={{ pointerEvents: "none" }}
           value={`₹ ${userData.price}`}
         />
 
         <TextInput
           variant="filled"
           label="Total Shares Allocated"
-          style={{ pointerEvents: 'none' }}
+          style={{ pointerEvents: "none" }}
           value={`${userData.shares}`}
         />
 
         <TextInput
           variant="filled"
           label="Shares Available"
-          style={{ pointerEvents: 'none' }}
+          style={{ pointerEvents: "none" }}
           value={`${userData.shares - (userData.sold || 0)}`}
         />
 
         <TextInput
-          mt={'lg'}
+          mt={"lg"}
           variant="filled"
           label="Total"
-          style={{ pointerEvents: 'none' }}
-          {...buyForm.getInputProps('total')}
-          value={`₹ ${(buyForm.values.amount || 0) * userData.price}`}
+          style={{ pointerEvents: "none" }}
+          {...buyForm.getInputProps("total")}
         />
 
-        <TextInput
+        <NumberInput
+          hideControls
           type="number"
           variant="filled"
           label="Amount"
-          {...buyForm.getInputProps('amount')}
-          onChange={(e) => {
+          {...buyForm.getInputProps("amount")}
+          max={userData.shares - (userData.sold || 0)}
+          onChange={(e: number) => {
             buyForm.setValues({
-              amount: parseInt(e.target.value),
-              total: parseInt(e.target.value) * userData.price,
+              amount: e,
+              total: parseFloat((e * userData.price).toFixed(6)),
             });
           }}
         />
 
-        <Flex gap={'xs'}>
-          <Text size={'sm'} weight={500}>
-            Platform Fees:{' '}
+        <Flex gap={"xs"}>
+          <Text size={"sm"} weight={500}>
+            Platform Fees:{" "}
           </Text>
 
-          <Text size={'sm'}> 0.2% </Text>
-          <Text size={'sm'} weight={500} ml={'auto'}>
-            Balance:{' '}
+          <Text size={"sm"}> 0.2% </Text>
+          <Text size={"sm"} weight={500} ml={"auto"}>
+            Balance:{" "}
           </Text>
 
-          <Text size={'sm'}> ₹ 10000 </Text>
+          <Text size={"sm"}> ₹ 10000 </Text>
         </Flex>
       </Flex>
 
@@ -111,8 +118,8 @@ export function BuyFrom({
         color="green"
         style={{
           bottom: 0,
-          position: 'fixed',
-          width: '100%',
+          position: "fixed",
+          width: "100%",
           borderRadius: 0,
         }}
       >
