@@ -133,12 +133,28 @@ export function Profile() {
               <Title order={4} weight={500}>
                 {user.username}
               </Title>
-              <Flex gap={"md"}>
-                <Text weight={500} size={"sm"}>
-                  ₹{user.price?.toFixed(2)}
-                </Text>
-                <Text weight={400} size={"sm"}>
-                  EQ {user.equity}%
+              <Flex justify={"space-between"} gap={"md"}>
+                <Flex gap={"md"}>
+                  <Text weight={500} size={"sm"}>
+                    ₹{user.price?.toFixed(2)}
+                  </Text>
+
+                  <Text weight={400} size={"sm"}>
+                    EQ {user?.userEquity?.toFixed(2)}%
+                  </Text>
+                </Flex>
+
+                <Text
+                  size={"xs"}
+                  sx={(theme) => ({
+                    background: theme.colors.violet[3],
+                    padding: "2px 4px",
+                    borderRadius: theme.radius.md,
+                    display: "flex",
+                    alignItems: "center",
+                  })}
+                >
+                  Invite people to buy your shares
                 </Text>
               </Flex>
             </div>
@@ -150,8 +166,8 @@ export function Profile() {
         <ProfileEquityStats
           stats={[
             { label: "Total Shares", value: user.shares },
-            { label: "Market Cap", value: `₹${user.shares * user.price}` },
-            { label: "INR Locked", value: user.equity },
+            { label: "Market Cap", value: user.shares * user.price },
+            { label: "INR Locked", value: user.userEquity?.toFixed(2) },
           ]}
         />
 

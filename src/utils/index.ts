@@ -1,4 +1,6 @@
-export function roundOff(num: number) {
+export function roundOff(val: number | string) {
+  const num = typeof val === "number" ? val : parseFloat(val);
+
   if (num >= 1e7) {
     return (num / 1e7).toFixed(2) + " Cr";
   }
