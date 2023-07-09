@@ -9,5 +9,5 @@ export function roundOff(val: number | string) {
     return (num / 1e3).toFixed(2) + " K";
   }
 
-  return num;
+  return isNaN(num) ? 0 : num;
 }
