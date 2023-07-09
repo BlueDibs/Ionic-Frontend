@@ -7,39 +7,38 @@ import {
   Table,
   TextInput,
   Text,
-} from '@mantine/core';
-import { Statement } from './Statement';
-import { IonIcon } from '@ionic/react';
-import { query } from 'express';
-import { searchOutline } from 'ionicons/icons';
-import { useQuery } from '@tanstack/react-query';
+} from "@mantine/core";
+import { Statement } from "./Statement";
+import { IonIcon } from "@ionic/react";
+import { searchOutline } from "ionicons/icons";
+import { useAppSelector } from "../../store/hooks";
 
 export function Tiiys({ query }: { query: any }) {
+  const user = useAppSelector((state) => state.user);
+
   const tiiysValue = query?.data?.tiiys?.reduce(
     (prev: number, current: any) =>
       prev + current.amount * current.sellerUser.price,
     0
   );
 
-  console.log(tiiysValue);
-
   return (
-    <Stack mt={'sm'}>
-      <Divider my={'sm'} />
+    <Stack mt={"sm"}>
+      <Divider my={"sm"} />
       <Statement label="TIIYS" value={`$ ${tiiysValue}`} />
       <Statement
-        label="Your Equity 10%"
-        value={`$ ${(tiiysValue * 10) / 100}`}
+        label={`Your Equity ${user.userEquity.toFixed(2)}%`}
+        value={Math.round(user.shares * (user.userEquity / 100))}
       />
       <Statement
         label="Platform Equity 2.5%"
-        value={`$ ${(tiiysValue * 2.5) / 100}`}
+        value={Math.round(user.shares * 0.025)}
       />
       <Button color="green">Sell Equity</Button>
 
-      <Divider my={'sm'} />
+      <Divider my={"sm"} />
       <Paper>
-        <Flex justify={'space-between'}>
+        <Flex justify={"space-between"}>
           <Text weight={600}>Investors</Text>
           <TextInput
             placeholder="search"
@@ -47,7 +46,7 @@ export function Tiiys({ query }: { query: any }) {
             icon={<IonIcon icon={searchOutline} />}
           />
         </Flex>
-        <Table mt={'sm'}>
+        <Table mt={"sm"}>
           <thead>
             <tr>
               <th>Name</th>
