@@ -1,5 +1,5 @@
 import { Container, Flex, SimpleGrid, Text } from "@mantine/core";
-import { roundOff } from "../../utils";
+import { humanizeNum } from "../../utils";
 
 const SingleStat = (data: { label: string; value: number | string }) => (
   <Flex
@@ -13,7 +13,7 @@ const SingleStat = (data: { label: string; value: number | string }) => (
       {data.label}
     </Text>
     <Text size={"sm"} weight={700}>
-      {roundOff(data.value)}
+      {humanizeNum(data.value)}
     </Text>
   </Flex>
 );

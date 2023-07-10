@@ -45,8 +45,6 @@ export function Search() {
     placeholderData: [],
   });
 
-  console.log(suggestionsQuery.data);
-
   useEffect(() => {
     if (search?.length) {
       searchQuery.refetch();

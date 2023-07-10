@@ -8,7 +8,7 @@ import {
 import { Title, Text, Flex, Button } from "@mantine/core";
 import { useAppSelector } from "../../store/hooks";
 import { HeaderComponent } from "../../components/Header";
-import { roundOff } from "../../utils";
+import { getFormattedSmallPrice, humanizeNum } from "../../utils";
 
 const LabelVale = (data: any) => (
   <Flex justify={"space-between"}>
@@ -57,7 +57,7 @@ export function SellConfirmation({
             You Will Receive
           </Text>
           <Title align="center" order={1} size={70}>
-            {roundOff(final_amount)}
+            {humanizeNum(final_amount)}
           </Title>
           <Text align="center" size={"lg"}>
             Rupees
@@ -68,10 +68,10 @@ export function SellConfirmation({
           <LabelVale label="Total Amount" value={data.shares_amount} />
           <LabelVale
             label="Fee (%0.2)"
-            value={(data.amount_receive * 0.2) / 100}
+            value={getFormattedSmallPrice((data.amount_receive * 0.2) / 100)}
           />
 
-          <LabelVale label="Balance" value={user.balance} />
+          <LabelVale label="Balance" value={humanizeNum(user.balance)} />
         </div>
         <Button
           loading={isLoading}

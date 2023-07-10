@@ -13,7 +13,7 @@ import { useAppSelector } from "../../store/hooks";
 import { SellForm } from "../User/BuySell/SellForm";
 import { Chart } from "../../components/Chart";
 import { Button, Flex, NumberInput, Text, TextInput } from "@mantine/core";
-import { roundOff } from "../../utils";
+import { humanizeNum } from "../../utils";
 import { SellConfirmation } from "../Wallet/Sell Confirmaation";
 import { useMutation } from "@tanstack/react-query";
 import { selfSellSharesAPI } from "../User/BuySell/buySell.api";
@@ -120,7 +120,7 @@ export function SelfSellModal({ opened, onClose }: Props) {
                 variant="filled"
                 label="Market Rate"
                 style={{ pointerEvents: "none" }}
-                value={`₹ ${roundOff(user.price)}`}
+                value={`₹ ${humanizeNum(user.price)}`}
               />
 
               <TextInput

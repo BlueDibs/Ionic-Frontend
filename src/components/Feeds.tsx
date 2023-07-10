@@ -17,16 +17,7 @@ import { unLikePostUser, likePostUser } from "../store/slice/userSlice";
 import { NotifyUser } from "../utils/notification";
 import { useVirtual } from "react-virtual";
 import React from "react";
-
-function getPrice(price: number, decimalpoints = 2) {
-  const parsedPrice = parseFloat(price.toFixed(decimalpoints));
-
-  if (parsedPrice === 0) {
-    return getPrice(parsedPrice, decimalpoints++);
-  }
-
-  return parsedPrice;
-}
+import { getFormattedSmallPrice } from "../utils";
 
 function Feeds({ feeds, index }: { feeds: any[]; index?: number | null }) {
   const history = useHistory();
@@ -159,7 +150,7 @@ function Feeds({ feeds, index }: { feeds: any[]; index?: number | null }) {
                 </Text>
 
                 <Text weight={400}>
-                  ₹{getPrice(feeds[virtualItem.index].User.price)}
+                  ₹{getFormattedSmallPrice(feeds[virtualItem.index].User.price)}
                 </Text>
               </Flex>
               <div

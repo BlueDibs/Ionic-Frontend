@@ -29,6 +29,7 @@ import { useHistory } from "react-router";
 import { ProfileEquityStats } from "../../components/Profile/ProfileEquityStats";
 import { auth } from "../../utils/firebase";
 import { SelfSellModal } from "./SelfSell";
+import { getFormattedSmallPrice } from "../../utils";
 
 const useStyles = createStyles((theme) => ({
   statusLeft: {},
@@ -167,7 +168,10 @@ export function Profile() {
           stats={[
             { label: "Total Shares", value: user.shares },
             { label: "Market Cap", value: user.shares * user.price },
-            { label: "INR Locked", value: user.userEquity?.toFixed(2) },
+            {
+              label: "INR Locked",
+              value: getFormattedSmallPrice(user.price ?? 0),
+            },
           ]}
         />
 

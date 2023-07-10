@@ -35,7 +35,7 @@ import { Chart } from "../../components/Chart";
 import { useQuery } from "@tanstack/react-query";
 import { fetchUserDetails } from "../User/api.user";
 import { useHistory } from "react-router";
-import { roundOff } from "../../utils";
+import { getFormattedSmallPrice, humanizeNum } from "../../utils";
 
 export function Holdings({ query }: { query: any }) {
   const [modalOpenned, setOpen] = useState<boolean>(false);
@@ -99,15 +99,15 @@ export function Holdings({ query }: { query: any }) {
         <Divider my={"sm"} />
         <Statement
           label="Balance"
-          value={`$ ${roundOff(query.data?.balance || 0)}`}
+          value={`$ ${humanizeNum(query.data?.balance || 0)}`}
         />
         <Statement
           label="Total Investment"
-          value={`$ ${roundOff(query.data?.ttlInvestment || 0)}`}
+          value={`$ ${humanizeNum(query.data?.ttlInvestment || 0)}`}
         />
         <Statement
           label="Total Returns"
-          value={`$ ${roundOff(query.data?.ttlReturns || 0)}`}
+          value={`$ ${humanizeNum(query.data?.ttlReturns || 0)}`}
         />
         <Button color="green">Add Money</Button>
         <Divider my={"sm"} />
@@ -137,8 +137,12 @@ export function Holdings({ query }: { query: any }) {
                 <IonItem>
                   <Grid w={"100%"} style={{ fontSize: "0.8rem" }}>
                     <Grid.Col span={4}>{item.sellerUser.username}</Grid.Col>
-                    <Grid.Col span={3}>{item.amount}</Grid.Col>
-                    <Grid.Col span={5}>{item.value.toFixed(5)}</Grid.Col>
+                    <Grid.Col span={3}>
+                      {humanizeNum(getFormattedSmallPrice(item.amount))}
+                    </Grid.Col>
+                    <Grid.Col span={5}>
+                      {humanizeNum(getFormattedSmallPrice(item.value))}
+                    </Grid.Col>
                   </Grid>
                 </IonItem>
 
