@@ -6,7 +6,7 @@ import {
   IonSearchbar,
 } from "@ionic/react";
 import { useQuery } from "@tanstack/react-query";
-import { searchUsername } from "./search.api";
+import { getSuggestedUsers, searchUsername } from "./search.api";
 import { useEffect, useState } from "react";
 import {
   Avatar,
@@ -38,6 +38,14 @@ export function Search() {
     enabled: false,
     placeholderData: [],
   });
+
+  const suggestionsQuery = useQuery({
+    queryKey: ["suggestions"],
+    queryFn: getSuggestedUsers,
+    placeholderData: [],
+  });
+
+  console.log(suggestionsQuery.data);
 
   useEffect(() => {
     if (search?.length) {
@@ -124,21 +132,25 @@ export function Search() {
 
         <ScrollArea style={{ height: "calc(100% - 55px)" }}>
           <Stack spacing={"xs"} px={"md"}>
-            <Flex
-              align={"center"}
-              sx={(theme) => ({
-                background: theme.colors.gray[1],
-                borderRadius: theme.radius.md,
-                padding: 4,
-              })}
-            >
-              <Avatar
-                style={{ marginRight: 10, borderRadius: "50%" }}
-                src={null}
-              />
+            {suggestionsQuery.data.map((user) => (
+              <Flex
+                key={user.id}
+                align={"center"}
+                sx={(theme) => ({
+                  background: theme.colors.gray[1],
+                  borderRadius: theme.radius.md,
+                  padding: 4,
+                })}
+                onClick={() => history.push(`/app/user/${user.id}`)}
+              >
+                <Avatar
+                  style={{ marginRight: 10, borderRadius: "50%" }}
+                  src={null}
+                />
 
-              <Title order={5}>User Name</Title>
-            </Flex>
+                <Title order={5}>{user.username}</Title>
+              </Flex>
+            ))}
           </Stack>
         </ScrollArea>
       </Box>
