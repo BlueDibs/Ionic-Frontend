@@ -18,6 +18,16 @@ import { NotifyUser } from "../utils/notification";
 import { useVirtual } from "react-virtual";
 import React from "react";
 
+function getPrice(price: number, decimalpoints = 2) {
+  const parsedPrice = parseFloat(price.toFixed(decimalpoints));
+
+  if (parsedPrice === 0) {
+    return getPrice(parsedPrice, decimalpoints++);
+  }
+
+  return parsedPrice;
+}
+
 function Feeds({ feeds, index }: { feeds: any[]; index?: number | null }) {
   const history = useHistory();
   const user = useAppSelector((state) => state.user);
@@ -131,7 +141,14 @@ function Feeds({ feeds, index }: { feeds: any[]; index?: number | null }) {
                 transform: `translateY(${virtualItem.start}px)`,
               }}
             >
-              <Flex style={{ padding: "7px 10px" }} gap={10} align={"center"}>
+              <Flex
+                sx={{ padding: "7px 10px", width: "min-content" }}
+                gap={10}
+                align={"center"}
+                onClick={() =>
+                  history.push(`/app/user/${feeds[virtualItem.index].User.id}`)
+                }
+              >
                 <Avatar
                   src={imgUrl(feeds[virtualItem.index].User.avatarPath)}
                   radius={999}
@@ -139,6 +156,10 @@ function Feeds({ feeds, index }: { feeds: any[]; index?: number | null }) {
 
                 <Text weight={500}>
                   {feeds[virtualItem.index].User.username}
+                </Text>
+
+                <Text weight={400}>
+                  ₹{getPrice(feeds[virtualItem.index].User.price)}
                 </Text>
               </Flex>
               <div

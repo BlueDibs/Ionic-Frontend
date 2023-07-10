@@ -35,6 +35,7 @@ import { Chart } from "../../components/Chart";
 import { useQuery } from "@tanstack/react-query";
 import { fetchUserDetails } from "../User/api.user";
 import { useHistory } from "react-router";
+import { roundOff } from "../../utils";
 
 export function Holdings({ query }: { query: any }) {
   const [modalOpenned, setOpen] = useState<boolean>(false);
@@ -96,14 +97,17 @@ export function Holdings({ query }: { query: any }) {
 
       <Stack mt={"sm"}>
         <Divider my={"sm"} />
-        <Statement label="Balance" value={`$ ${query.data?.balance || 0}`} />
+        <Statement
+          label="Balance"
+          value={`$ ${roundOff(query.data?.balance || 0)}`}
+        />
         <Statement
           label="Total Investment"
-          value={`$ ${query.data?.ttlInvestment || 0}`}
+          value={`$ ${roundOff(query.data?.ttlInvestment || 0)}`}
         />
         <Statement
           label="Total Returns"
-          value={`$ ${query.data?.ttlReturns || 0}`}
+          value={`$ ${roundOff(query.data?.ttlReturns || 0)}`}
         />
         <Button color="green">Add Money</Button>
         <Divider my={"sm"} />

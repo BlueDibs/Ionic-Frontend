@@ -12,6 +12,7 @@ import { Statement } from "./Statement";
 import { IonIcon } from "@ionic/react";
 import { searchOutline } from "ionicons/icons";
 import { useAppSelector } from "../../store/hooks";
+import { roundOff } from "../../utils";
 
 export function Tiiys({ query }: { query: any }) {
   const user = useAppSelector((state) => state.user);
@@ -25,7 +26,7 @@ export function Tiiys({ query }: { query: any }) {
   return (
     <Stack mt={"sm"}>
       <Divider my={"sm"} />
-      <Statement label="TIIYS" value={`$ ${tiiysValue}`} />
+      <Statement label="TIIYS" value={`$ ${roundOff(tiiysValue)}`} />
       <Statement
         label={`Your Equity ${user.userEquity.toFixed(2)}%`}
         value={Math.round(user.shares * (user.userEquity / 100))}
