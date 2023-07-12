@@ -16,6 +16,7 @@ interface UserState {
   equity: number;
   balance: number;
   price: number;
+  INRLocked: number;
   userEquity: number;
 }
 

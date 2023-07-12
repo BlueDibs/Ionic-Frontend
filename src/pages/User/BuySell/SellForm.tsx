@@ -4,6 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { sellSharesAPI } from "./buySell.api";
 import { useState } from "react";
 import { SellConfirmation } from "../../Wallet/Sell Confirmaation";
+import { getFormattedSmallPrice } from "../../../utils";
 
 export function SellForm({
   userData,
@@ -56,7 +57,7 @@ export function SellForm({
           variant="filled"
           label="Shares Holding"
           style={{ pointerEvents: "none" }}
-          value={`${userData.shares}`}
+          value={`${getFormattedSmallPrice(userData.shares)}`}
         />
 
         <TextInput

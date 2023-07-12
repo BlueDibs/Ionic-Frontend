@@ -170,7 +170,7 @@ export function Profile() {
             { label: "Market Cap", value: user.shares * user.price },
             {
               label: "INR Locked",
-              value: getFormattedSmallPrice(user.price ?? 0),
+              value: getFormattedSmallPrice(user.INRLocked ?? 0),
             },
           ]}
         />

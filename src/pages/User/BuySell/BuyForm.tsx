@@ -6,6 +6,7 @@ import { Chart } from "../../../components/Chart";
 import React, { useRef, useState } from "react";
 import { useHistory } from "react-router";
 import { BuyConfirmation } from "../../Wallet/BuyConfirmaation";
+import { getFormattedSmallPrice } from "../../../utils";
 
 export function BuyFrom({
   userData,
@@ -64,14 +65,16 @@ export function BuyFrom({
           variant="filled"
           label="Total Shares Allocated"
           style={{ pointerEvents: "none" }}
-          value={`${userData.shares}`}
+          value={`${getFormattedSmallPrice(userData.shares)}`}
         />
 
         <TextInput
           variant="filled"
           label="Shares Available"
           style={{ pointerEvents: "none" }}
-          value={`${userData.shares - (userData.sold || 0)}`}
+          value={`${getFormattedSmallPrice(
+            userData.shares - (userData.sold || 0)
+          )}`}
         />
 
         <TextInput
