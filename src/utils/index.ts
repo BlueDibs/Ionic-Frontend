@@ -16,14 +16,14 @@ export function humanizeNum(val: number | string) {
   return isNaN(num) ? 0 : num;
 }
 
-export function getFormattedSmallPrice(price: number, decimalpoints = 2) {
+export function getFormattedSmallPrice(price: number, decimalpoints = 1) {
   const parsedPrice = parseFloat(price.toFixed(decimalpoints));
 
   if (decimalpoints >= 5) return parsedPrice;
 
   if (parsedPrice === 0) {
-    return getFormattedSmallPrice(parsedPrice, decimalpoints + 1);
+    return getFormattedSmallPrice(price, decimalpoints + 1);
   }
 
-  return parsedPrice;
+  return parseFloat(price.toFixed(decimalpoints + 1));
 }

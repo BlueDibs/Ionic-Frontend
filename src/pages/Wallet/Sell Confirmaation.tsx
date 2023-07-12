@@ -57,14 +57,17 @@ export function SellConfirmation({
             You Will Receive
           </Text>
           <Title align="center" order={1} size={70}>
-            {humanizeNum(final_amount)}
+            {humanizeNum(getFormattedSmallPrice(final_amount))}
           </Title>
           <Text align="center" size={"lg"}>
             Rupees
           </Text>
         </div>
         <div style={{ margin: "15%" }}>
-          <LabelVale label="Share Price" value={data.share_price} />
+          <LabelVale
+            label="Share Price"
+            value={getFormattedSmallPrice(data.share_price)}
+          />
           <LabelVale label="Total Amount" value={data.shares_amount} />
           <LabelVale
             label="Fee (%0.2)"
