@@ -16,6 +16,7 @@ import { getFormattedSmallPrice, humanizeNum } from "../../utils";
 import { SelfSellModal } from "../Profile/SelfSell";
 import { useState } from "react";
 import TermsConditions from "./TermsConditions";
+import { useHistory } from "react-router";
 
 export function Tiiys({ query }: { query: any }) {
   const user = useAppSelector((state) => state.user);
@@ -26,6 +27,8 @@ export function Tiiys({ query }: { query: any }) {
       prev + current.amount * current.sellerUser.price,
     0
   );
+
+  const history = useHistory();
 
   return (
     <Stack mt={"sm"}>
@@ -73,8 +76,12 @@ export function Tiiys({ query }: { query: any }) {
             </tr>
           </thead>
           <tbody>
-            {query.data?.tiiys.map((item: any) => (
-              <tr>
+            {query.data?.tiiys?.map((item: any) => (
+              <tr
+                onClick={() => {
+                  history.push(`/app/user/${item.buyer_id}`);
+                }}
+              >
                 <td>{item.buyerUser.username}</td>
                 <td>{humanizeNum(getFormattedSmallPrice(item.amount))}</td>
                 <td>

@@ -188,7 +188,7 @@ export function PublicProfile() {
           <Flex direction={"column"} gap={"xs"} p={"sm"}>
             <Avatar
               src={
-                userQuery.data.avatarPath
+                userQuery.data?.avatarPath
                   ? `${config.STATIC_FILE_BASE_URL}${userQuery.data.avatarPath}?alt=media`
                   : null
               }
@@ -199,7 +199,7 @@ export function PublicProfile() {
             />
             <div>
               <Title order={4} weight={500}>
-                {userQuery.data.username}
+                {userQuery.data?.username}
               </Title>
               <Flex gap={"md"}>
                 <Text weight={500} size={"sm"}>
@@ -211,7 +211,7 @@ export function PublicProfile() {
               </Flex>
             </div>
 
-            <Text size={"sm"}>{userQuery.data.bio}</Text>
+            <Text size={"sm"}>{userQuery.data?.bio}</Text>
           </Flex>
           <div style={{ height: "150px", width: "100%", marginTop: "10px" }}>
             <MinChart
@@ -262,7 +262,7 @@ export function PublicProfile() {
             />
             <Status
               label="Posts"
-              value={fetchPostQry.data.length || 0}
+              value={fetchPostQry.data?.length || 0}
               className={classes.statusRight}
             />
           </SimpleGrid>
