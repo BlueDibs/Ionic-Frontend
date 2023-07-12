@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   '@capacitor/android':
     specifier: 4.8.0
@@ -40,6 +44,9 @@ dependencies:
   '@mantine/hooks':
     specifier: ^6.0.9
     version: 6.0.9(react@18.2.0)
+  '@mantine/notifications':
+    specifier: ^6.0.16
+    version: 6.0.16(@mantine/core@6.0.9)(@mantine/hooks@6.0.9)(react-dom@18.2.0)(react@18.2.0)
   '@nivo/line':
     specifier: ^0.83.0
     version: 0.83.0(react-dom@18.2.0)(react@18.2.0)
@@ -1328,7 +1335,6 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       regenerator-runtime: 0.13.11
-    dev: true
 
   /@babel/template@7.20.7:
     resolution: {integrity: sha512-8SegXApWe6VoNw0r9JHpSteLKTpTiLZ4rMlGIm9JQ18KiCtyQiAMEazujAHrUS5flrcqYZa75ukev3P6QmUwUw==}
@@ -2585,6 +2591,22 @@ packages:
       react: 18.2.0
     dev: false
 
+  /@mantine/notifications@6.0.16(@mantine/core@6.0.9)(@mantine/hooks@6.0.9)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-KqlPW51sxgQoJmIC2lEWMVlwPqy04D35iRMkCSget8aNgzk0K5csJppXo6qwMFn2GHKVGXFKJMBUp06IXQbiig==}
+    peerDependencies:
+      '@mantine/core': 6.0.16
+      '@mantine/hooks': 6.0.16
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@mantine/core': 6.0.9(@emotion/react@11.10.8)(@mantine/hooks@6.0.9)(@types/react@18.0.27)(react-dom@18.2.0)(react@18.2.0)
+      '@mantine/hooks': 6.0.9(react@18.2.0)
+      '@mantine/utils': 6.0.16(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      react-transition-group: 4.4.2(react-dom@18.2.0)(react@18.2.0)
+    dev: false
+
   /@mantine/styles@6.0.9(@emotion/react@11.10.8)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-jTtSicZalxw5fHD4p2c5RJdsb1DlBTKFwMmPWSTt5IgQ3ADucQtQWl2sVtVCpR/b5w9/Ihzgju84bPmOlAWh0g==}
     peerDependencies:
@@ -2597,6 +2619,14 @@ packages:
       csstype: 3.0.9
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /@mantine/utils@6.0.16(react@18.2.0):
+    resolution: {integrity: sha512-UFel9DbifL3zS8pTJlr6GfwGd6464OWXCJdUq0oLydgimbC1VV2PnptBr6FMwIpPVcxouLOtY1cChzwFH95PSA==}
+    peerDependencies:
+      react: '>=16.8.0'
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /@mantine/utils@6.0.9(react@18.2.0):
@@ -2841,13 +2871,13 @@ packages:
   /@radix-ui/number@1.0.0:
     resolution: {integrity: sha512-Ofwh/1HX69ZfJRiRBMTy7rgjAzHmwe4kW9C9Y99HTRUcYLUuVT0KESFj15rPjRgKJs20GPq8Bm5aEDJ8DuA3vA==}
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.22.5
     dev: false
 
   /@radix-ui/primitive@1.0.0:
     resolution: {integrity: sha512-3e7rn8FDMin4CgeL7Z/49smCA3rFYY3Ha2rUQ7HRWFadS5iCRw08ZgVT1LaNTCNqgvrUiyczLflrVrF0SRQtNA==}
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.22.5
     dev: false
 
   /@radix-ui/react-compose-refs@1.0.0(react@18.2.0):
@@ -2855,7 +2885,7 @@ packages:
     peerDependencies:
       react: ^16.8 || ^17.0 || ^18.0
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.22.5
       react: 18.2.0
     dev: false
 
@@ -2864,7 +2894,7 @@ packages:
     peerDependencies:
       react: ^16.8 || ^17.0 || ^18.0
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.22.5
       react: 18.2.0
     dev: false
 
@@ -2873,7 +2903,7 @@ packages:
     peerDependencies:
       react: ^16.8 || ^17.0 || ^18.0
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.22.5
       react: 18.2.0
     dev: false
 
@@ -2883,7 +2913,7 @@ packages:
       react: ^16.8 || ^17.0 || ^18.0
       react-dom: ^16.8 || ^17.0 || ^18.0
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.22.5
       '@radix-ui/react-compose-refs': 1.0.0(react@18.2.0)
       '@radix-ui/react-use-layout-effect': 1.0.0(react@18.2.0)
       react: 18.2.0
@@ -2896,7 +2926,7 @@ packages:
       react: ^16.8 || ^17.0 || ^18.0
       react-dom: ^16.8 || ^17.0 || ^18.0
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.22.5
       '@radix-ui/react-slot': 1.0.1(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -2927,7 +2957,7 @@ packages:
     peerDependencies:
       react: ^16.8 || ^17.0 || ^18.0
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.22.5
       '@radix-ui/react-compose-refs': 1.0.0(react@18.2.0)
       react: 18.2.0
     dev: false
@@ -2937,7 +2967,7 @@ packages:
     peerDependencies:
       react: ^16.8 || ^17.0 || ^18.0
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.22.5
       react: 18.2.0
     dev: false
 
@@ -2946,7 +2976,7 @@ packages:
     peerDependencies:
       react: ^16.8 || ^17.0 || ^18.0
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.22.5
       react: 18.2.0
     dev: false
 
@@ -3648,7 +3678,7 @@ packages:
     resolution: {integrity: sha512-Cg7TFGpIr01vOQNODXOOaGz2NpCU5gl8x1qJFbb6hbZxR7XrcE2vtbAsTAbJ7/xwJtUuJEw8K8Zr/AE0LHlesg==}
     engines: {node: '>=10', npm: '>=6'}
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.22.5
       cosmiconfig: 7.1.0
       resolve: 1.22.2
     dev: false
@@ -4350,6 +4380,13 @@ packages:
   /dom-accessibility-api@0.5.16:
     resolution: {integrity: sha512-X7BJ2yElsnOJ30pZF4uIIDfBEVgF4XEBxL9Bxhy6dnrm5hkzqmsWHGTiHqRiITNhMyFLyAiWndIJP7Z1NTteDg==}
     dev: true
+
+  /dom-helpers@5.2.1:
+    resolution: {integrity: sha512-nRCa7CK3VTrM2NmGkIy4cbK7IZlgBE/PYMn55rrXefr5xXDP0LdtfPnblFDoVdcAfslJ7or6iqAUnx0CCGIWQA==}
+    dependencies:
+      '@babel/runtime': 7.22.5
+      csstype: 3.1.2
+    dev: false
 
   /domexception@4.0.0:
     resolution: {integrity: sha512-A2is4PLG+eeSfoTMA95/s4pvAoSo2mKtiM5jlHkAVewmiO8ISFTFKZjH7UAM1Atli/OT/7JHOrJRJiMKUZKYBw==}
@@ -6648,6 +6685,20 @@ packages:
       - '@types/react'
     dev: false
 
+  /react-transition-group@4.4.2(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-/RNYfRAMlZwDSr6z4zNKV6xu53/e2BuaBbGhbyYIXTrmgu/bGHzmqOs7mJSJBHy9Ud+ApHx3QjrkKSp1pxvlFg==}
+    peerDependencies:
+      react: '>=16.6.0'
+      react-dom: '>=16.6.0'
+    dependencies:
+      '@babel/runtime': 7.22.5
+      dom-helpers: 5.2.1
+      loose-envify: 1.4.0
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
   /react-virtual@2.10.4(react@18.2.0):
     resolution: {integrity: sha512-Ir6+oPQZTVHfa6+JL9M7cvMILstFZH/H3jqeYeKI4MSUX+rIruVwFC6nGVXw9wqAw8L0Kg2KvfXxI85OvYQdpQ==}
     peerDependencies:
@@ -6732,7 +6783,7 @@ packages:
   /regenerator-transform@0.15.1:
     resolution: {integrity: sha512-knzmNAcuyxV+gQCufkYcvOqX/qIIfHLv0u5x79kRxuGojfYVky1f15TzZEu2Avte8QGepvUNTnLskf8E6X6Vyg==}
     dependencies:
-      '@babel/runtime': 7.21.5
+      '@babel/runtime': 7.22.5
     dev: true
 
   /regexp.prototype.flags@1.5.0:

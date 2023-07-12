@@ -13,7 +13,7 @@ import {
   IonModal,
   IonTitle,
   IonToolbar,
-} from "@ionic/react";
+} from '@ionic/react';
 import {
   Stack,
   Divider,
@@ -25,17 +25,17 @@ import {
   Table,
   Grid,
   Tabs,
-} from "@mantine/core";
-import { searchOutline } from "ionicons/icons";
-import { Statement } from "./Statement";
-import { BuyFrom } from "../User/BuySell/BuyForm";
-import { SellForm } from "../User/BuySell/SellForm";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Chart } from "../../components/Chart";
-import { useQuery } from "@tanstack/react-query";
-import { fetchUserDetails } from "../User/api.user";
-import { useHistory } from "react-router";
-import { getFormattedSmallPrice, humanizeNum } from "../../utils";
+} from '@mantine/core';
+import { searchOutline } from 'ionicons/icons';
+import { Statement } from './Statement';
+import { BuyFrom } from '../User/BuySell/BuyForm';
+import { SellForm } from '../User/BuySell/SellForm';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Chart } from '../../components/Chart';
+import { useQuery } from '@tanstack/react-query';
+import { fetchUserDetails } from '../User/api.user';
+import { useHistory } from 'react-router';
+import { getFormattedSmallPrice, humanizeNum } from '../../utils';
 
 export function Holdings({ query }: { query: any }) {
   const [modalOpenned, setOpen] = useState<boolean>(false);
@@ -59,7 +59,7 @@ export function Holdings({ query }: { query: any }) {
         data={[
           {
             id: 1,
-            color: "hsl(140, 70%, 50%)",
+            color: 'hsl(140, 70%, 50%)',
             data: chartsData,
           },
         ]}
@@ -95,24 +95,24 @@ export function Holdings({ query }: { query: any }) {
         </IonContent>
       </IonModal>
 
-      <Stack mt={"sm"}>
-        <Divider my={"sm"} />
+      <Stack mt={'sm'}>
+        <Divider my={'sm'} />
         <Statement
           label="Balance"
-          value={`$ ${humanizeNum(query.data?.balance || 0)}`}
+          value={` ${humanizeNum(query.data?.balance || 0)}`}
         />
         <Statement
           label="Total Investment"
-          value={`$ ${humanizeNum(query.data?.ttlInvestment || 0)}`}
+          value={` ${humanizeNum(query.data?.ttlInvestment || 0)}`}
         />
         <Statement
           label="Total Returns"
-          value={`$ ${humanizeNum(query.data?.ttlReturns || 0)}`}
+          value={` ${humanizeNum(query.data?.ttlReturns || 0)}`}
         />
         <Button color="green">Add Money</Button>
-        <Divider my={"sm"} />
+        <Divider my={'sm'} />
         <Paper>
-          <Flex justify={"space-between"}>
+          <Flex justify={'space-between'}>
             <Text weight={600}>Current Statistics</Text>
             <TextInput
               placeholder="search"
@@ -120,10 +120,10 @@ export function Holdings({ query }: { query: any }) {
               icon={<IonIcon icon={searchOutline} />}
             />
           </Flex>
-          <div style={{ padding: "10px 15px" }}>
+          <div style={{ padding: '10px 15px' }}>
             <Grid
-              w={"100%"}
-              style={{ fontSize: "0.8rem", fontWeight: 550, color: "#495057" }}
+              w={'100%'}
+              style={{ fontSize: '0.8rem', fontWeight: 550, color: '#495057' }}
             >
               <Grid.Col span={4}>Name</Grid.Col>
               <Grid.Col span={3}>Held</Grid.Col>
@@ -135,7 +135,7 @@ export function Holdings({ query }: { query: any }) {
             {query.data?.holdings.map((item: any) => (
               <IonItemSliding style={{ padding: 0, margin: 0 }}>
                 <IonItem>
-                  <Grid w={"100%"} style={{ fontSize: "0.8rem" }}>
+                  <Grid w={'100%'} style={{ fontSize: '0.8rem' }}>
                     <Grid.Col span={4}>{item.sellerUser.username}</Grid.Col>
                     <Grid.Col span={3}>
                       {humanizeNum(getFormattedSmallPrice(item.amount))}
@@ -148,7 +148,7 @@ export function Holdings({ query }: { query: any }) {
 
                 <IonItemOptions style={{ padding: 0, margin: 0 }}>
                   <IonItemOption
-                    style={{ backgroundColor: "#228be6", fontWeight: 600 }}
+                    style={{ backgroundColor: '#228be6', fontWeight: 600 }}
                     onClick={() => {
                       history.push(`/app/user/${item.sellerUser.id}`);
                     }}
@@ -158,7 +158,7 @@ export function Holdings({ query }: { query: any }) {
 
                   <IonItemOption
                     color="danger"
-                    style={{ backgroundColor: "#fa5252", fontWeight: 600 }}
+                    style={{ backgroundColor: '#fa5252', fontWeight: 600 }}
                     onClick={() => {
                       fetchUserProfile(item.sellerUser.id);
                     }}
