@@ -12,7 +12,14 @@ import { useRef, useState } from "react";
 import { useAppSelector } from "../../store/hooks";
 import { SellForm } from "../User/BuySell/SellForm";
 import { Chart } from "../../components/Chart";
-import { Button, Flex, NumberInput, Text, TextInput } from "@mantine/core";
+import {
+  Button,
+  Flex,
+  NumberInput,
+  Text,
+  TextInput,
+  Title,
+} from "@mantine/core";
 import { humanizeNum } from "../../utils";
 import { SellConfirmation } from "../Wallet/Sell Confirmaation";
 import { useMutation } from "@tanstack/react-query";
@@ -96,7 +103,10 @@ export function SelfSellModal({ opened, onClose }: Props) {
                 Cancel
               </IonButton>
             </IonButtons>
-            <IonTitle>{user.username}'s Shares</IonTitle>
+
+            <Flex pl={40}>
+              <IonTitle size="small">Your Shares</IonTitle>
+            </Flex>
           </IonToolbar>
         </IonHeader>
         <IonContent>
@@ -116,6 +126,8 @@ export function SelfSellModal({ opened, onClose }: Props) {
             onSubmit={form.onSubmit((val) => setIsConfirmModalOpened(true))}
           >
             <Flex direction={"column"} gap={"md"} p={"lg"}>
+              <Title order={4}> Sell equity to platform </Title>
+
               <TextInput
                 variant="filled"
                 label="Market Rate"

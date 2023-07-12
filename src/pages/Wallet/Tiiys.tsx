@@ -7,14 +7,15 @@ import {
   Table,
   TextInput,
   Text,
-} from '@mantine/core';
-import { Statement } from './Statement';
-import { IonIcon } from '@ionic/react';
-import { searchOutline } from 'ionicons/icons';
-import { useAppSelector } from '../../store/hooks';
-import { getFormattedSmallPrice, humanizeNum } from '../../utils';
-import { SelfSellModal } from '../Profile/SelfSell';
-import { useState } from 'react';
+} from "@mantine/core";
+import { Statement } from "./Statement";
+import { IonIcon } from "@ionic/react";
+import { searchOutline } from "ionicons/icons";
+import { useAppSelector } from "../../store/hooks";
+import { getFormattedSmallPrice, humanizeNum } from "../../utils";
+import { SelfSellModal } from "../Profile/SelfSell";
+import { useState } from "react";
+import TermsConditions from "./TermsConditions";
 
 export function Tiiys({ query }: { query: any }) {
   const user = useAppSelector((state) => state.user);
@@ -27,8 +28,8 @@ export function Tiiys({ query }: { query: any }) {
   );
 
   return (
-    <Stack mt={'sm'}>
-      <Divider my={'sm'} />
+    <Stack mt={"sm"}>
+      <Divider my={"sm"} />
 
       <SelfSellModal
         opened={isSelfSellModalOpen}
@@ -48,9 +49,14 @@ export function Tiiys({ query }: { query: any }) {
         Sell Equity
       </Button>
 
-      <Divider my={'sm'} />
+      <Divider my={"sm"} />
+
+      <TermsConditions />
+
+      <Divider my={"sm"} />
+
       <Paper>
-        <Flex justify={'space-between'}>
+        <Flex justify={"space-between"}>
           <Text weight={600}>Investors</Text>
           <TextInput
             placeholder="search"
@@ -58,7 +64,7 @@ export function Tiiys({ query }: { query: any }) {
             icon={<IonIcon icon={searchOutline} />}
           />
         </Flex>
-        <Table mt={'sm'}>
+        <Table mt={"sm"}>
           <thead>
             <tr>
               <th>Name</th>

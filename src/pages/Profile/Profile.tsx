@@ -24,11 +24,10 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { imgUrl } from "../../utils/media";
-import { chatbubbleEllipsesOutline, settingsOutline } from "ionicons/icons";
+import { settingsOutline } from "ionicons/icons";
 import { useHistory } from "react-router";
 import { ProfileEquityStats } from "../../components/Profile/ProfileEquityStats";
 import { auth } from "../../utils/firebase";
-import { SelfSellModal } from "./SelfSell";
 import { getFormattedSmallPrice } from "../../utils";
 
 const useStyles = createStyles((theme) => ({
@@ -82,7 +81,6 @@ export function Profile() {
   const user = useAppSelector((state) => state.user);
 
   const [editMdlOpn, setEdtMdlOpn] = useState(false);
-  const [isSelfSellModalOpen, setSelfSellModalOpen] = useState(false);
 
   const fetchPostQry = useQuery({
     queryKey: ["posts"],
@@ -116,11 +114,6 @@ export function Profile() {
       <IonContent>
         <Container p={"lg"} pb={0}>
           <EditProfile open={editMdlOpn} setModalOpen={setEdtMdlOpn} />
-
-          <SelfSellModal
-            opened={isSelfSellModalOpen}
-            onClose={() => setSelfSellModalOpen(false)}
-          />
 
           <Flex direction={"column"} gap={"xs"} p={"sm"}>
             <Avatar
@@ -205,27 +198,15 @@ export function Profile() {
             />
           </SimpleGrid>
 
-          <Group noWrap>
-            <Button
-              w={"100%"}
-              mt={"md"}
-              variant="white"
-              style={{ borderColor: "black", color: "black" }}
-              onClick={() => setEdtMdlOpn(true)}
-            >
-              Edit Profile
-            </Button>
-
-            <Button
-              mt={"md"}
-              w={"100%"}
-              variant="filled"
-              color="green"
-              onClick={() => setSelfSellModalOpen(true)}
-            >
-              Sell
-            </Button>
-          </Group>
+          <Button
+            w={"100%"}
+            mt={"md"}
+            variant="white"
+            style={{ borderColor: "black", color: "black" }}
+            onClick={() => setEdtMdlOpn(true)}
+          >
+            Edit Profile
+          </Button>
         </Container>
 
         <SimpleGrid
